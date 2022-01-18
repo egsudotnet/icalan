@@ -92,6 +92,7 @@ class Penjualan extends CI_Controller{
 				redirect('admin/penjualan');
 			}else{
 				$nofak=$this->m_penjualan->get_nofak();
+				
 				$this->session->set_userdata('nofak',$nofak);
 				$order_proses=$this->m_penjualan->simpan_penjualan($nofak,$total,$jml_uang,$kembalian);
 				if($order_proses){

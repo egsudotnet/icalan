@@ -47,7 +47,10 @@ class M_penjualan extends CI_Model{
         }else{
             $kd = "000001";
         }
-        return date('dmy').$kd;
+		 
+		$tanggal = $this->db->query("SELECT DATE_FORMAT(CURDATE(),'%y%m%d') AS Tanggal")->row()->Tanggal;  
+        // return date('dmy').$kd;
+		return $tanggal.$kd;
 	}
 
 	//=====================Penjualan grosir================================
