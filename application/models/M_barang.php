@@ -29,6 +29,12 @@ class M_barang extends CI_Model{
 		return $hsl;
 	}
 
+    function get_barang_by_search($filter){
+		$query=$this->db->query("SELECT barang_id AS id,barang_nama AS text FROM tbl_barang where barang_id like '%$filter%' or barang_nama like '%$filter%' ");
+        if($query->num_rows() > 0){ 
+            return $query->result() ;
+        }
+    }
 	function get_kobar(){
 		$q = $this->db->query("SELECT MAX(RIGHT(barang_id,6)) AS kd_max FROM tbl_barang");
         $kd = "";

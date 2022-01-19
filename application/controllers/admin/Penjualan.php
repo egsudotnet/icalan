@@ -11,6 +11,23 @@ class Penjualan extends CI_Controller{
 		$this->load->model('m_suplier');
 		$this->load->model('m_penjualan');
 	}
+
+	
+	function pr($str, $die = true) {
+		if ($str) {
+			if (is_object($str) || is_array($str)) {
+				echo "<pre>" . print_r($str, true) . "</pre>";
+			} else {
+				echo "<pre>$str</pre>";
+			}
+		}
+
+		if ($die) {
+			echo "---------------------------------------- die ----------------------------------------";
+			die();
+		}
+	}
+
 	function index(){
 	if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){
 		$data['data']=$this->m_barang->tampil_barang();
@@ -19,15 +36,26 @@ class Penjualan extends CI_Controller{
         echo "Halaman tidak ditemukan";
     }
 	}
+
 	function get_barang(){
-	if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){
-		$kobar=$this->input->post('kode_brg');
-		$x['brg']=$this->m_barang->get_barang($kobar);
-		$this->load->view('admin/v_detail_barang_jual',$x);
-	}else{
-        echo "Halaman tidak ditemukan";
-    }
+		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){
+			$kobar=$this->input->post('kode_brg');  
+			$x['brg']=$this->m_barang->get_barang($kobar);
+			$this->load->view('admin/v_detail_barang_jual',$x);
+		}else{
+			echo "Halaman tidak ditemukan";
+		}
 	}
+	function get_barang2(){
+		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){ 
+			$search=$this->input->get('search');  
+			$data=$this->m_barang->get_barang_by_search($search);  
+		}else{
+			echo "Tidak mempunyai akses";
+		}
+		echo json_encode($data);
+	}
+
 	function add_to_cart(){
 	if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){
 		$kobar=$this->input->post('kode_brg');

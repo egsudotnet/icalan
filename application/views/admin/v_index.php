@@ -57,7 +57,7 @@
         <!-- Projects Row -->
         <div class="row" align="center">
          <?php if($h=='1'){ ?> 
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item blue" style="height:150px;">
                      <a href="<?php echo base_url().'admin/penjualan'?>" data-toggle="modal">
                            <i class="fa fa-shopping-bag"></i>
@@ -65,7 +65,7 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item green" style="height:150px;">
                      <a href="<?php echo base_url().'admin/penjualan_grosir'?>" data-toggle="modal">
                            <i class="fa fa-cubes"></i>
@@ -73,7 +73,7 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item light-orange" style="height:150px;">
                      <a href="<?php echo base_url().'admin/suplier'?>" data-toggle="modal">
                            <i class="fa fa-truck"></i>
@@ -81,7 +81,7 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item color" style="height:150px;">
                      <a href="<?php echo base_url().'admin/kategori'?>" data-toggle="modal">
                            <i class="fa fa-sitemap"></i>
@@ -91,7 +91,7 @@
             </div>
             <?php }?>
             <!-- <?php if($h=='2'){ ?> 
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item blue" style="height:150px;">
                      <a href="#" data-toggle="modal">
                            <i class="fa fa-shopping-cart"></i>
@@ -99,7 +99,7 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item green" style="height:150px;">
                      <a href="#" data-toggle="modal">
                            <i class="fa fa-users"></i>
@@ -107,7 +107,7 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item light-orange" style="height:150px;">
                      <a href="#" data-toggle="modal">
                            <i class="fa fa-truck"></i>
@@ -115,7 +115,7 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item color" style="height:150px;">
                      <a href="#" data-toggle="modal">
                            <i class="fa fa-sitemap"></i>
@@ -132,7 +132,7 @@
         <!-- Projects Row -->
         <div class="row">
         <?php if($h=='1'){ ?> 
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item purple" style="height:150px;">
                      <a href="<?php echo base_url().'admin/barang'?>" data-toggle="modal">
                            <i class="fa fa-shopping-cart"></i>
@@ -140,7 +140,7 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item red" style="height:150px;">
                      <a href="<?php echo base_url().'admin/pengguna'?>" data-toggle="modal">
                            <i class="fa fa-users"></i>
@@ -148,7 +148,7 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item blue" style="height:150px;">
                      <a href="<?php echo base_url().'admin/laporan'?>" data-toggle="modal">
                            <i class="fa fa-bar-chart"></i>
@@ -156,7 +156,7 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item light-red" style="height:150px;">
                      <a href="<?php echo base_url().'admin/pembelian'?>" data-toggle="modal">
                            <i class="fa fa-cubes"></i>
@@ -166,8 +166,8 @@
             </div>
             <?php }?>
             <?php if($h=='2'){ ?> 
-            <div class="col-md-3 portfolio-item"></div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item"></div>
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item purple" style="height:150px;">
                      <a href="<?php echo base_url().'admin/penjualan_grosir'?>" data-toggle="modal">
                            <i class="fa fa-cubes"></i>
@@ -175,7 +175,7 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item red" style="height:150px;">
                      <a href="<?php echo base_url().'admin/penjualan'?>" data-toggle="modal">
                            <i class="fa fa-shopping-bag"></i>
@@ -183,8 +183,8 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item"></div>
-            <!-- <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item"></div>
+            <!-- <div class="col-xs-3 portfolio-item">
                 <div class="menu-item blue" style="height:150px;">
                      <a href="#" data-toggle="modal">
                            <i class="fa fa-bar-chart"></i>
@@ -192,7 +192,7 @@
                       </a>
                 </div> 
             </div>
-            <div class="col-md-3 portfolio-item">
+            <div class="col-xs-3 portfolio-item">
                 <div class="menu-item light-red" style="height:150px;">
                      <a href="#" data-toggle="modal">
                            <i class="fa fa-cubes"></i>
