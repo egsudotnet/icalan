@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="<?php echo base_url('assets/css/laporan.css')?>"/>
 </head>
-<body onload="window.print()">
+<body onload="window.print();window.onafterprint = window.close;">
 <div id="laporan">
 <table align="center" style="width:700px; border-bottom:3px double;border-top:none;border-right:none;border-left:none;margin-top:5px;margin-bottom:20px;">
 <!--<tr>
@@ -94,7 +94,7 @@ $no=0;
 </table>
 <table align="center" style="width:700px; border:none;margin-top:5px;margin-bottom:20px;">
     <tr>
-        <td align="right">Padang, <?php echo date('d-M-Y')?></td>
+        <td align="right">Tangerang, <?php echo date('d-M-Y')?></td>
     </tr>
     <tr>
         <td align="right"></td>

@@ -296,33 +296,49 @@
                     $("#jumlah").focus();
                 }
             });
- 
-            //$('#kode_brg').css("display","none");
-
-            $('#select_kode_brg').css({"width":"180px"});
-            $('#select_kode_brg').select2({
-                minimumInputLength: 3,
-                allowClear: true,
-                placeholder: '',
-                ajax: {
-                    dataType: 'json',
-                    url: '<?php echo base_url().'admin/penjualan/get_barang2';?>',
-                    delay: 800,
-                    data: function(params) {
-                        return {search: params.term}
-                    },
-                    processResults: function (data, page) {
-                    return {
-                        results: data
-                    };
-                    },
+   
+            
+            $.ajax({
+                type: "POST",
+                url : "<?php echo base_url().'admin/penjualan/get_barang2';?>", 
+                success: function(data){  
+                    data = eval("("+ data +")") ;
+                    $('#select_kode_brg').css({"width":"180px"});
+                    var selectOrigin = $('#select_kode_brg').select2();
+                    selectOrigin.empty();
+                    selectOrigin.select2({
+                        placeholder: "select departure airport",
+                        allowclear: true,
+                        data: data,
+                        width: '100%',
+                        dropdownAutoWidth: 'true'
+                    });
                 }
-            }).on('select2:select', function (evt) {
-                $("#kode_brg").val($('#select_kode_brg').val()).trigger("input");
-                //$('.select_kode_brg_container').css("display","none");
-                // var data = $(".select2 option:selected").text();
-                // alert("Data yang dipilih adalah "+data);
             });
+            $("#select_kode_brg").change(function(){
+                $("#kode_brg").val($(this).val()).trigger("input");
+            })
+            // $('#select_kode_brg').css({"width":"180px"});
+            // $('#select_kode_brg').select2({
+            //     minimumInputLength: 3,
+            //     allowClear: true,
+            //     placeholder: '',
+            //     ajax: {
+            //         dataType: 'json',
+            //         url: '<?php echo base_url().'admin/penjualan/get_barang2';?>',
+            //         delay: 800,
+            //         data: function(params) {
+            //             return {search: params.term}
+            //         },
+            //         processResults: function (data, page) {
+            //         return {
+            //             results: data
+            //         };
+            //         },
+            //     }
+            // }).on('select2:select', function (evt) {
+            //     $("#kode_brg").val($('#select_kode_brg').val()).trigger("input");
+            // });
         });
     </script>
     

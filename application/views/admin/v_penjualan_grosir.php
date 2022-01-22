@@ -21,6 +21,7 @@
     <link href="<?php echo base_url().'assets/css/jquery.dataTables.min.css'?>" rel="stylesheet">
     <link href="<?php echo base_url().'assets/dist/css/bootstrap-select.css'?>" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bootstrap-datetimepicker.min.css'?>">
+    <link href="<?php echo base_url().'assets/css/select2.css'?>" rel="stylesheet">
 </head>
 
 <body>
@@ -49,11 +50,15 @@
             <div class="col-lg-12">
             <form action="<?php echo base_url().'admin/penjualan_grosir/add_to_cart'?>" method="post">
             <table>
-                <tr>
-                    <th>Kode Barang</th>
+                <tr class="">
+                    <input type="text" name="kode_brg" id="kode_brg" class="form-control input-sm"  style="display:none"> 
+                    <th colspan="select_kode_brg_container">Kode Barang</th>
                 </tr>
-                <tr>
-                    <th><input type="text" name="kode_brg" id="kode_brg" class="form-control input-sm"></th>                     
+                <tr> 
+                    <th class="select_kode_brg_container"> 
+                        <select name="select_kode_brg" id="select_kode_brg" class="form-control input-sm"> 
+                        </select>
+                    </th>                     
                 </tr>
                     <div id="detail_barang" style="position:absolute;">
                     </div>
@@ -207,6 +212,7 @@
 
     <!-- jQuery -->
     <script src="<?php echo base_url().'assets/js/jquery.js'?>"></script>
+    <script src="<?php echo base_url().'assets/js/select2.js'?>"></script> 
 
     <!-- Bootstrap Core JavaScript -->
     <script src="<?php echo base_url().'assets/dist/js/bootstrap-select.min.js'?>"></script>
@@ -281,6 +287,29 @@
                 if(e.which==13){
                     $("#jumlah").focus();
                 }
+            });
+
+            
+            $('#select_kode_brg').css({"width":"180px"});
+            $('#select_kode_brg').select2({
+                minimumInputLength: 3,
+                allowClear: true,
+                placeholder: '',
+                ajax: {
+                    dataType: 'json',
+                    url: '<?php echo base_url().'admin/penjualan/get_barang2';?>',
+                    delay: 800,
+                    data: function(params) {
+                        return {search: params.term}
+                    },
+                    processResults: function (data, page) {
+                    return {
+                        results: data
+                    };
+                    },
+                }
+            }).on('select2:select', function (evt) {
+                $("#kode_brg").val($('#select_kode_brg').val()).trigger("input");
             });
         });
     </script>
