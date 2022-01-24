@@ -25,8 +25,10 @@ class M_barang extends CI_Model{
 
 
 	function get_barang($kobar){
-		$hsl=$this->db->query("SELECT * FROM tbl_barang where barang_id='$kobar'");
-		return $hsl;
+		$query=$this->db->query("SELECT barang_id,barang_nama,barang_satuan,barang_harpok,barang_harjul,barang_harjul_grosir,barang_stok,barang_min_stok,barang_kategori_id,barang_user_id FROM tbl_barang where barang_id='$kobar'");
+		if($query->num_rows() > 0){ 
+            return $query->row() ;
+        }
 	}
 
     function get_barang_by_search($filter){
