@@ -1,5 +1,5 @@
 <?php
-	class M_barang extends CI_Model{
+class M_barang_v2 extends CI_Model{
 
 	function hapus_barang($kode){
 		$hsl=$this->db->query("DELETE FROM tbl_barang where barang_id='$kode'");
@@ -25,22 +25,30 @@
 
 
 	function get_barang($kobar){
-		$hsl=$this->db->query("SELECT * FROM tbl_barang where barang_id='$kobar'");
-		return $hsl;
+		$query=$this->db->query("SELECT barang_id,barang_nama,barang_satuan,barang_harpok,barang_harjul,barang_harjul_grosir,barang_stok,barang_min_stok,barang_kategori_id,barang_user_id,1 barang_qty_input FROM tbl_barang where barang_id='$kobar'");
+		if($query->num_rows() > 0){ 
+            return $query->row() ;
+        }
 	}
 
+    function get_barang_by_search($filter){
+		$query=$this->db->query("SELECT barang_id AS id,barang_nama AS text FROM tbl_barang where barang_id like '%$filter%' or barang_nama like '%$filter%' ");
+        if($query->num_rows() > 0){ 
+            return $query->result() ;
+        }
+    }
 	function get_kobar(){
 		$q = $this->db->query("SELECT MAX(RIGHT(barang_id,6)) AS kd_max FROM tbl_barang");
-		$kd = "";
-		if($q->num_rows()>0){
-			foreach($q->result() as $k){
-				$tmp = ((int)$k->kd_max)+1;
-				$kd = sprintf("%06s", $tmp);
-			}
-		}else{
-			$kd = "000001";
-		}
-		return "BR".$kd;
+        $kd = "";
+        if($q->num_rows()>0){
+            foreach($q->result() as $k){
+                $tmp = ((int)$k->kd_max)+1;
+                $kd = sprintf("%06s", $tmp);
+            }
+        }else{
+            $kd = "000001";
+        }
+        return "BR".$kd;
 	}
 
-} 
+}

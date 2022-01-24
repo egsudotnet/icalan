@@ -7,7 +7,7 @@ class Penjualan extends CI_Controller{
             redirect($url);
         };
 		$this->load->model('m_kategori');
-		$this->load->model('m_barang');
+		$this->load->model('M_barang_v2');
 		$this->load->model('m_suplier');
 		$this->load->model('m_penjualan');
 	}
@@ -30,7 +30,7 @@ class Penjualan extends CI_Controller{
 
 	function index(){
 		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){
-			$data['data']=$this->m_barang->tampil_barang();
+			$data['data']=$this->M_barang_v2->tampil_barang();
 			$this->load->view('admin_v2/v_penjualan',$data);
 		}else{
 			echo "Halaman tidak ditemukan";
@@ -40,7 +40,7 @@ class Penjualan extends CI_Controller{
 	function get_barang(){
 		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){
 			$kobar=$this->input->post('kobar');  
-			$data=$this->m_barang->get_barang($kobar);
+			$data=$this->M_barang_v2->get_barang($kobar);
 		}else{
 			echo "Halaman tidak ditemukan";
 		}		
@@ -49,7 +49,7 @@ class Penjualan extends CI_Controller{
 	function get_barang2(){
 		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){ 
 			$search=$this->input->get('search');  
-			$data=$this->m_barang->get_barang_by_search($search);  
+			$data=$this->M_barang_v2->get_barang_by_search($search);  
 		}else{
 			echo "Tidak mempunyai akses";
 		}
@@ -59,7 +59,7 @@ class Penjualan extends CI_Controller{
 	function add_to_cart(){
 	if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){
 		$kobar=$this->input->post('kode_brg');
-		$produk=$this->m_barang->get_barang($kobar);
+		$produk=$this->M_barang_v2->get_barang($kobar);
 		$i=$produk->row_array();
 		$data = array(
                'id'       => $i['barang_id'],
