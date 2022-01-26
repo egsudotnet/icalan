@@ -26,28 +26,49 @@
                                 <th>Satuan</th> 
                                 <th>Harga</th>
                                 <th>Qty</th>
-                                <th>Total</th> 
+                                <th style="width:200px">Total</th> 
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="row in listBarang">
                                     <td>{{row.barang_nama}}</td>
                                     <td>{{row.barang_satuan}}</td>
-                                    <td class="barang_harjul">{{row.barang_harjul}}</td> 
+                                    <td class="barang_harjul text-right">{{row.barang_harjul}}</td> 
                                     <td style="width:120px"> 
                                         <div class="input-group input-group-lg">
                                         <span class="input-group-btn btn-minus">
                                             <span class="btn btn-warning"><i class="glyphicon glyphicon-minus"></i></span>
                                         </span>
-                                        <input v-model="row.barang_qty_input" class="form-control input-lg input-qty" style="width:100px"/>
+                                        <input v-model="row.barang_qty_input" class="form-control input-lg text-right input-qty" style="width:100px"/>
                                         <span class="input-group-btn btn-plus">
                                             <span class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></span>
                                         </span>
                                         </div>
                                     </td>
-                                    <td>{{row.barang_harjul * row.barang_qty_input}}</td>
+                                    <td class="text-right">{{row.barang_harjul * row.barang_qty_input}}</td>
                                 </tr>
                             <tbody>
+                            <tfoot>
+                                <tr>
+                                    <th rowspan="3" colspan="3"><span class="btn btn-primary"><i class="fa fa-save"> Simpan</i></span></th> 
+                                    <th colspan="1"><b class="pull-right">Total</b></th> 
+                                    <th>
+                                        <input v-model="totalHarga" class="form-control input-lg priceFormat text-right" style="width:200px"/>
+                                    </th> 
+                                </tr>
+                                <tr>
+                                    <th colspan="1"><b class="pull-right">Total Bayar</b></th> 
+                                    <th>
+                                        <input v-model="totalBayar" class="form-control input-lg priceFormat text-right" style="width:200px"/>
+                                    </th> 
+                                </tr>
+                                <tr>
+                                    <th colspan="1"><b class="pull-right">{{labelKembalian}}</b></th> 
+                                    <th>
+                                        <input v-model="kembalian" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
+                                    </th> 
+                                </tr>
+                            </tfoot>
                         </table>
                 </div>
             </div>
@@ -63,54 +84,11 @@
 ?> 
 
 <script type="text/javascript">
-    $(function(){
-        $('.jml_uang').priceFormat({
-                prefix: '',
-                //centsSeparator: '',
-                centsLimit: 0,
-                thousandsSeparator: ','
-        });
-        $('#jml_uang2').priceFormat({
-                prefix: '',
-                //centsSeparator: '',
-                centsLimit: 0,
-                thousandsSeparator: ''
-        });
-        $('#kembalian').priceFormat({
-                prefix: '',
-                //centsSeparator: '',
-                centsLimit: 0,
-                thousandsSeparator: ','
-        });
-        $('.harjul,input-qty').priceFormat({
-                prefix: '',
-                //centsSeparator: '',
-                centsLimit: 0,
-                thousandsSeparator: ','
-        });
-        $('#jml_uang,.input-qty').on("input",function(){
-            var total=$('#total').val();
-            var jumuang=$('#jml_uang').val();
-            var hsl=jumuang.replace(/[^\d]/g,"");
-            $('#jml_uang2').val(hsl);
-            $('#kembalian').val(hsl-total);
-        })
-
-        $(document).on("input","#jml_uang,.input-qty",function(){
-            var total=$('#total').val();
-            var jumuang=$('#jml_uang').val();
-            var hsl=jumuang.replace(/[^\d]/g,"");
-            $('#jml_uang2').val(hsl);
-            $('#kembalian').val(hsl-total);
-        })
-
-    }); 
-    
     var Penjualan = new Vue({
         el: "#sectionPenjualan",
         data: {
             listBarang: [],
-            barang : "A"
+            totalBayar : 0,
         },
         mounted: function () {
             this.Validation();
@@ -255,6 +233,20 @@
             }
         },
         computed: {
+            totalHarga: function () {
+                 var total = 0;
+                 $.each(this.listBarang,function(index,item){
+                    total += item.barang_harjul * item.barang_qty_input;
+                 });
+                 return total; 
+            },
+            kembalian: function () { 
+                 return this.totalBayar - this.totalHarga; 
+            },
+            labelKembalian: function () {
+                 var kembalian = this.totalBayar - this.totalHarga; 
+                 return kembalian<0 ? "Kurang Bayar" : "Kembalian"; 
+            }
             // statusCode: function () {
             //     if (this.status === true) {
             //         return listStatus.filter(function (a) { return a.value.toLowerCase() === 'active'; })[0].code;
@@ -263,6 +255,14 @@
             //         return listStatus.filter(function (a) { return a.value.toLowerCase() === 'inactive'; })[0].code;
             //     }
             // }
+        },
+        updated: function () {
+            $('.priceFormat').priceFormat({
+                prefix: '',
+                //centsSeparator: '',
+                centsLimit: 0,
+                thousandsSeparator: '.'
+            });
         }
     });
 
