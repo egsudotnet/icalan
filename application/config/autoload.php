@@ -38,6 +38,7 @@
 */
 
 $autoload['packages'] = array();
+$autoload['helper'] = array('array', 'language', 'url','application_helper');
 
 
 /*

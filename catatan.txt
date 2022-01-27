@@ -1,0 +1,15 @@
+CREATE TABLE `db_penjualan`.`lookups` (
+  `lookup_id` INT NOT NULL AUTO_INCREMENT,
+  `lookup_kode` VARCHAR(5) NULL,
+  `lookup_value` VARCHAR(1000) NULL,
+  `lookup_keterangan` VARCHAR(2000) NULL,
+  PRIMARY KEY (`lookup_id`),
+  UNIQUE INDEX `lookup_kode_UNIQUE` (`lookup_kode` ASC) VISIBLE)
+ENGINE = InnoDB;
+INSERT INTO `db_penjualan`.`lookups` (`lookup_kode`, `lookup_value`, `lookup_keterangan`) VALUES ('KD001', 'Toko Koh Anggit', 'Nama Toko');
+INSERT INTO `db_penjualan`.`lookups` (`lookup_kode`, `lookup_value`, `lookup_keterangan`) VALUES ('KD002', 'Kampus Utama : Jl. Colombo No.1, Sleman, Yogyakarta. Kampus UPP 1 : Jl. Kenari No.6, Yogyakarta. Kampus UPP 2 : Jl. Bantul No. 50, Bantul, Yogyakarta.', 'Alamat Toko');
+INSERT INTO `db_penjualan`.`lookups` (`lookup_kode`, `lookup_value`, `lookup_keterangan`) VALUES ('KD003', '08976545435', 'HP Toko');
+
+
+CATATAN
+tbl_jual_bayar_belum rrelasi ke tabel_jual

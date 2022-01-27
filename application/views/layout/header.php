@@ -22,6 +22,13 @@
     <link href="<?php echo base_url().'assets/dist/css/bootstrap-select.css'?>" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bootstrap-datetimepicker.min.css'?>">
     <link href="<?php echo base_url().'assets/css/select2.css'?>" rel="stylesheet">
+
+    <style>
+        th{
+            text-align:center !important;
+        }
+        
+    </style>
 </head>
 
 <body>
@@ -30,3 +37,9 @@
    <?php 
         $this->load->view('admin_v2/menu');
    ?>
+<div class="container">
+    <div align="center" style="margin-top:0px;color:white;background-color:red" id="info-error"></div>
+    <div align="center" style="margin-top:0px;color:black;background-color:yellow" id="info-warning"></div>
+    <div align="center" style="margin-top:0px;color:white;background-color:green" id="info-success"></div>
+<div>
+ 

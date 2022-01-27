@@ -32,7 +32,21 @@ class M_barang_v2 extends CI_Model{
 	}
 
     function get_barang_by_search($filter){
-		$query=$this->db->query("SELECT barang_id AS id,barang_nama AS text FROM tbl_barang where barang_id like '%$filter%' or barang_nama like '%$filter%' ");
+		$query=$this->db->query("SELECT 
+			barang_id AS id,
+			barang_nama AS text,
+			barang_id,
+			barang_nama,
+			barang_satuan,
+			barang_harpok,
+			barang_harjul,
+			barang_harjul_grosir,
+			barang_stok,
+			barang_min_stok,
+			barang_kategori_id,
+			barang_user_id,
+			1 barang_qty_input
+		FROM tbl_barang where barang_id like '%$filter%' or barang_nama like '%$filter%' Limit 10");
         if($query->num_rows() > 0){ 
             return $query->result() ;
         }

@@ -13,7 +13,21 @@
     <script src="<?php echo base_url().'assets/js/moment.js'?>"></script>
     <script src="<?php echo base_url().'assets/js/bootstrap-datetimepicker.min.js'?>"></script>  
     <script> 
+     
+    var helper = {};
+    helper.dataToko = {
+        namaTokoKode : "KD001",
+        alamatTokoKode : "KD002",
+        hpTokoKode : "KD003", 
+    }
+    helper.convertToInt = function (myStr){ 
+        myStr = myStr.toString();
+        return parseInt(myStr.replaceAll('.', ''));
+    }
         $(function(){
+            BeforeSendAjaxBehaviour = () =>{
+                $(".info-error,info-warning,.info-success").text("");
+            }
                 // $('.priceFormat').priceFormat({
                 //         prefix: '',
                 //         //centsSeparator: '',

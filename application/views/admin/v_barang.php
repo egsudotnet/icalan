@@ -189,12 +189,12 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class="control-label col-xs-3" >Harga (Grosir)</label>
                         <div class="col-xs-9">
                             <input name="harjul_grosir" class="harjul form-control" type="text" placeholder="Harga Jual Grosir..." style="width:335px;">
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label class="control-label col-xs-3" >Stok</label>
@@ -1003,12 +1003,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="control-label col-xs-3" >Harga (Grosir)</label>
                             <div class="col-xs-9">
                                 <input name="harjul_grosir" class="harjul form-control" type="text" value="<?php echo $harjul_grosir;?>" placeholder="Harga Jual Grosir..." style="width:335px;" required>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group">
                             <label class="control-label col-xs-3" >Stok</label>
