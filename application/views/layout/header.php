@@ -35,7 +35,7 @@
 
     <!-- Navigation -->
    <?php 
-        $this->load->view('admin_v2/menu');
+        $this->load->view('layout/menu');
    ?>
 <div class="container">
     <div align="center" style="margin-top:0px;color:white;background-color:red" id="info-error"></div>

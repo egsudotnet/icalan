@@ -35,7 +35,7 @@
 <img src="<?php echo base_url().'assets/img/bg.jpg'?>" alt="gambar" class="bg" />
     <!-- Navigation -->
    <?php 
-        $this->load->view('admin/menu');
+        $this->load->view('layout/menu');
    ?>
 
     <!-- Page Content -->

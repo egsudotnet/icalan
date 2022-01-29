@@ -27,7 +27,7 @@
 
     <!-- Navigation -->
    <?php 
-        $this->load->view('admin/menu');
+        $this->load->view('layout/menu');
    ?>
 
     <!-- Page Content -->

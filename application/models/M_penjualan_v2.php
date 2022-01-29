@@ -93,6 +93,7 @@ class M_penjualan_v2 extends CI_Model{
 			(
 				bayar_nofak,
 				jual_nofak,
+				piutang,
 				bayar_jml_uang,
 				bayar_kurang,
 				bayar_user_id)
@@ -100,6 +101,7 @@ class M_penjualan_v2 extends CI_Model{
 			(
 				$bayarNofak,
 				$nofak,
+				$total,
 				$jml_uang,
 				$kembalian,
 				$idadmin);
@@ -171,27 +173,5 @@ class M_penjualan_v2 extends CI_Model{
 			$result = $q->result();
         } 
 		return $result;
-	}
-
-	//=====================Penjualan grosir================================
-	function simpan_penjualan_grosir($nofak,$total,$jml_uang,$kembalian){
-		$idadmin=$this->session->userdata('idadmin');
-		$this->db->query("INSERT INTO tbl_jual (jual_nofak,jual_total,jual_jml_uang,jual_kembalian,jual_user_id,jual_keterangan) VALUES ('$nofak','$total','$jml_uang','$kembalian','$idadmin','grosir')");
-		foreach ($this->cart->contents() as $item) {
-			$data=array(
-				'd_jual_nofak' 			=>	$nofak,
-				'd_jual_barang_id'		=>	$item['id'],
-				'd_jual_barang_nama'	=>	$item['name'],
-				'd_jual_barang_satuan'	=>	$item['satuan'],
-				'd_jual_barang_harpok'	=>	$item['harpok'],
-				'd_jual_barang_harjul'	=>	$item['amount'],
-				'd_jual_qty'			=>	$item['qty'],
-				'd_jual_diskon'			=>	$item['disc'],
-				'd_jual_total'			=>	$item['subtotal']
-			);
-			$this->db->insert('tbl_detail_jual',$data);
-			$this->db->query("update tbl_barang set barang_stok=barang_stok-'$item[qty]' where barang_id='$item[id]'");
-		}
-		return true;
 	}
 }

@@ -9,7 +9,7 @@
     <meta name="description" content="Produk By egsudotnet">
     <meta name="author" content="egsudotnet">
 
-    <title>Welcome To Point of Sale Apps</title>
+    <title>Transaksi Penjualan</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url().'assets/css/bootstrap.min.css'?>" rel="stylesheet">
@@ -21,7 +21,7 @@
     <link href="<?php echo base_url().'assets/css/jquery.dataTables.min.css'?>" rel="stylesheet">
     <link href="<?php echo base_url().'assets/dist/css/bootstrap-select.css'?>" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bootstrap-datetimepicker.min.css'?>">
-    <link href="<?php echo base_url().'assets/css/select2.css'?>" rel="stylesheet">
+	<link href="<?php echo base_url().'assets/css/select2.css'?>" rel="stylesheet">
 </head>
 
 <body>
@@ -39,16 +39,16 @@
             <div class="col-lg-12">
             <center><?php echo $this->session->flashdata('msg');?></center>
                 <h1 class="page-header">Transaksi
-                    <small>Penjualan (Grosir)</small>
-                    <a href="#" data-toggle="modal" data-target="#largeModal" class="pull-right"><small>Bantuan?</small></a>
-                </h1>
+                    <small>Penjualan (Eceran)</small>
+                    <a href="#" data-toggle="modal" data-target="#largeModal" class="pull-right"><small>Cari Produk!</small></a>
+                </h1> 
             </div>
         </div>
         <!-- /.row -->
         <!-- Projects Row -->
         <div class="row">
             <div class="col-lg-12">
-            <form action="<?php echo base_url().'admin/penjualan_grosir/add_to_cart'?>" method="post">
+            <form action="<?php echo base_url().'admin/penjualan/add_to_cart'?>" method="post">
             <table>
                 <tr class="">
                     <input type="text" name="kode_brg" id="kode_brg" class="form-control input-sm"  style="display:none"> 
@@ -63,6 +63,7 @@
                     <div id="detail_barang" style="position:absolute;">
                     </div>
             </table>
+             
              </form>
             <table class="table table-bordered table-condensed" style="font-size:11px;margin-top:10px;">
                 <thead>
@@ -90,14 +91,14 @@
                          <td style="text-align:center;"><?php echo number_format($items['qty']);?></td>
                          <td style="text-align:right;"><?php echo number_format($items['subtotal']);?></td>
                         
-                         <td style="text-align:center;"><a href="<?php echo base_url().'admin/penjualan_grosir/remove/'.$items['rowid'];?>" class="btn btn-warning btn-xs"><span class="fa fa-close"></span> Batal</a></td>
+                         <td style="text-align:center;"><a href="<?php echo base_url().'admin/penjualan/remove/'.$items['rowid'];?>" class="btn btn-warning btn-xs"><span class="fa fa-close"></span> Batal</a></td>
                     </tr>
                     
                     <?php $i++; ?>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <form action="<?php echo base_url().'admin/penjualan_grosir/simpan_penjualan_grosir'?>" method="post">
+            <form action="<?php echo base_url().'admin/penjualan/simpan_penjualan'?>" method="post">
             <table>
                 <tr>
                     <td style="width:760px;" rowspan="2"><button type="submit" class="btn btn-info btn-lg"> Simpan</button></td>
@@ -121,7 +122,7 @@
             <hr/>
         </div>
         <!-- /.row -->
-         <!-- ============ MODAL ADD =============== -->
+        <!-- ============ MODAL ADD =============== -->
         <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
             <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -138,7 +139,7 @@
                             <th style="width:120px;">Kode Barang</th>
                             <th style="width:240px;">Nama Barang</th>
                             <th>Satuan</th>
-                            <th style="width:100px;">Harga (Grosir)</th>
+                            <th style="width:100px;">Harga (Eceran)</th>
                             <th>Stok</th>
                             <th style="width:100px;text-align:center;">Aksi</th>
                         </tr>
@@ -164,15 +165,15 @@
                             <td><?php echo $id;?></td>
                             <td><?php echo $nm;?></td>
                             <td style="text-align:center;"><?php echo $satuan;?></td>
-                            <td style="text-align:right;"><?php echo 'Rp '.number_format($harjul_grosir);?></td>
+                            <td style="text-align:right;"><?php echo 'Rp '.number_format($harjul);?></td>
                             <td style="text-align:center;"><?php echo $stok;?></td>
                             <td style="text-align:center;">
-                            <form action="<?php echo base_url().'admin/penjualan_grosir/add_to_cart'?>" method="post">
+                            <form action="<?php echo base_url().'admin/penjualan/add_to_cart'?>" method="post">
                             <input type="hidden" name="kode_brg" value="<?php echo $id?>">
                             <input type="hidden" name="nabar" value="<?php echo $nm;?>">
                             <input type="hidden" name="satuan" value="<?php echo $satuan;?>">
                             <input type="hidden" name="stok" value="<?php echo $stok;?>">
-                            <input type="hidden" name="harjul" value="<?php echo number_format($harjul_grosir);?>">
+                            <input type="hidden" name="harjul" value="<?php echo number_format($harjul);?>">
                             <input type="hidden" name="diskon" value="0">
                             <input type="hidden" name="qty" value="1" required>
                                 <button type="submit" class="btn btn-xs btn-info" title="Pilih"><span class="fa fa-edit"></span> Pilih</button>
@@ -192,6 +193,11 @@
             </div>
             </div>
         </div>
+
+        
+
+        <!-- ============ MODAL HAPUS =============== -->
+        
 
         <!--END MODAL-->
 
@@ -272,15 +278,17 @@
             //Ajax kabupaten/kota insert
             $("#kode_brg").focus();
             $("#kode_brg").on("input",function(){
-                var kobar = {kode_brg:$(this).val()};
-                   $.ajax({
-               type: "POST",
-               url : "<?php echo base_url().'admin/penjualan_grosir/get_barang';?>",
-               data: kobar,
-               success: function(msg){
-               $('#detail_barang').html(msg);
-               }
-            });
+                var kobar = {
+                    kode_brg:$(this).val()
+                };
+                $.ajax({
+                    type: "POST",
+                    url : "<?php echo base_url().'admin/penjualan/get_barang';?>",
+                    data: kobar,
+                    success: function(msg){
+                    $('#detail_barang').html(msg);
+                    }
+                });
             }); 
 
             $("#kode_brg").keypress(function(e){
@@ -288,29 +296,49 @@
                     $("#jumlah").focus();
                 }
             });
-
+   
             
-            $('#select_kode_brg').css({"width":"180px"});
-            $('#select_kode_brg').select2({
-                minimumInputLength: 3,
-                allowClear: true,
-                placeholder: '',
-                ajax: {
-                    dataType: 'json',
-                    url: '<?php echo base_url().'admin/penjualan/get_barang2';?>',
-                    delay: 800,
-                    data: function(params) {
-                        return {search: params.term}
-                    },
-                    processResults: function (data, page) {
-                    return {
-                        results: data
-                    };
-                    },
+            $.ajax({
+                type: "POST",
+                url : "<?php echo base_url().'admin/penjualan/get_barang2';?>", 
+                success: function(data){  
+                    data = eval("("+ data +")") ;
+                    $('#select_kode_brg').css({"width":"180px"});
+                    var selectOrigin = $('#select_kode_brg').select2();
+                    selectOrigin.empty();
+                    selectOrigin.select2({
+                        placeholder: "select departure airport",
+                        allowclear: true,
+                        data: data,
+                        width: '100%',
+                        dropdownAutoWidth: 'true'
+                    });
                 }
-            }).on('select2:select', function (evt) {
-                $("#kode_brg").val($('#select_kode_brg').val()).trigger("input");
             });
+            $("#select_kode_brg").change(function(){
+                $("#kode_brg").val($(this).val()).trigger("input");
+            })
+            // $('#select_kode_brg').css({"width":"180px"});
+            // $('#select_kode_brg').select2({
+            //     minimumInputLength: 3,
+            //     allowClear: true,
+            //     placeholder: '',
+            //     ajax: {
+            //         dataType: 'json',
+            //         url: '<?php echo base_url().'admin/penjualan/get_barang2';?>',
+            //         delay: 800,
+            //         data: function(params) {
+            //             return {search: params.term}
+            //         },
+            //         processResults: function (data, page) {
+            //         return {
+            //             results: data
+            //         };
+            //         },
+            //     }
+            // }).on('select2:select', function (evt) {
+            //     $("#kode_brg").val($('#select_kode_brg').val()).trigger("input");
+            // });
         });
     </script>
     
