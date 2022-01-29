@@ -27,6 +27,9 @@
         th{
             text-align:center !important;
         }
+        .d-none{
+           display:none !important;
+        }
         
     </style>
 </head>
