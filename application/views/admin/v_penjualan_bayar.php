@@ -46,26 +46,29 @@
                                 </tr>
                         </table>
                         </br> 
-                        <table class="table table-stripped">
+                        <table id="tablePiutang" class="table table-stripped">
                             <thead>
                                 <tr>
-                                <th>No.Faktur</th>
-                                <th>Tanggal Pembelian</th> 
-                                <th>Total Harga</th>
-                                <th>Total Bayar</th>
-                                <th>Kurang Bayar</th>
-                                <th>Nama Pegawai</th>
+                                    <th>No.</th>
+                                    <th>No.Faktur</th>
+                                    <th>Tanggal Pembelian</th> 
+                                    <th>Total Harga</th>
+                                    <th>Total Bayar</th>
+                                    <th>Kurang Bayar</th>
+                                    <th>Nama Pegawai</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="row in listPiutang">
+                                <tr v-for="(row,index) in listPiutang">
+                                    <td>{{index+1}}</td>
                                     <td>{{row.jual_nofak}}</td>
-                                    <td>{{row.jual_tanggal}}</td> 
+                                    <td><span class="d-none"></span>{{row.jual_tanggal}}</td> 
                                     <td class="text-right priceFormat">{{row.jual_total}}</td>
                                     <td class="text-right priceFormat">{{row.jual_jml_uang}}</td>
                                     <td class="text-right priceFormat">{{row.jual_kembalian}}</td>
                                     <td class="text-right">{{row.user_nama}}</td>
-                                    <td class=""><span class="btn btn-success btn-cari-faktur"><i class="glyphicon glyphicon-remove">Pilih</i></span></td>
+                                    <td class=""><span class="btn btn-success btn-pilih"><i class="glyphicon glyphicon-edit">Pilih</i></span></td>
                                 </tr>
                             <tbody> 
                         </table>
@@ -162,6 +165,12 @@
 </div>
 
 <script type="text/javascript">
+    var tablePiutang = $('#tablePiutang').DataTable({
+        paging:false,
+        scrollY: 400,
+        info:false
+    });
+
     var Pembayaran = new Vue({
         el: "#sectionPembayaran",
         data: {
@@ -334,16 +343,21 @@
                 centsLimit: 0,
                 thousandsSeparator: '.'
             });
-
-            var dataPembayaran = {};
-            dataPembayaran.listPiutang = Pembayaran.listPiutang;
-            dataPembayaran.totalHarga = Pembayaran.totalHarga;
-            dataPembayaran.totalBayar = Pembayaran.totalBayar;
-            dataPembayaran.kembalian = Pembayaran.kembalian;
-            dataPembayaran.labelKembalian = Pembayaran.labelKembalian;
             
-            dataPembayaran = JSON.stringify(dataPembayaran);
-            localStorage.dataPembayaran = dataPembayaran;
+            // if(tablePiutang){
+            //     tablePiutang.clear().destroy(); 
+            //     tablePiutang = $('#tablePiutang').DataTable();
+            // }
+            ////tablePiutang.reload();
+            // var dataPembayaran = {};
+            // dataPembayaran.listPiutang = Pembayaran.listPiutang;
+            // dataPembayaran.totalHarga = Pembayaran.totalHarga;
+            // dataPembayaran.totalBayar = Pembayaran.totalBayar;
+            // dataPembayaran.kembalian = Pembayaran.kembalian;
+            // dataPembayaran.labelKembalian = Pembayaran.labelKembalian;
+            
+            // dataPembayaran = JSON.stringify(dataPembayaran);
+            // localStorage.dataPembayaran = dataPembayaran;
         }
     });
 
