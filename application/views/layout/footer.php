@@ -25,11 +25,48 @@
             myStr = myStr.toString();
             return parseInt(myStr.replaceAll('.', ''));
         }
+
+        helper.numberWithCommas = function(myNumber) {
+            if(!myNumber)
+                return "";
+
+            return myNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+        helper.updatePriceFormat = function() {
+            $('.priceFormat').priceFormat({
+                prefix: '',
+                //centsSeparator: '',
+                centsLimit: 0,
+                thousandsSeparator: '.'
+            });
+            // // $('.priceFormat').each((index,item)=>{
+            // //     var text=$(item).text();
+            // //     return  $(item).text(helper.numberWithCommas(text));
+            // // });
+
+        }
+        helper.updateDateFormat = function() {
+            $('.tanggal').each((index,item)=>{
+                var tanggal = $(item).text();
+                var isMoment = moment(tanggal)._isAMomentObject;
+                if(isMoment){ 
+                    tanggal =  moment(tanggal).format("DD-MM-YYYY HH:mm");
+                }else{
+                    tanggal =  tanggal;
+                }
+                $(item).text(tanggal);
+            });
+        }
+ 
         $(function(){
-            BeforeSendAjaxBehaviour = () =>{
+            BeforeSendAjaxBehaviour = (isShowLoading) =>{
+                if(isShowLoading)
+                    $('#loading').modal('show');
                 $(".info-error,info-warning,.info-success").text(""); //todo
+                
             }  
             AfterSendAjaxBehaviour = () =>{
+                $('#loading').modal('hide');
                 $(".info-error,info-warning,.info-success").text(""); //todo
             }  
         }); 

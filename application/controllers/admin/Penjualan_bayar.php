@@ -33,16 +33,37 @@ class Penjualan_bayar extends CI_Controller{
 		}
 		echo json_encode($data);
 	}
+
+	function get_list_barang(){
+		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){  
+			$param=$this->input; 
+			$nofak = $param->get("nofak");   
+			$data=$this->M_penjualan_bayar_v2->get_list_barang($nofak);  
+		}else{
+			echo "Tidak mempunyai akses";
+		}
+		echo json_encode($data);
+	}
  
-  
+	function get_list_bayar(){
+		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){  
+			$param=$this->input; 
+			$nofak = $param->get("nofak");   
+			$data=$this->M_penjualan_bayar_v2->get_list_bayar($nofak);  
+		}else{
+			echo "Tidak mempunyai akses";
+		}
+		echo json_encode($data);
+	} 
+
 	function simpan_pembayaran(){
 		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){  
 			$param=$this->input;
 			$nofak = $param->post("nofak");
-			$piutang = $param->post("piutang");
-			$jumlahBayar = $param->post("jumlahBayar"); 	
-			$kurangBayar = $param->post("kurangBayar"); 	 
-			$result=$this->M_penjualan_bayar_v2->simpan_pembayaran($nofak, $piutang, $jumlahBayar,$kurangBayar);
+			$kurangBayar = $param->post("kurangBayar");
+			$inputBayar = $param->post("inputBayar"); 	
+			$kurangBayarBaru = $param->post("kurangBayarBaru"); 	 
+			$result=$this->M_penjualan_bayar_v2->simpan_pembayaran($nofak, $kurangBayar, $inputBayar,$kurangBayarBaru);
 			echo json_encode($result); 
 		}else{
 			echo "Halaman tidak ditemukan";

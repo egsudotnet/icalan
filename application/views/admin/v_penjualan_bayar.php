@@ -15,6 +15,7 @@
         </h1> 
     </div>
 </div>
+
     <section id="sectionPembayaran">
         <div class="row">
                 <div class="col-lg-12">
@@ -46,7 +47,8 @@
                                 </tr>
                         </table>
                         </br> 
-                        <table id="tablePiutang" class="table table-stripped">
+                        <div id="divTablePiutangLoading"></div>
+                        <table id="tablePiutang" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -63,20 +65,108 @@
                                 <tr v-for="(row,index) in listPiutang">
                                     <td>{{index+1}}</td>
                                     <td>{{row.jual_nofak}}</td>
-                                    <td><span class="d-none"></span>{{row.jual_tanggal}}</td> 
+                                    <td class="tanggal">{{row.jual_tanggal}}</td> 
                                     <td class="text-right priceFormat">{{row.jual_total}}</td>
                                     <td class="text-right priceFormat">{{row.jual_jml_uang}}</td>
-                                    <td class="text-right priceFormat">{{row.jual_kembalian}}</td>
-                                    <td class="text-right">{{row.user_nama}}</td>
+                                    <td class="text-right priceFormat">{{row.jual_kembalian * -1}}</td>
+                                    <td class="">{{row.user_nama}}</td>
                                     <td class=""><span class="btn btn-success btn-pilih"><i class="glyphicon glyphicon-edit">Pilih</i></span></td>
                                 </tr>
-                            <tbody> 
+                            </tbody> 
                         </table>
                 </div>
             </div>
 
         </div>
     </section>
+
+    <section id="sectionDetail" style="display:none">
+        <div><span class="btn btn-default" v-on:click="ShowHeader"><i class="glyphicon glyphicon-arrow-left"> Kembali</i></span></div>
+        <table class="w-100" >   
+            <tr>
+                <td>No.Faktur</td>
+                <td>{{nofak}}</td> 
+                <td>Total Harga</td>
+                <td class="priceFormat">{{totalHarga}}</td> 
+            </tr>
+            <tr>
+                <td>Tanggal Pembelian</td> 
+                <td>{{tanggalPembelian}}</td> 
+                <td>Total Bayar</td> 
+                <td class="priceFormat">{{totalBayar}}</td> 
+            </tr>
+            <tr>
+                <td>Nama Pegawai</td> 
+                <td>{{namaPegawai}}</td> 
+                <td>Kurang Bayar</td>
+                <td class="priceFormat">{{kurangBayar}}</td> 
+            </tr>
+        </table>
+
+        </br>
+        </br>
+        <table class="table table-stripped">
+            <thead>
+                <tr>
+                <th>No.</th>
+                <th>Nama</th>
+                <th>Harga</th>
+                <th>Qty</th>
+                <th style="width:200px">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!-- d_jual_barang_nama, d_jual_barang_satuan, d_jual_barang_harjul, d_jual_qty, d_jual_total -->
+                <tr v-for="(row,index) in listBarang">
+                    <td>{{index+1}}</td>
+                    <td>{{row.barang_nama}}</td> 
+                    <td class="text-right priceFormat">{{row.barang_harjul}}</td> 
+                    <td class="text-right">{{row.qty}} {{row.barang_satuan}}</td>
+                    <td class="text-right priceFormat">{{row.total}}</td> 
+                </tr>
+        </tbody>
+        </table> 
+        
+        </br>
+        </br>  
+
+        <table class="table table-stripped">
+                    <thead>
+                        <tr>
+                        <th>No.</th>
+                        <th>No.Faktur</th>
+                        <th>Piutang</th>
+                        <th>Tgl.Bayar</th>
+                        <th>Jml.Pembayaran</th>
+                        <th>Kurang Bayar</th>
+                        <th>Nama Pegawai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <!-- d_jual_barang_nama, d_jual_barang_satuan, d_jual_barang_harjul, d_jual_qty, d_jual_total -->
+                        <tr v-for="(row,index) in listPembayaran">
+                            <td>{{index+1}}</td>
+                            <td>{{row.bayar_nofak}}</td> 
+                            <td class="text-right priceFormat">{{row.piutang}}</td> 
+                            <td>{{row.bayar_tanggal}}</td> 
+                            <td class="text-right priceFormat">{{row.bayar_jml_uang}}</td> 
+                            <td class="text-right priceFormat">{{row.bayar_kurang}}</td>
+                            <td>{{row.user_nama}}</td> 
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4"></th> 
+                            <td><b><input v-model="inputBayar" id="inputBayar" class="text-right priceFormat"></input></b></td> 
+                            <td class="text-right">{{kurangBayarBaru * -1}}</td> 
+                            <th>       
+                                <span class="btn btn-primary" v-on:click="Simpan"><i class="fa fa-save"> SIMPAN</i></span>
+                            </th> 
+                        </tr>
+                    </tfoot>
+                </table>  
+
+    <section>
 </div>
 <!-- /.container -->
 
@@ -86,89 +176,15 @@
 ?> 
 </div> 
 </div>
-
-<div id="divFaktur" style="display:none;width:400px">  
-    <section id="sectionFaktur">
-        <div class="row">
-                <div class="col-lg-12">
-                        <table>
-                                <tr> 
-                                    <th>SELAMAT DATANG</th> 
-                                </tr>
-                                <tr> 
-                                    <th>  
-                                        {{namaToko}}
-                                    </th>  
-                                </tr>
-                                <tr> 
-                                    <th>  
-                                        {{alamatToko}}
-                                    </th>  
-                                </tr>
-                                <tr> 
-                                    <th>  
-                                        {{hpToko}}
-                                    </th>  
-                                </tr>
-                        </table> 
-                        <div>{{nofak}} <span class="pull-right">{{tanggalTransaksi}}</span></div>
-                        <div>{{namaUser}}</div>
-                        <table style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th style="width:40%">Barang</th>
-                                    <th style="width:20%">Harga</th>
-                                    <th style="width:20%">Qty</th>
-                                    <th style="width:20%">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="row in listPiutang">
-                                    <td>{{row.barang_nama}}</td>
-                                    <td class="text-right priceFormat">{{row.barang_harjul}}</td>
-                                    <td class="text-right priceFormat">{{row.barang_qty_input}} {{row.barang_satuan}}</td> 
-                                    <td class="text-right priceFormat">{{row.barang_harjul * row.barang_qty_input}}</td>
-                                </tr>
-                            <tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="4">
-                                        </br>
-                                    </td>
-                                </tr> 
-                                <tr> 
-                                    <td colspan="3"><b class="pull-right">Total</b></td> 
-                                    <td class="text-right priceFormat">{{totalHarga}}</td> 
-                                </tr>
-                                <tr>
-                                    <td colspan="3"><b class="pull-right">Total Bayar</b></td> 
-                                    <td class="text-right priceFormat">{{totalBayar}}</td> 
-                                </tr>
-                                <tr>
-                                    <td colspan="3"><b class="pull-right">{{labelKembalian}}</b></td> 
-                                    <td class="text-right priceFormat">{{kembalian}}</td> 
-                                </tr>
-                                <tr>
-
-                                    <td colspan="4" align="center">
-                                        </br>
-                                        <b>Terima kasih</b>
-                                    </td>  
-                                </tr>
-                            </tfoot>
-                        </table>
-                </div>
-            </div>
-
-        </div>
-    </section>
-</div>
-
+ 
 <script type="text/javascript">
     var tablePiutang = $('#tablePiutang').DataTable({
         paging:false,
-        scrollY: 400,
-        info:false
+        //scrollY: 400,
+        searching:false,
+        info:false,
+        ordering:false,
+        catch:false
     });
 
     var Pembayaran = new Vue({
@@ -197,10 +213,15 @@
                 $(document).on("click",".btn-pilih",function(){ 
                     var target = $(this).closest("tr").find("td .btn-pilih");
                     var index = $(this).closest("tr").index();
-                    alert("pilih");   
+                    var data = Pembayaran.listPiutang[index];
+                    Detail.Show(data);
                 })  
             },
             Search: function () {  
+                if(!Pembayaran.tanggalDari && !Pembayaran.tanggalSampai && !Pembayaran.nofak){
+                    alert("Silahkan isi minimal satu data filter!");
+                    return;
+                }
                 var data = {
                     tanggalDari : Pembayaran.tanggalDari, 
                     tanggalSampai : Pembayaran.tanggalSampai,  
@@ -212,17 +233,24 @@
 				    dataType: 'json', 
                     data: data,
                     method: 'POST',
-                    beforeSend: function () {
-                        BeforeSendAjaxBehaviour(true);
+                    beforeSend: function () {  
+					    $('#divTablePiutangLoading').addClass('panel-loading');
+					    $('#tablePiutang').hide();
                     }
                 }).done(function (data, textStatus, jqXHR) {
                     if(data){
-                        Pembayaran.listPiutang = data;
+                        Pembayaran.listPiutang = [];
+                        setTimeout(() => {
+                            Pembayaran.listPiutang = data; 
+                        }, 1000);
                     }else{ 
                         $("#info-error").text("Tidak ada data.");
                     }
                 }).fail(function (jqXHR, textStatus, errorThrown) { 
                     $("#info-error").text(textStatus);
+                }).complete(()=>{ 
+                    $('#divTablePiutangLoading').removeClass('panel-loading');
+				    $('#tablePiutang').show();
                 });
             },
             Post: function () { 
@@ -258,9 +286,12 @@
                     }
                 }).fail(function (jqXHR, textStatus, errorThrown) { 
                     $("#info-error").text(textStatus);
+                }).complete(function () { 
+                    AfterSendAjaxBehaviour(true);
                 });
             },
-            Put: function () {
+            numberWithCommas: function () {
+                return helper.numberWithCommas();
             },
             Delete: function () {
                 if(!localStorage.dataPembayaran)
@@ -276,38 +307,6 @@
                 location.reload();
             },
             Validation: function () {
-                // $("#crewForm").validate({
-                //     rules: {
-                //         textNonEmployeeIdModal: {
-                //             alphanumeric : true
-                //         }
-                //     },
-                //     highlight: function (element, errorClass, validClass) {
-                //         $(element).parents('.form-control').removeClass('has-success').addClass('has-error');
-                //     },
-                //     unhighlight: function (element, errorClass, validClass) {
-                //         $(element).parents('.form-control').removeClass('has-error').addClass('has-success');
-                //     },
-                //     errorPlacement: function (error, element) {
-                //         if (element.hasClass('select2') && element.next('.select2-container').length) {
-                //             error.insertAfter(element.next('.select2-container'));
-                //         } else if (element.parent('.input-group').length) {
-                //             error.insertAfter(element.parent());
-                //         }
-                //         else if (element.prop('type') === 'radio' && element.parent('.radio-inline').length) {
-                //             error.insertAfter(element.parent().parent());
-                //         }
-                //         else if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                //             error.appendTo(element.parent().parent());
-                //         }
-                //         else if (element.hasClass('select2-employee')) {
-                //             error.insertAfter(element.parent());
-                //         }
-                //         else {
-                //             error.insertAfter(element);
-                //         }
-                //     }
-                // });
             },
             SortArray: function (data, ColumnToSort) {
                 data.sort(function (a, b) {
@@ -337,109 +336,161 @@
             }
         },
         updated: function () {
-            $('.priceFormat').priceFormat({
-                prefix: '',
-                //centsSeparator: '',
-                centsLimit: 0,
-                thousandsSeparator: '.'
-            });
-            
-            // if(tablePiutang){
-            //     tablePiutang.clear().destroy(); 
-            //     tablePiutang = $('#tablePiutang').DataTable();
-            // }
-            ////tablePiutang.reload();
-            // var dataPembayaran = {};
-            // dataPembayaran.listPiutang = Pembayaran.listPiutang;
-            // dataPembayaran.totalHarga = Pembayaran.totalHarga;
-            // dataPembayaran.totalBayar = Pembayaran.totalBayar;
-            // dataPembayaran.kembalian = Pembayaran.kembalian;
-            // dataPembayaran.labelKembalian = Pembayaran.labelKembalian;
-            
-            // dataPembayaran = JSON.stringify(dataPembayaran);
-            // localStorage.dataPembayaran = dataPembayaran;
+            helper.updatePriceFormat()
+            helper.updateDateFormat() 
         }
     });
 
-    var Faktur = new Vue({
-        el: "#sectionFaktur",
-        data: {
-            listPiutang: [],
-            totalHarga : 0,
-            totalBayar : 0,
-            kembalian : "", 
-            nofak : "",
-            namaUser : "",
-            namaToko : "",
-            alamatToko : "",
-            hpToko : "",
-            labelKembalian : "",
-            tanggalTransaksi : "ffffff ff"
+    var Detail = new Vue({
+        el: "#sectionDetail",
+        data: { 
+            nofak:"",
+            tanggalPembelian:"",
+            totalHarga:"",
+            totalBayar:"",
+            kurangBayar:"",
+            namaPegawai:"",
+            listBarang:[],
+            listPembayaran:[], 
+            inputBayar:0
         },
         mounted: function () { 
         },
-        watch: {
-            // isNew: function () {
-            //     this.action = this.isNew ? "Submit" : "Update";
-            //     this.title = this.isNew ? "Add Crew" : "Crew Detail";
-            // }
+        watch: { 
         },
         methods: {
-            Init: function (isNew, data) { 
+            Init: function () { 
             },
-            Search: function (kobar) { 
+            Clear: function () { 
+                this.nofak = "";
+                this.tanggalPembelian = "";
+                this.totalHarga = "";
+                this.totalBayar = "";
+                this.kurangBayar = "";
+                this.namaPegawai = "";
+                this.listBarang = [];
+                this.listPembayaran = [];
+                this.inputBayar = 0
             },
-            print: function (data) {
-                this.nofak =  data.nofak;
-                this.namaUser = data.namaUser;
-                this.tanggalTransaksi = data.tanggalTransaksi;
-                this.namaToko = $.grep(data.dataToko,(n,i)=>{return n.lookup_kode == helper.dataToko.namaTokoKode})[0].lookup_value;
-                this.alamatToko = $.grep(data.dataToko,(n,i)=>{return n.lookup_kode == helper.dataToko.alamatTokoKode})[0].lookup_value;
-                this.hpToko = $.grep(data.dataToko,(n,i)=>{return n.lookup_kode == helper.dataToko.hpTokoKode})[0].lookup_value;
+            Show: function (data) { 
+                this.Clear();
+                $("#sectionPembayaran").hide();
+                $("#sectionDetail").show(); 
+                this.inputBayar = "";
+                this.nofak = data.jual_nofak;
+                this.tanggalPembelian = moment(data.jual_tanggal).format("DD-MM-YY HH:mm");
+                this.totalHarga = data.jual_total;
+                this.totalBayar = data.jual_jml_uang;
+                this.kurangBayar = data.jual_kembalian;
+                this.namaPegawai = data.user_nama; 
+                
+                this.SearchListBarang(this.nofak); 
+                this.SearchListBayar(this.nofak); 
+                $("#inputBayar").focus(); 
+            },
+            ShowHeader: function () { 
+                $("#sectionPembayaran").show();
+                $("#sectionDetail").hide(); 
+            },
+            SearchListBarang: function (nofak) { 
+                if(!nofak)
+                    return;
 
-                this.listPiutang  = Pembayaran.listPiutang;
-                this.totalHarga  = Pembayaran.totalHarga;
-                this.totalBayar  = Pembayaran.totalBayar;
-                this.kembalian  = Pembayaran.kembalian;
-                
-                this.labelKembalian  = Pembayaran.labelKembalian;
-                $("#divInput").hide();
-                $("#divFaktur").show();
-                
-                setTimeout(() => { 
-                    window.print();
-                    Pembayaran.ClearData();
-                }, 1000);
-            },
-            Put: function () {
-            },
-            Delete: function () {
-            },
-            Validation: function () { 
-            },
-            SortArray: function (data, ColumnToSort) {
-                data.sort(function (a, b) {
-                    var x = a[ColumnToSort].toLowerCase();
-                    var y = b[ColumnToSort].toLowerCase();
-                    if (x < y) { return -1; }
-                    if (x > y) { return 1; }
-                    return 0;
+                $.ajax({
+                    url: '<?php echo base_url().'admin/penjualan_bayar/get_list_barang?nofak=';?>' + nofak,
+                    cache: false,
+				    dataType: 'json',  
+                    method: 'GET',
+                    beforeSend: function () {
+                        $('#sectionDetail').addClass('panel-loading'); 
+                    }
+                }).done(function (data, textStatus, jqXHR) {
+                    if(data){
+                        Detail.listBarang = data;
+                    }else{ 
+                        $("#info-error").text("Tidak ada data.");
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) { 
+                    $("#info-error").text(textStatus);
+                }).complete(()=>{
+                    $('#sectionDetail').removeClass('panel-loading');
                 });
-                return data;
+            },
+            SearchListBayar: function (nofak) { 
+                if(!nofak)
+                    return;
+
+                $.ajax({
+                    url: '<?php echo base_url().'admin/penjualan_bayar/get_list_bayar?nofak=';?>' + nofak,
+                    cache: false,
+				    dataType: 'json',  
+                    method: 'GET',
+                    beforeSend: function () {
+                    }
+                }).done(function (data, textStatus, jqXHR) {
+                    if(data){
+                        Detail.listPembayaran = data;
+                    }else{ 
+                        $("#info-error").text("Tidak ada data.");
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) { 
+                    $("#info-error").text(textStatus);
+                });
+            },
+            Simpan: function () { 
+                var data= {};
+                data.nofak = this.nofak;
+                data.kurangBayar = helper.convertToInt(this.kurangBayar);
+                data.inputBayar = helper.convertToInt(this.inputBayar);  
+                data.kurangBayarBaru = helper.convertToInt(this.kurangBayarBaru);  
+
+                if(data.kurangBayarBaru>0){
+                    alert("Pembayaran makasimal adalah Rp." + helper.numberWithCommas(data.kurangBayar * -1))
+                    $("#inputBayar").focus(); 
+                    return;
+                }
+                if(data.inputBayar<=0){
+                    alert("Silahkan isi jumlah pembayaran!")
+                    $("#inputBayar").focus(); 
+                    return;
+                }
+
+                $.ajax({
+                    url: '<?php echo base_url().'admin/penjualan_bayar/simpan_pembayaran';?>',
+                    cache: false,
+				    dataType: 'json', 
+                    data: data,
+                    method: 'POST',
+                    beforeSend: function () {
+                        BeforeSendAjaxBehaviour(true);
+                    }
+                }).done(function (data, textStatus, jqXHR) {
+                    if(data.status){
+                      Detail.ShowHeader();
+                      Pembayaran.Search();
+                    }else{ 
+                        $("#info-error").text(data.message);
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) { 
+                    $("#info-error").text(textStatus);
+                }).complete(function () { 
+                    AfterSendAjaxBehaviour(true);
+                });
+            },
+        },
+        computed: {
+            kurangBayarBaru: function () {
+                 var value = 0; 
+                 value = helper.convertToInt(this.kurangBayar) + helper.convertToInt(this.inputBayar);
+                 value = isNaN(value)?"":helper.numberWithCommas(value.toString());
+                 return value;
             }
         },
-        computed: { 
-        },
         updated: function () {
-            $('.priceFormat').priceFormat({
-                prefix: '',
-                //centsSeparator: '',
-                centsLimit: 0,
-                thousandsSeparator: '.'
-            });
+            helper.updatePriceFormat();
         }
     });
-
+ 
     $(document).ready(function(){
         Pembayaran.Init();
     });

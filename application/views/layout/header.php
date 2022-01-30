@@ -30,8 +30,66 @@
         .d-none{
            display:none !important;
         }
+        .w-100{
+           width:100% !important;
+        }
         
     </style>
+    
+    <style>
+            #loading {
+                background-color: transparent !important;
+                border: none;
+                box-shadow: none;
+                clear: both;
+            }
+
+            .spinner {
+                background: transparent url('<?php echo base_url('/assets/img/Spinner-0.gif'); ?>') 0 0 no-repeat;
+                text-align: center;
+                position: absolute;
+                top: 40%;
+                left: 45%;
+                width: 127px;
+                height: 127px;
+                opacity:50%
+            }
+            .div-notif { 
+                text-align: center;
+                position: absolute;
+                top: 45%;
+                left: 45%;
+                width: 127px;
+                height: 127px; 
+                color:black !important
+            }
+
+            .modal-backdrop {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                z-index: 1040;
+                background-color: white !important;
+            }
+/* 
+            #loader {
+                position: fixed;
+                width: 100%;
+                height: 100vh;
+                z-index: 1;
+                overflow: visible;
+                background: #fff url('<?php echo base_url('/assets/img/lab.gif'); ?>') no-repeat center center;
+            } */
+
+        
+            .panel-loading {
+                background: transparent url('<?php echo base_url('assets/img/Spinner-1.gif') ?>') center center no-repeat;
+                min-height:50px !important;
+            }
+        </style>
+
 </head>
 
 <body>
@@ -45,4 +103,12 @@
     <div align="center" style="margin-top:0px;color:black;background-color:yellow" id="info-warning"></div>
     <div align="center" style="margin-top:0px;color:white;background-color:green" id="info-success"></div>
 <div>
+
+<div id="loading" class="modal active" role="dialog" aria-hidden="false" data-backdrop="static" data-keyboard="false">
+	<div class="spinner"></div>
+	<!-- <div class="div-notif">
+		<span id="notif" class="label label-important">Data sedang diproses. Mohon tunggu..</span> 
+	</div> -->
+</div>
+
  

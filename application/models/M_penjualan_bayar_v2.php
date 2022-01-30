@@ -48,12 +48,50 @@ class M_penjualan_bayar_v2 extends CI_Model{
         } 
 		return $result;
 	}
+	
 
-	function simpan_pembayaran($nofak, $piutang, $jumlahBayar,$kurangBayar){ 
+	function get_list_barang($nofak){
+		$result = []; 
+
+		$query = $this->db->query("
+			SELECT 
+				d_jual_barang_nama AS barang_nama , 
+				d_jual_barang_satuan AS barang_satuan , 
+				d_jual_barang_harjul AS barang_harjul, 
+				d_jual_qty AS qty, 
+				d_jual_total AS total
+			FROM  tbl_detail_jual
+			WHERE d_jual_nofak='$nofak'
+		"); 
+        if($query->num_rows()>0){
+			$result = $query->result();
+        } 
+		return $result;
+	}
+
+	function get_list_bayar($nofak){
+		$result = []; 
+
+		$query = $this->db->query("
+			SELECT 
+				bayar_nofak, piutang, bayar_tanggal, bayar_jml_uang, bayar_kurang, b.user_nama 
+			FROM tbl_jual_bayar A 
+					LEFT JOIN tbl_user B ON A.bayar_user_id=B.user_id
+			WHERE jual_nofak='$nofak'
+			ORDER BY bayar_tanggal
+		"); 
+        if($query->num_rows()>0){
+			$result = $query->result();
+        } 
+		return $result;
+	}
+	function simpan_pembayaran($nofak, $kurangBayar, $inputBayar,$kurangBayarBaru){ 
 		$idadmin=$this->session->userdata('idadmin');  
 		$this->db->trans_start(); 
 		try {  
 			$bayarNofak = $this->get_bayar_nofak();   
+			$kurangBayar = $kurangBayar * -1;
+			$kurangBayarBaru = $kurangBayarBaru * -1;
 			$this->db->query("
 				INSERT INTO tbl_jual_bayar
 				(
@@ -65,29 +103,28 @@ class M_penjualan_bayar_v2 extends CI_Model{
 					bayar_user_id)
 				VALUES 
 				(
-					$bayarNofak,
-					$nofak,
-					$piutang,
-					$jumlahBayar,
-					$kurangBayar,
-					$idadmin);
+					'$bayarNofak',
+					'$nofak',
+					'$kurangBayar',
+					'$inputBayar',
+					'$kurangBayarBaru',
+					'$idadmin');
 			");   
+
 
 			$this->db->query("
 				UPDATE tbl_jual
 				SET  
-					jual_jml_uang = (SELECT SUM(jumlahBayar) FROM tbl_jual_bayar WHERE jual_nofak='$nofak'),
-					jual_kembalian = $kurangBayar 
+					jual_jml_uang = (SELECT SUM(bayar_jml_uang) FROM tbl_jual_bayar WHERE jual_nofak='$nofak'),
+					jual_kembalian = jual_jml_uang - jual_total
 				WHERE
 					jual_nofak=$nofak 
 			");  
 			 
-			$this->db->trans_commit(); 
-			////$this->db->trans_rollback(); 
+			$this->db->trans_commit();  
 			$response = [
 				'status' => true,
-				'message' => 'Proses Simpan Berhasil', 
-				'data' =>['nofak' => $nofak,'namaUser' => $this->session->userdata('nama'), 'dataToko' => $this->get_data_toko(), 'tanggalTransaksi' => $tanggalTransaksi],
+				'message' => 'Proses Simpan Berhasil'
 			];
 		} catch ( Exception $e ) { 
 			$this->db->trans_rollback(); 
@@ -102,6 +139,7 @@ class M_penjualan_bayar_v2 extends CI_Model{
 
 		return $response;
 	}
+
 	function get_nofak(){
 		$q = $this->db->query("SELECT MAX(RIGHT(jual_nofak,6)) AS kd_max FROM tbl_jual WHERE DATE(jual_tanggal)=CURDATE()");
         $kd = "";
@@ -134,14 +172,5 @@ class M_penjualan_bayar_v2 extends CI_Model{
 		$tanggal = $this->db->query("SELECT DATE_FORMAT(CURDATE(),'%y%m%d') AS Tanggal")->row()->Tanggal;  
         // return date('dmy').$kd;
 		return $tanggal.$kd;
-	}
-
-	function get_data_toko(){
-		$result = [];
-		$q = $this->db->query("SELECT lookup_kode, lookup_value from lookups where lookup_kode in ('KD001','KD002','KD003')"); 
-        if($q->num_rows()>0){
-			$result = $q->result();
-        } 
-		return $result;
-	}
+	} 
 }

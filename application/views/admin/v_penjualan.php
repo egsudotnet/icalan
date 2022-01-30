@@ -325,6 +325,8 @@
                     }
                 }).fail(function (jqXHR, textStatus, errorThrown) { 
                     $("#info-error").text(textStatus);
+                }).complete(function(){ 
+                    AfterSendAjaxBehaviour(true);
                 });
             },
             Put: function () {

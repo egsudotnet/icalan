@@ -11,5 +11,6 @@ INSERT INTO `db_penjualan`.`lookups` (`lookup_kode`, `lookup_value`, `lookup_ket
 INSERT INTO `db_penjualan`.`lookups` (`lookup_kode`, `lookup_value`, `lookup_keterangan`) VALUES ('KD003', '08976545435', 'HP Toko');
 
 
+.......................
 CATATAN
 tbl_jual_bayar_belum rrelasi ke tabel_jual
