@@ -1,186 +1,408 @@
+<div id="divInput"> 
 <?php 
     $this->load->view('layout/header');
 ?> 
 
-    <!-- Page Content -->
-    <div class="container">
 
-        <!-- Page Heading -->
+<!-- Page Content -->
+<div class="container"> 
+<!-- Page Heading -->
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Transaksi
+            <small>Pembelian</small>
+            <a href="#" data-toggle="modal" data-target="#largeModal" class="pull-right"><small></small></a>
+        </h1> 
+    </div>
+</div>
+    <section id="sectionPembelian">
         <div class="row">
-            <div class="col-lg-12">
-            <center><?php echo $this->session->flashdata('msg');?></center>
-                <h1 class="page-header">Pembelian
-                    <small>Barang</small>
-                    
-                </h1>
-            </div>
-        </div>
-        <!-- /.row -->
-        <!-- Projects Row -->
-        <div class="row">
-            <div class="col-lg-12">
-            <form action="<?php echo base_url().'admin/pembelian/add_to_cart'?>" method="post">
-            <table>
-                <tr>
-                    <th style="width:100px;padding-bottom:5px;">No Faktur</th>
-                    <th style="width:300px;padding-bottom:5px;"><input type="text" name="nofak" value="<?php echo $this->session->userdata('nofak');?>" class="form-control input-sm" style="width:200px;" required></th>
-                    <th style="width:90px;padding-bottom:5px;">Suplier</th>
-                    <td style="width:350px;">
-                    <select name="suplier" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Suplier" data-width="100%" required>
-                        <?php foreach ($sup->result_array() as $i) {
-                            $id_sup=$i['suplier_id'];
-                            $nm_sup=$i['suplier_nama'];
-                            $al_sup=$i['suplier_alamat'];
-                            $notelp_sup=$i['suplier_notelp'];
-                            $sess_id=$this->session->userdata('suplier');
-                            if($sess_id==$id_sup)
-                                echo "<option value='$id_sup' selected>$nm_sup - $al_sup - $notelp_sup</option>";
-                            else
-                                echo "<option value='$id_sup'>$nm_sup - $al_sup - $notelp_sup</option>";
-                        }?>
-                    </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Tanggal</th>
-                    <td>
-                        <div class='input-group date' id='datepicker' style="width:200px;">
-                            <input type='text' name="tgl" class="form-control" value="<?php echo $this->session->userdata('tglfak');?>" placeholder="Tanggal..." required/>
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-            </table><hr/>
-            <table>
-                <tr>
-                    <th>Kode Barang</th>
-                </tr>
-                <tr>
-                    <th><input type="text" name="kode_brg" id="kode_brg" class="form-control input-sm"></th>                     
-                </tr>
-                    <div id="detail_barang" style="position:absolute;">
-                    </div>
-            </table>
-             </form>
-            <table class="table table-bordered table-condensed" style="font-size:11px;margin-top:10px;">
-                <thead>
-                    <tr>
-                        <th>Kode Barang</th>
-                        <th>Nama Barang</th>
-                        <th style="text-align:center;">Satuan</th>
-                        <th style="text-align:center;">Harga Pokok</th>
-                        <th style="text-align:center;">Harga Jual</th>
-                        <th style="text-align:center;">Jumlah Beli</th>
-                        <th style="text-align:center;">Sub Total</th>
-                        <th style="width:100px;text-align:center;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1; ?>
-                    <?php foreach ($this->cart->contents() as $items): ?>
-                    <?php echo form_hidden($i.'[rowid]', $items['rowid']); ?>
-                    <tr>
-                         <td><?=$items['id'];?></td>
-                         <td><?=$items['name'];?></td>
-                         <td style="text-align:center;"><?=$items['satuan'];?></td>
-                         <td style="text-align:right;"><?php echo number_format($items['price']);?></td>
-                         <td style="text-align:right;"><?php echo number_format($items['harga']);?></td>
-                         <td style="text-align:center;"><?php echo number_format($items['qty']);?></td>
-                         <td style="text-align:right;"><?php echo number_format($items['subtotal']);?></td>
-                         <td style="text-align:center;"><a href="<?php echo base_url().'admin/pembelian/remove/'.$items['rowid'];?>" class="btn btn-warning btn-xs"><span class="fa fa-close"></span> Batal</a></td>
-                    </tr>
-                    <?php $i++; ?>
-                    <?php endforeach; ?>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="6" style="text-align:center;">Total</td>
-                        <td style="text-align:right;">Rp. <?php echo number_format($this->cart->total());?></td>
-                    </tr>
-                </tfoot>
-            </table>
-            <a href="<?php echo base_url().'admin/pembelian/simpan_pembelian'?>" class="btn btn-info btn-lg"><span class="fa fa-save"></span> Simpan</a>
-            </div>
-        </div>
-        <!-- /.row -->
-        
-
-        <hr>
-
-        <!-- Footer -->
-        <footer>
-            <div class="row">
                 <div class="col-lg-12">
-                    <p style="text-align:center;">Copyright &copy; <?php echo '2022';?> by egsudotnet</p>
+                        <table class="w-100 filter" >
+                                <tr> 
+                                    <td style="width: 200px"><b>No.Faktur<b></td> 
+                                    <td style="width: 300px"><b>Suplayer<b></td> 
+                                    <td ><b>Tanggal Beli<b></td> 
+                                    <td><b>Nama Barang<b></td> 
+                                </tr>
+                                <tr> 
+                                    <td> 
+                                        <input v-model="nofak" class="form-control input-sm"/>  
+                                    </td>  
+                                    <td> 
+                                        <select name="select_kode_suplier" id="select_kode_suplier"  style="width: 100%" class="form-control input-sm"> 
+                                        </select>
+                                    </td>    
+                                    <td> 
+                                        <input type="date" name="tanggal_beli" id="tanggal_beli" v-model="tanggalBeli" class="form-control input-sm"/>  
+                                    </td>  
+                                    <td> 
+                                        <select name="select_kode_brg" id="select_kode_brg" class="form-control input-sm"> 
+                                        </select>
+                                    </td>  
+                                    <td>
+                                        <div class="pull-right"> 
+                                            <span class="btn btn-primary" v-on:click="Post"><i class="fa fa-save"> Simpan</i></span>
+                                            <span class="btn btn-danger" v-on:click="Delete"><i class="fa fa-trash"> Batal</i></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                        </table>
+                        <table class="table table-stripped mt-20">
+                            <thead>
+                                <tr>
+                                <th>Nama</th>
+                                <th>Stok</th> 
+                                <th>Satuan</th> 
+                                <th>Harga Beli</th>
+                                <th>Harga Jual</th>
+                                <th>Qty</th>
+                                <th style="width:200px">Total</th> 
+                                <th style="width:10px"></th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(row,index) in listBarang">
+                                    <td>{{row.barang_nama}}</td>
+                                    <td>{{row.barang_stok}}</td>
+                                    <td>{{row.barang_satuan}}</td>
+                                    <td> 
+                                        <input class="form-control input-sm text-right priceFormat barang-harpok" v-model="row.barang_harpok"/>
+                                    </td> 
+                                    <td> 
+                                        <input class="form-control input-sm text-right priceFormat" v-model="row.barang_harjul"/>
+                                    </td> 
+                                    <td style="width:120px"> 
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-btn btn-minus">
+                                                <span class="btn btn-warning"><i class="glyphicon glyphicon-minus"></i></span>
+                                            </span>
+                                            <input v-model="row.barang_qty_input" class="form-control input-sm text-right input-qty" style="width:100px"/>
+                                            <span class="input-group-btn btn-plus">
+                                                <span class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></span>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">  
+                                        <b class="form-control input-sm text-right">{{totalHargaPerBarang(row.barang_harpok,row.barang_qty_input)}}<b>
+                                        <!-- <input class="form-control input-sm text-right priceFormat" readonly v-model="totalHargaPerBarang(row.barang_harpok * row.barang_qty_input)"/>  -->
+                                    </td>
+                                    <td class=""><span class="btn btn-danger btn-delete"><i class="glyphicon glyphicon-remove"></i></span></td>
+                                </tr>
+                            <tbody>
+                            <tfoot>
+                                <tr>
+                                    <th rowspan="3" colspan="5">
+                                    </th> 
+                                    <th colspan="1"><b class="pull-right">Total Rp.</b></th> 
+                                    <th>
+                                        <input v-model="totalHarga" class="form-control input-lg priceFormat text-right" style="width:200px"/>
+                                    </th> 
+                                </tr>
+                                <tr>
+                                    <th colspan="1"><b class="pull-right">Total Bayar Rp.</b></th> 
+                                    <th>
+                                        <input v-model="totalBayar" class="form-control input-lg priceFormat text-right" style="width:200px"/>
+                                    </th> 
+                                </tr>
+                                <tr>
+                                    <th colspan="1"><b v-bind:class="('pull-right ' + (kembalian<0?'text-danger':''))">{{labelKembalian}} Rp.</b></th> 
+                                    <th>
+                                        <input v-model="kembalian" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
+                                    </th> 
+                                </tr>
+                            </tfoot>
+                        </table>
                 </div>
             </div>
-            <!-- /.row -->
-        </footer>
 
-    </div>
-    <!-- /.container -->
- 
-    <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker').datetimepicker({
-                    format: 'DD MMMM YYYY HH:mm',
-                });
-                
-                $('#datepicker').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                });
-                $('#datepicker2').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                });
+        </div>
+    </section>
+</div>
+<!-- /.container -->
 
-                $('#timepicker').datetimepicker({
-                    format: 'HH:mm'
-                });
-            });
-    </script>
-    <script type="text/javascript">
-        $(function(){
-            $('.harpok').priceFormat({
-                    prefix: '',
-                    //centsSeparator: '',
-                    centsLimit: 0,
-                    thousandsSeparator: ','
-            });
-            $('.harjul').priceFormat({
-                    prefix: '',
-                    //centsSeparator: '',
-                    centsLimit: 0,
-                    thousandsSeparator: ','
-            });
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            //Ajax kabupaten/kota insert
-            $("#kode_brg").focus();
-            $("#kode_brg").keyup(function(){
-                var kobar = {kode_brg:$(this).val()};
-                   $.ajax({
-               type: "POST",
-               url : "<?php echo base_url().'admin/pembelian/get_barang';?>",
-               data: kobar,
-               success: function(msg){
-               $('#detail_barang').html(msg);
-               }
-            });
-            }); 
-
-            $("#kode_brg").keypress(function(e){
-                if(e.which==13){
-                    $("#jumlah").focus();
-                }
-            });
-        });
-    </script>
-    
 <!-- footer -->
 <?php 
     $this->load->view('layout/footer');
 ?> 
+</div> 
+</div>
+ 
+<script type="text/javascript">
+    var Pembelian = new Vue({
+        el: "#sectionPembelian",
+        data: {
+            listBarang: [],
+            totalBayar : 0,
+            selectBarang : "",
+            selectBarangList : "",
+
+            //data struk
+            nofak : "",
+            namaUser : "",
+            namaToko : "",
+            alamatToko : "",
+            hpToko : "",
+
+            kodeSuplier : "",
+            namaSuplier : "",
+
+            tanggalBeli : ""
+        },
+        mounted: function () { 
+            //this.Validation();
+        },
+        watch: {
+            // isNew: function () {
+            //     this.action = this.isNew ? "Submit" : "Update";
+            //     this.title = this.isNew ? "Add Crew" : "Crew Detail";
+            // }
+        },
+        methods: {
+            Init: function (isNew, data) { 
+                $('#select_kode_brg').css({"width":"180px"});
+                this.selectBarang = $('#select_kode_brg').select2({
+                    minimumInputLength: 3,
+                    allowClear: true,
+                    placeholder: '',
+                    ajax: {
+                        dataType: 'json',
+                        url: '<?php echo base_url().'admin/barang/get_barang2';?>',
+                        delay: 800,
+                        data: function(params) {
+                            return {search: params.term}
+                        },
+                        processResults: function (data, page) {
+                            Pembelian.selectBarangList = data;
+                            return {
+                                results: data
+                            };
+                        },
+                    }
+                }).on('select2:select', function (evt) { 
+                }); 
+ 
+                $("#select_kode_brg").change(function(){
+                    beep();
+                    var idBarang = $(this).val();
+                    var barangExist = $.grep(Pembelian.listBarang,(n,i)=>{
+                        return n.barang_id == idBarang;
+                    });
+                    if(barangExist.length>0){
+                        barangExist[0].barang_qty_input ++;
+                        $("#select_kode_brg").val("").change();
+                    }else{
+                        Pembelian.Search($(this).val()); 
+                    }
+                })
+
+                //======================
+                
+                this.selectBarang = $('#select_kode_suplier').select2({
+                    minimumInputLength: 3,
+                    allowClear: true,
+                    placeholder: '',
+                    ajax: {
+                        dataType: 'json',
+                        url: '<?php echo base_url().'admin/suplier/get_suplier';?>',
+                        delay: 800,
+                        data: function(params) {
+                            return {search: params.term}
+                        },
+                        processResults: function (data, page) {
+                            return {
+                                results: data
+                            };
+                        },
+                    }
+                }).on('select2:select', function (evt) {  
+                    Pembelian.kodeSuplier = $(this).val();
+                    Pembelian.namaSuplier = $("#select_kode_suplier option:selected").text();
+                });  
+                //=================================>>
+
+                $(document).on("click",".btn-minus,.btn-plus",function(){ 
+                    var target = $(this).closest("tr").find("td .input-qty");
+                    var index = $(this).closest("tr").index();
+                    //var hargaJual = $(this).closest("tr").find("td .barang_harpok");
+                    
+                    var qty = parseInt(target.val()) 
+                    if($(this).hasClass("btn-minus")){
+                        qty -= 1;
+                    }else{
+                        qty += 1;
+                    }
+
+                    if(qty>0)
+                        beep();
+
+                    var qty = qty < 1 ? 1 : qty;
+                    //target.val(qty).change();
+                    Pembelian.listBarang[index].barang_qty_input=qty;  
+                })
+ 
+                $(document).on("click",".btn-delete",function(){ 
+                    var target = $(this).closest("tr").find("td .btn-delete");
+                    var index = $(this).closest("tr").index();  
+                    Pembelian.listBarang.splice(index, 1);
+                }) 
+
+                /////
+                
+                var dataPembelian = localStorage.dataPembelian; 
+                if(dataPembelian){
+                    dataPembelian = JSON.parse(dataPembelian);
+                    this.nofak = dataPembelian.nofak;
+                    this.kodeSuplier = dataPembelian.kodeSuplier;
+                    this.tanggalBeli = dataPembelian.tanggalBeli;
+                    this.listBarang = dataPembelian.listBarang;
+                    this.totalBayar = dataPembelian.totalBayar;
+                    this.kodeSuplier = dataPembelian.kodeSuplier;
+
+                    helper.setSelect2("#select_kode_suplier", dataPembelian.kodeSuplier, dataPembelian.namaSuplier); 
+                }
+            },
+            Search: function (kobar) { 
+                if(!kobar)
+                    return;
+
+                var data = $.grep(Pembelian.selectBarangList,(n,i)=>{
+                    return n.barang_id == kobar;
+                });
+
+                if(data.length>0){ 
+                    Pembelian.listBarang.push(data[0]);
+                }
+                $("#select_kode_brg").val("").change();
+            },
+            Post: function () { 
+                if(!localStorage.dataPembelian)
+                    return;
+                var data = JSON.parse(localStorage.dataPembelian);
+                
+                if(!data.nofak){
+                    alert("Silahkan isi nomor faktur!");
+                    return;
+                }
+                if(!data.kodeSuplier){
+                    alert("Silahkan isi nama suplayer!");
+                    return;
+                }
+                if(!data.tanggalBeli){
+                    alert("Silahkan isi tanggal beli!");
+                    return;
+                }
+                  
+                data.totalHarga = helper.convertToInt(data.totalHarga);
+                data.totalBayar = helper.convertToInt(data.totalBayar);
+                data.kembalian = helper.convertToInt(data.kembalian); 
+                $.each(Pembelian.listBarang,(index,item)=>{
+                    item.barang_harpok = helper.convertToInt(item.barang_harpok);
+                    item.barang_qty_input = helper.convertToInt(item.barang_qty_input);
+                }) 
+
+                $.ajax({
+                    url: '<?php echo base_url().'admin/pembelian/simpan_pembelian';?>',
+                    cache: false,
+				    dataType: 'json',
+                    // headers: {
+                    //     'Content-Type': 'application/json'
+                    // },
+                    data: data,
+                    method: 'POST',
+                    beforeSend: function () {
+                        BeforeSendAjaxBehaviour(true);
+                    }
+                }).done(function (data, textStatus, jqXHR) {
+                    if(data.status){
+                        Pembelian.ClearData();
+                        $(".info-success").text("Data berhasil disimpan."); 
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
+                    }else{ 
+                        $(".info-error").text(data.message);
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) { 
+                    $(".info-error").text(textStatus);
+                }).complete(function(){ 
+                    AfterSendAjaxBehaviour(true);
+                });
+            },
+            Delete: function () {
+                if(!localStorage.dataPembelian)
+                    return;
+                    
+                if (confirm("Apakah anda akan membatalkan transaksi?")) {
+                    localStorage.dataPembelian = "";
+                    location.reload();
+                }
+            },
+            ClearData: function(){
+                localStorage.dataPembelian = ""; 
+            },
+            Validation: function () {
+            },
+            SortArray: function (data, ColumnToSort) {
+                data.sort(function (a, b) {
+                    var x = a[ColumnToSort].toLowerCase();
+                    var y = b[ColumnToSort].toLowerCase();
+                    if (x < y) { return -1; }
+                    if (x > y) { return 1; }
+                    return 0;
+                });
+                return data;
+            },
+            totalHargaPerBarang(harpok,qty) { 
+                 return helper.numberWithThousandSeparator(helper.convertToInt(harpok) * helper.convertToInt(qty)); 
+            }
+        },
+        computed: {
+            totalHarga: function () {
+                 var total = 0;
+                 $.each(this.listBarang,function(index,item){
+                    total +=  helper.convertToInt(item.barang_harpok) *  helper.convertToInt(item.barang_qty_input);
+                 });
+                 return total; 
+            },
+            kembalian: function () { 
+                 return helper.convertToInt(this.totalBayar) - helper.convertToInt(this.totalHarga); 
+            },
+            labelKembalian: function () {
+                 var kembalian = helper.convertToInt(this.totalBayar) - helper.convertToInt(this.totalHarga); 
+                 return kembalian<0 ? "Kurang Bayar" : "Kembalian"; 
+            }
+        },
+        updated: function () {
+            $('.priceFormat').priceFormat({
+                prefix: '',
+                //centsSeparator: '',
+                centsLimit: 0,
+                thousandsSeparator: '.'
+            }); 
+            var dataPembelian = {};
+            dataPembelian.nofak = Pembelian.nofak;
+            dataPembelian.kodeSuplier = Pembelian.kodeSuplier;
+
+            Pembelian.namaSuplier = $("#select_kode_suplier option:selected").text();
+
+            dataPembelian.namaSuplier = Pembelian.namaSuplier;
+            dataPembelian.tanggalBeli = Pembelian.tanggalBeli; 
+             
+            dataPembelian.listBarang = Pembelian.listBarang;
+
+            dataPembelian.totalHarga = Pembelian.totalHarga;
+            dataPembelian.totalBayar = Pembelian.totalBayar;
+            dataPembelian.kembalian = Pembelian.kembalian;
+            dataPembelian.labelKembalian = Pembelian.labelKembalian;
+            
+            dataPembelian = JSON.stringify(dataPembelian);
+            localStorage.dataPembelian = dataPembelian;
+        }
+    }); 
+
+    $(document).ready(function(){
+        Pembelian.Init();
+    });
+</script>
+     

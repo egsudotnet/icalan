@@ -11,6 +11,7 @@ class Kategori extends CI_Controller{
 	function index(){
 	if($this->session->userdata('akses')=='1'){
 		$data['data']=$this->m_kategori->tampil_kategori();
+		$data['title']="Master kategori";
 		$this->load->view('admin/v_kategori',$data);
 	}else{
         echo "Halaman tidak ditemukan";

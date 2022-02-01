@@ -22,11 +22,15 @@
             hpTokoKode : "KD003", 
         }
         helper.convertToInt = function (myStr){ 
-            myStr = myStr.toString();
-            return parseInt(myStr.replaceAll('.', ''));
+            if(myStr){
+                myStr = myStr.toString();
+                return parseInt(myStr.replaceAll('.', ''));
+            }else{
+                return 0;
+            }
         }
 
-        helper.numberWithCommas = function(myNumber) {
+        helper.numberWithThousandSeparator = function(myNumber) {
             if(!myNumber)
                 return "";
 
@@ -41,33 +45,41 @@
             });
             // // $('.priceFormat').each((index,item)=>{
             // //     var text=$(item).text();
-            // //     return  $(item).text(helper.numberWithCommas(text));
+            // //     return  $(item).text(helper.numberWithThousandSeparator(text));
             // // });
 
         }
         helper.updateDateFormat = function() {
-            $('.tanggal').each((index,item)=>{
-                var tanggal = $(item).text();
-                var isMoment = moment(tanggal)._isAMomentObject;
-                if(isMoment){ 
-                    tanggal =  moment(tanggal).format("DD-MM-YYYY HH:mm");
-                }else{
-                    tanggal =  tanggal;
-                }
-                $(item).text(tanggal);
-            });
+            // $('.tanggal').each((index,item)=>{
+            //     var tanggal = $(item).text();
+            //     var isMoment = moment(tanggal)._isAMomentObject;
+            //     if(isMoment){ 
+            //         tanggal =  moment(tanggal).format("DD-MM-YYYY HH:mm");
+            //     }else{
+            //         tanggal =  tanggal;
+            //     }
+            //     $(item).text(tanggal);
+            // });
         }
- 
+  
+        helper.setSelect2 = function(elementId,id,text){
+            var newOption = new Option(text, id, true, true); 
+            $(elementId).append(newOption).trigger('change'); 
+        }
+                    
+  
         $(function(){
             BeforeSendAjaxBehaviour = (isShowLoading) =>{
                 if(isShowLoading)
                     $('#loading').modal('show');
+ 
+                    
                 $(".info-error,info-warning,.info-success").text(""); //todo
                 
             }  
             AfterSendAjaxBehaviour = () =>{
                 $('#loading').modal('hide');
-                $(".info-error,info-warning,.info-success").text(""); //todo
+                ////$(".info-error,info-warning,.info-success").text(""); //todo
             }  
         }); 
 
@@ -76,6 +88,10 @@
             snd.play();
         } 
 
+        $(document).ready(function(){
+             
+        });
+        
 
          
     </script>

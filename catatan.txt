@@ -10,7 +10,53 @@ INSERT INTO `db_penjualan`.`lookups` (`lookup_kode`, `lookup_value`, `lookup_ket
 INSERT INTO `db_penjualan`.`lookups` (`lookup_kode`, `lookup_value`, `lookup_keterangan`) VALUES ('KD002', 'Kampus Utama : Jl. Colombo No.1, Sleman, Yogyakarta. Kampus UPP 1 : Jl. Kenari No.6, Yogyakarta. Kampus UPP 2 : Jl. Bantul No. 50, Bantul, Yogyakarta.', 'Alamat Toko');
 INSERT INTO `db_penjualan`.`lookups` (`lookup_kode`, `lookup_value`, `lookup_keterangan`) VALUES ('KD003', '08976545435', 'HP Toko');
 
+---------------------------------
+CREATE TABLE `db_penjualan`.`log_update` (
+  `log_id` INT NOT NULL AUTO_INCREMENT,
+  `nama_table` VARCHAR(45) NULL,
+  `nama_kolom` VARCHAR(45) NULL,
+  `nilai_lama` VARCHAR(45) NULL,
+  `nilai_baru` VARCHAR(45) NULL,
+  `user_id` INT(11) NULL,
+  PRIMARY KEY (`log_id`));
+
+ALTER TABLE `db_penjualan`.`log_update` 
+ADD COLUMN `insert_date` VARCHAR(45) NULL DEFAULT 'CURRENT_TIMESTAMP()' AFTER `user_id`,
+CHANGE COLUMN `nama_table` `nama_table` VARCHAR(45) NULL ,
+CHANGE COLUMN `nama_kolom` `nama_kolom` VARCHAR(45) NULL ,
+CHANGE COLUMN `nilai_lama` `nilai_lama` VARCHAR(45) NULL ,
+CHANGE COLUMN `nilai_baru` `nilai_baru` VARCHAR(45) NULL ,
+CHANGE COLUMN `user_id` `user_id` INT(11) NULL ;
+
+ALTER TABLE `db_penjualan`.`tbl_beli` 
+ADD COLUMN `beli_total` DOUBLE NULL AFTER `beli_kode`,
+ADD COLUMN `beli_jml_uang` DOUBLE NULL AFTER `beli_total`,
+ADD COLUMN `beli_kembalian` DOUBLE NULL AFTER `beli_jml_uang`,
+ADD COLUMN `beli_keterangan` VARCHAR(20) NULL AFTER `beli_kembalian`;
+
+
+ALTER TABLE `db_penjualan`.`tbl_beli` 
+ADD COLUMN `insert_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() AFTER `beli_keterangan`;
+
+CREATE TABLE `tbl_beli_bayar` (
+  `beli_bayar_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bayar_nofak` varchar(15) NOT NULL,
+  `beli_nofak` varchar(15) NOT NULL,
+  `piutang` double DEFAULT 0,
+  `bayar_tanggal` timestamp NULL DEFAULT current_timestamp(),
+  `bayar_jml_uang` double DEFAULT 0,
+  `bayar_kurang` double DEFAULT 0,
+  `bayar_user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`beli_bayar_id`),
+  KEY `nofak_key_idx` (`beli_nofak`)
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `db_penjualan`.`tbl_beli_bayar` 
+CHANGE COLUMN `piutang` `utang` DOUBLE NULL DEFAULT 0 ;
+
+
 
 .......................
 CATATAN
-tbl_jual_bayar_belum rrelasi ke tabel_jual
+- tbl_jual_bayar_belum rrelasi ke tabel_jual
+- title perlu dirapikan

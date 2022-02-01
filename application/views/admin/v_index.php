@@ -61,7 +61,7 @@
                 <div class="menu-item blue" style="height:150px;">
                      <a href="<?php echo base_url().'admin/penjualan'?>" data-toggle="modal">
                            <i class="fa fa-shopping-bag"></i>
-                            <p style="text-align:left;font-size:14px;padding-left:5px;">Penjualan Eceran</p>
+                            <p style="text-align:left;font-size:14px;padding-left:5px;">Penjualan</p>
                       </a>
                 </div> 
             </div>
@@ -89,13 +89,21 @@
                       </a>
                 </div> 
             </div>
+            <div class="col-xs-3 portfolio-item">
+                <div class="menu-item blue" style="height:150px;">
+                     <a href="<?php echo base_url().'admin/penjualan_bayar'?>" data-toggle="modal">
+                           <i class="fa fa-money"></i>
+                            <p style="text-align:left;font-size:14px;padding-left:5px;">Pembayaran Piutang</p>
+                      </a>
+                </div> 
+            </div>
             <?php }?>
             <!-- <?php if($h=='2'){ ?> 
             <div class="col-xs-3 portfolio-item">
                 <div class="menu-item blue" style="height:150px;">
                      <a href="#" data-toggle="modal">
                            <i class="fa fa-shopping-cart"></i>
-                            <p style="text-align:left;font-size:14px;padding-left:5px;">Penjualan Eceran</p>
+                            <p style="text-align:left;font-size:14px;padding-left:5px;">Penjualan</p>
                       </a>
                 </div> 
             </div>
@@ -165,6 +173,7 @@
                 </div> 
             </div>
             <?php }?>
+
             <?php if($h=='2'){ ?> 
             <div class="col-xs-3 portfolio-item"></div>
             <!-- <div class="col-xs-3 portfolio-item">
@@ -179,10 +188,21 @@
                 <div class="menu-item red" style="height:150px;">
                      <a href="<?php echo base_url().'admin/penjualan'?>" data-toggle="modal">
                            <i class="fa fa-shopping-bag"></i>
-                            <p style="text-align:left;font-size:14px;padding-left:5px;">Penjualan Eceran</p>
+                            <p style="text-align:left;font-size:14px;padding-left:5px;">Penjualan</p>
                       </a>
                 </div> 
             </div>
+
+            
+            <div class="col-xs-3 portfolio-item">
+                <div class="menu-item blue" style="height:150px;">
+                     <a href="<?php echo base_url().'admin/penjualan_bayar'?>" data-toggle="modal">
+                           <i class="fa fa-money"></i>
+                            <p style="text-align:left;font-size:14px;padding-left:5px;">Pembayaran Piutang</p>
+                      </a>
+                </div> 
+            </div>
+            
             <div class="col-xs-3 portfolio-item"></div>
             <!-- <div class="col-xs-3 portfolio-item">
                 <div class="menu-item blue" style="height:150px;">

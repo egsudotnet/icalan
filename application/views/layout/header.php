@@ -9,7 +9,7 @@
     <meta name="description" content="Produk By egsudotnet">
     <meta name="author" content="egsudotnet">
 
-    <title>Transaksi Penjualan</title>
+    <!-- <title>Transaksi Penjualan</title> -->
 
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url().'assets/css/bootstrap.min.css'?>" rel="stylesheet">
@@ -33,7 +33,46 @@
         .w-100{
            width:100% !important;
         }
-        
+        .mt-10{
+            margin-top:10px;
+        }
+        .mt-20{
+            margin-top:20px;
+        }
+        .mt-30{
+            margin-top:30px;
+        }
+        .mt-40{
+            margin-top:40px;
+        }
+        .mr-10{
+            margin-right:10px;
+        }
+        .mr-20{
+            margin-right:20px;
+        }
+        .mr-30{
+            margin-right:30px;
+        }
+        .mr-40{
+            margin-right:40px;
+        }
+        .ml-10{
+            margin-left:10px;
+        }
+        .ml-20{
+            margin-left:20px;
+        }
+        .ml-30{
+            margin-left:30px;
+        }
+        .ml-40{
+            margin-left:40px;
+        }
+
+        table.filter td{
+            padding-right:8px !important; 
+        }
     </style>
     
     <style>
@@ -90,6 +129,7 @@
             }
         </style>
 
+    <title><?php echo $title ?></title>
 </head>
 
 <body>
@@ -99,10 +139,12 @@
         $this->load->view('layout/menu');
    ?>
 <div class="container">
-    <div align="center" style="margin-top:0px;color:white;background-color:red" id="info-error"></div>
-    <div align="center" style="margin-top:0px;color:black;background-color:yellow" id="info-warning"></div>
-    <div align="center" style="margin-top:0px;color:white;background-color:green" id="info-success"></div>
-<div>
+    <div class="alert-danger info-error text-center"> 
+    </div>
+    <div class="alert-warning info-warning text-center"> 
+    </div>
+    <div class="alert-success info-success text-center"> 
+    </div> 
 
 <div id="loading" class="modal active" role="dialog" aria-hidden="false" data-backdrop="static" data-keyboard="false">
 	<div class="spinner"></div>

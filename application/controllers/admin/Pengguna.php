@@ -11,6 +11,7 @@ class Pengguna extends CI_Controller{
 	function index(){
 	if($this->session->userdata('akses')=='1'){
 		$data['data']=$this->m_pengguna->get_pengguna();
+		$data['title']="Master Pengguna";
 		$this->load->view('admin/v_pengguna',$data);
 	}else{
         echo "Halaman tidak ditemukan";

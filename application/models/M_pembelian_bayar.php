@@ -1,5 +1,5 @@
 <?php
-class M_penjualan_bayar_v2 extends CI_Model{
+class M_pembelian_bayar extends CI_Model{
  
 	// function pr($str, $die = true) {
 	// 	if ($str) {
@@ -17,31 +17,45 @@ class M_penjualan_bayar_v2 extends CI_Model{
 	// }
 
 
-	function get_piutang($tanggalDari, $tanggalSampai, $nofak){
+	function get_utang( $kodeSupplier, $tanggalDari, $tanggalSampai, $nofak, $status){
 		$result = [];
-		$additionalQuery = "";
+		$additionalQuery = ""; 
+
+		if($status == "0"){
+			$additionalQuery .= " beli_kembalian < 0 ";
+		}
+		if($status == "1"){
+			$additionalQuery .= " beli_kembalian = 0 ";
+		}
+
+		if(empty($additionalQuery)){
+			$additionalQuery .= " 1=1  ";
+		}
 
 		if(!empty($tanggalDari) && !empty($tanggalSampai)){
-			$additionalQuery .= "AND jual_tanggal BETWEEN= '$tanggalDari' AND '$tanggalSampai'";
+			$additionalQuery .= " AND beli_tanggal BETWEEN= '$tanggalDari' AND '$tanggalSampai' ";
 		}
 		if(!empty($tanggalDari) && empty($tanggalSampai)){
-			$additionalQuery .= "AND jual_tanggal >= '$tanggalDari'";
+			$additionalQuery .= " AND beli_tanggal >= '$tanggalDari' ";
 		}
 		if(empty($tanggalDari) && empty(!$tanggalSampai)){
-			$additionalQuery .= "AND jual_tanggal <= '$tanggalSampai'";
+			$additionalQuery .= " AND beli_tanggal <= '$tanggalSampai' ";
 		}
 		
 		if(!empty($nofak)){
-			$additionalQuery .= "AND jual_nofak = '$nofak'";
+			$additionalQuery .= " AND beli_nofak = '$nofak' ";
+		} 
+		if(!empty($kodeSupplier)){
+			$additionalQuery .= " AND beli_suplier_id = '$kodeSupplier' ";
 		}
 
 		$query = $this->db->query("
 		SELECT
-			jual_nofak, jual_tanggal, jual_total, jual_jml_uang, jual_kembalian, jual_user_id, b.user_nama 
-		FROM tbl_jual A 
-		LEFT JOIN tbl_user B ON A.jual_user_id=B.user_id
-		WHERE jual_kembalian < 0 
-			$additionalQuery 
+			beli_nofak,suplier_nama, DATE_FORMAT(beli_tanggal, '%d-%m-%Y %H:%i')beli_tanggal, beli_total, beli_jml_uang, beli_kembalian, beli_user_id, b.user_nama 
+		FROM tbl_beli A 
+		LEFT JOIN tbl_user B ON A.beli_user_id=B.user_id
+		LEFT JOIN tbl_suplier C ON A.beli_suplier_id=C.suplier_id
+		WHERE $additionalQuery
 		"); 
         if($query->num_rows()>0){
 			$result = $query->result();
@@ -55,13 +69,15 @@ class M_penjualan_bayar_v2 extends CI_Model{
 
 		$query = $this->db->query("
 			SELECT 
-				d_jual_barang_nama AS barang_nama , 
-				d_jual_barang_satuan AS barang_satuan , 
-				d_jual_barang_harjul AS barang_harjul, 
-				d_jual_qty AS qty, 
-				d_jual_total AS total
-			FROM  tbl_detail_jual
-			WHERE d_jual_nofak='$nofak'
+				B.barang_nama AS barang_nama , 
+				B.barang_satuan AS barang_satuan , 
+				B.barang_harpok AS barang_harpok, 
+				B.barang_harjul AS barang_harjul, 
+				d_beli_jumlah AS qty, 
+				d_beli_total AS total
+			FROM  tbl_detail_beli as A
+                 LEFT JOIN tbl_barang B ON A.d_beli_barang_id=B.barang_id
+			WHERE d_beli_nofak='$nofak'
 		"); 
         if($query->num_rows()>0){
 			$result = $query->result();
@@ -74,10 +90,10 @@ class M_penjualan_bayar_v2 extends CI_Model{
 
 		$query = $this->db->query("
 			SELECT 
-				bayar_nofak, piutang, bayar_tanggal, bayar_jml_uang, bayar_kurang, b.user_nama 
-			FROM tbl_jual_bayar A 
+				bayar_nofak, utang, bayar_tanggal, bayar_jml_uang, bayar_kurang, b.user_nama 
+			FROM tbl_beli_bayar A 
 					LEFT JOIN tbl_user B ON A.bayar_user_id=B.user_id
-			WHERE jual_nofak='$nofak'
+			WHERE beli_nofak='$nofak'
 			ORDER BY bayar_tanggal
 		"); 
         if($query->num_rows()>0){
@@ -85,6 +101,7 @@ class M_penjualan_bayar_v2 extends CI_Model{
         } 
 		return $result;
 	}
+	
 	function simpan_pembayaran($nofak, $kurangBayar, $inputBayar,$kurangBayarBaru){ 
 		$idadmin=$this->session->userdata('idadmin');  
 		$this->db->trans_start(); 
@@ -93,11 +110,11 @@ class M_penjualan_bayar_v2 extends CI_Model{
 			$kurangBayar = $kurangBayar * -1;
 			$kurangBayarBaru = $kurangBayarBaru * -1;
 			$this->db->query("
-				INSERT INTO tbl_jual_bayar
+				INSERT INTO tbl_beli_bayar
 				(
 					bayar_nofak,
-					jual_nofak,
-					piutang,
+					beli_nofak,
+					utang,
 					bayar_jml_uang,
 					bayar_kurang,
 					bayar_user_id)
@@ -113,12 +130,12 @@ class M_penjualan_bayar_v2 extends CI_Model{
 
 
 			$this->db->query("
-				UPDATE tbl_jual
+				UPDATE tbl_beli
 				SET  
-					jual_jml_uang = (SELECT SUM(bayar_jml_uang) FROM tbl_jual_bayar WHERE jual_nofak='$nofak'),
-					jual_kembalian = jual_jml_uang - jual_total
+					beli_jml_uang = (SELECT SUM(bayar_jml_uang) FROM tbl_beli_bayar WHERE beli_nofak='$nofak'),
+					beli_kembalian = beli_jml_uang - beli_total
 				WHERE
-					jual_nofak=$nofak 
+					beli_nofak='$nofak'
 			");  
 			 
 			$this->db->trans_commit();  
@@ -141,7 +158,7 @@ class M_penjualan_bayar_v2 extends CI_Model{
 	}
 
 	function get_nofak(){
-		$q = $this->db->query("SELECT MAX(RIGHT(jual_nofak,6)) AS kd_max FROM tbl_jual WHERE DATE(jual_tanggal)=CURDATE()");
+		$q = $this->db->query("SELECT MAX(RIGHT(beli_nofak,6)) AS kd_max FROM tbl_beli WHERE DATE(beli_tanggal)=CURDATE()");
         $kd = "";
         if($q->num_rows()>0){
             foreach($q->result() as $k){
@@ -158,7 +175,7 @@ class M_penjualan_bayar_v2 extends CI_Model{
 	}
 	
 	function get_bayar_nofak(){
-		$q = $this->db->query("SELECT MAX(RIGHT(bayar_nofak,6)) AS kd_max FROM tbl_jual_bayar WHERE DATE(bayar_tanggal)=CURDATE()");
+		$q = $this->db->query("SELECT MAX(RIGHT(bayar_nofak,6)) AS kd_max FROM tbl_beli_bayar WHERE DATE(bayar_tanggal)=CURDATE()");
         $kd = "";
         if($q->num_rows()>0){
             foreach($q->result() as $k){
