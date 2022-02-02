@@ -59,4 +59,6 @@ CHANGE COLUMN `piutang` `utang` DOUBLE NULL DEFAULT 0 ;
 .......................
 CATATAN
 - tbl_jual_bayar_belum rrelasi ke tabel_jual
-- title perlu dirapikan
+- title perlu dirapikan SEbagian
+
+- Form Barang perlu ke Vue

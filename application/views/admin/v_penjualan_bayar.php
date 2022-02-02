@@ -464,6 +464,9 @@
                     $(".info-error").text(textStatus);
                 });
             },
+            numberWithThousandSeparator: function (myNumber) {
+                return helper.numberWithThousandSeparator(myNumber);
+            },
             Simpan: function () { 
                 var data= {};
                 data.nofak = this.nofak;
@@ -521,10 +524,7 @@
         },
         updated: function () {
             helper.updatePriceFormat();
-        },
-        numberWithThousandSeparator: function (myNumber) {
-            return helper.numberWithThousandSeparator(myNumber);
-        },
+        }
     });
  
     $(document).ready(function(){

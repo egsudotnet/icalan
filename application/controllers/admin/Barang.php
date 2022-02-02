@@ -15,6 +15,7 @@ class Barang extends CI_Controller{
 		$data['data']=$this->m_barang->tampil_barang();
 		$data['kat']=$this->m_kategori->tampil_kategori();
 		$data['kat2']=$this->m_kategori->tampil_kategori();
+		$data['title']="Master Barang";
 		$this->load->view('admin/v_barang',$data);
 	}else{
         echo "Halaman tidak ditemukan";

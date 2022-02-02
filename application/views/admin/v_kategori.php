@@ -160,12 +160,7 @@
 
     </div>
     <!-- /.container -->
- 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#mydata').DataTable();
-        } );
-    </script>
+  
     
 <!-- footer -->
 <?php 
