@@ -19,13 +19,13 @@ class M_pembelian_bayar extends CI_Model{
 
 	function get_utang( $kodeSupplier, $tanggalDari, $tanggalSampai, $nofak, $status){
 		$result = [];
-		$additionalQuery = ""; 
+		$additionalQuery = " beli_kembalian <= 0 "; 
 
 		if($status == "0"){
-			$additionalQuery .= " beli_kembalian < 0 ";
+			$additionalQuery .= " AND beli_kembalian < 0 ";
 		}
 		if($status == "1"){
-			$additionalQuery .= " beli_kembalian = 0 ";
+			$additionalQuery .= " AND beli_kembalian = 0 ";
 		}
 
 		if(empty($additionalQuery)){
@@ -52,9 +52,9 @@ class M_pembelian_bayar extends CI_Model{
 		$query = $this->db->query("
 		SELECT
 			beli_nofak,suplier_nama, DATE_FORMAT(beli_tanggal, '%d-%m-%Y %H:%i')beli_tanggal, beli_total, beli_jml_uang, beli_kembalian, beli_user_id, b.user_nama 
-		FROM tbl_beli A 
-		LEFT JOIN tbl_user B ON A.beli_user_id=B.user_id
-		LEFT JOIN tbl_suplier C ON A.beli_suplier_id=C.suplier_id
+		FROM tbl_beli a 
+		LEFT JOIN tbl_user b ON a.beli_user_id=b.user_id
+		LEFT JOIN tbl_suplier c ON a.beli_suplier_id=c.suplier_id
 		WHERE $additionalQuery
 		"); 
         if($query->num_rows()>0){
@@ -69,14 +69,14 @@ class M_pembelian_bayar extends CI_Model{
 
 		$query = $this->db->query("
 			SELECT 
-				B.barang_nama AS barang_nama , 
-				B.barang_satuan AS barang_satuan , 
-				B.barang_harpok AS barang_harpok, 
-				B.barang_harjul AS barang_harjul, 
+				b.barang_nama AS barang_nama , 
+				b.barang_satuan AS barang_satuan , 
+				b.barang_harpok AS barang_harpok, 
+				b.barang_harjul AS barang_harjul, 
 				d_beli_jumlah AS qty, 
 				d_beli_total AS total
-			FROM  tbl_detail_beli as A
-                 LEFT JOIN tbl_barang B ON A.d_beli_barang_id=B.barang_id
+			FROM  tbl_detail_beli as a
+                 LEFT JOIN tbl_barang b ON a.d_beli_barang_id=b.barang_id
 			WHERE d_beli_nofak='$nofak'
 		"); 
         if($query->num_rows()>0){
@@ -91,8 +91,8 @@ class M_pembelian_bayar extends CI_Model{
 		$query = $this->db->query("
 			SELECT 
 				bayar_nofak, utang, bayar_tanggal, bayar_jml_uang, bayar_kurang, b.user_nama 
-			FROM tbl_beli_bayar A 
-					LEFT JOIN tbl_user B ON A.bayar_user_id=B.user_id
+			FROM tbl_beli_bayar a 
+					LEFT JOIN tbl_user b ON a.bayar_user_id=b.user_id
 			WHERE beli_nofak='$nofak'
 			ORDER BY bayar_tanggal
 		"); 

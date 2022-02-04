@@ -19,13 +19,13 @@ class M_penjualan_bayar extends CI_Model{
 
 	function get_piutang($namaPelanggan, $tanggalDari, $tanggalSampai, $nofak, $status){
 		$result = [];
-		$additionalQuery = ""; 
+		$additionalQuery = "  jual_kembalian <= 0 "; 
 
 		if($status == "0"){
-			$additionalQuery .= " jual_kembalian < 0 ";
+			$additionalQuery .= " AND jual_kembalian < 0 ";
 		}
 		if($status == "1"){
-			$additionalQuery .= " jual_kembalian = 0 ";
+			$additionalQuery .= " AND jual_kembalian = 0 ";
 		}
 
 		if(empty($additionalQuery)){
@@ -52,8 +52,8 @@ class M_penjualan_bayar extends CI_Model{
 		$query = $this->db->query("
 		SELECT
 			jual_nofak, DATE_FORMAT(jual_tanggal, '%d-%m-%Y %H:%i')jual_tanggal, jual_total, jual_jml_uang, jual_kembalian, jual_user_id, b.user_nama 
-		FROM tbl_jual A 
-		LEFT JOIN tbl_user B ON A.jual_user_id=B.user_id
+		FROM tbl_jual AS a 
+		LEFT JOIN tbl_user AS b ON a.jual_user_id=b.user_id
 		WHERE $additionalQuery
 		"); 
         if($query->num_rows()>0){
@@ -88,8 +88,8 @@ class M_penjualan_bayar extends CI_Model{
 		$query = $this->db->query("
 			SELECT 
 				bayar_nofak, piutang, bayar_tanggal, bayar_jml_uang, bayar_kurang, b.user_nama 
-			FROM tbl_jual_bayar A 
-					LEFT JOIN tbl_user B ON A.bayar_user_id=B.user_id
+			FROM tbl_jual_bayar a 
+					LEFT JOIN tbl_user b ON a.bayar_user_id=b.user_id
 			WHERE jual_nofak='$nofak'
 			ORDER BY bayar_tanggal
 		"); 
