@@ -139,7 +139,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p style="text-align:center;">Copyright &copy; <?php echo '2022';?> by egsudotnet</p>
+                    <!-- <p style="text-align:center;">Copyright &copy; <?php echo '2022';?> by egsudotnet</p> -->
                 </div>
             </div>
             <!-- /.row -->
@@ -150,20 +150,20 @@
  
     <script type="text/javascript">
             $(function () {
-                $('#datetimepicker').datetimepicker({
-                    format: 'DD MMMM YYYY HH:mm',
-                });
+                // $('#datetimepicker').datetimepicker({
+                //     format: 'DD MMMM YYYY HH:mm',
+                // });
                 
-                $('#datepicker').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                });
-                $('#datepicker2').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                });
+                // $('#datepicker').datetimepicker({
+                //     format: 'YYYY-MM-DD',
+                // });
+                // $('#datepicker2').datetimepicker({
+                //     format: 'YYYY-MM-DD',
+                // });
 
-                $('#timepicker').datetimepicker({
-                    format: 'HH:mm'
-                });
+                // $('#timepicker').datetimepicker({
+                //     format: 'HH:mm'
+                // });
             });
     </script> 
 <!-- footer -->

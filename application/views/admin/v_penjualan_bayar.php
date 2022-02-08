@@ -85,7 +85,10 @@
     </section>
 
     <section id="sectionDetail" style="display:none">
-        <div><span class="btn btn-default" v-on:click="ShowHeader"><i class="glyphicon glyphicon-arrow-left"> Kembali</i></span></div>
+        <div>
+            <span class="btn btn-default" v-on:click="ShowHeader"><i class="glyphicon glyphicon-arrow-left"> Kembali</i></span>
+            <span class="btn btn-default pull-right" onclick="Faktur.Print()"><i class="glyphicon glyphicon-print"> Cetak Ulang</i></span>
+        </div>
         <h3 style="margin-top:10px"></h3>  
         <table class="w-100">   
             <tr>
@@ -160,9 +163,14 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="4"></th> 
-                            <td align="right"><b><input v-model="inputBayar" id="inputBayar" class="text-right priceFormat"/></b></td> 
-                            <td align="right"><b><input v-model="kurangBayarBaruShow" id="inputBayar" class="text-right" disabled/></b></td>  
+                            <th  colspan="4"></th> 
+                            <td align="right" v-on:click="ShowInputMoney">
+                                <div class="input-group" style="width:120px">
+                                    <span class="input-group-addon"><i class="fa fa-money btn-success"></i></span>
+                                    <input v-model="inputBayar" id="inputBayar" class="text-right priceFormat" disabled style="width:120px !important"/>
+                                </div>
+                            </td>  
+                            <td align="right"><b><input v-model="kurangBayarBaruShow" id="inputBayar" class="text-right" disabled style="width:120px !important"/></b></td>  
                             <th>       
                                 <span class="btn btn-primary" v-on:click="Simpan"><i class="fa fa-save"> SIMPAN</i></span>
                             </th> 
@@ -181,6 +189,88 @@
 </div> 
 </div>
  
+
+<div id="divFaktur" style="display:none;width:400px">  
+    <section id="sectionFaktur">
+        <div class="row">
+                <div class="col-lg-12">
+                        <table>
+                                <tr> 
+                                    <th>SELAMAT DATANG</th> 
+                                </tr>
+                                <tr> 
+                                    <th>  
+                                        {{namaToko}}
+                                    </th>  
+                                </tr>
+                                <tr> 
+                                    <th>  
+                                        {{alamatToko}}
+                                    </th>  
+                                </tr>
+                                <tr> 
+                                    <th>  
+                                        {{hpToko}}
+                                    </th>  
+                                </tr>
+                        </table> 
+                        <div>{{nofak}} <span class="pull-right">{{tanggalTransaksi}}</span></div>
+                        <div>{{namaPelanggan}}</div>
+                        <table style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="width:40%">Barang</th>
+                                    <th style="width:20%">Harga</th>
+                                    <th style="width:20%">Qty</th>
+                                    <th style="width:20%">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="row in listBarang">
+                                    <td>{{row.barang_nama}}</td>
+                                    <td class="text-right priceFormat">{{row.barang_harjul}}</td>
+                                    <td class="text-right priceFormat">{{row.barang_qty_input}} {{row.barang_satuan}}</td> 
+                                    <td class="text-right priceFormat">{{row.barang_harjul * row.barang_qty_input}}</td>
+                                </tr>
+                            <tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">
+                                        </br>
+                                    </td>
+                                </tr> 
+                                <tr> 
+                                    <td colspan="3"><b class="pull-right">Total</b></td> 
+                                    <td class="text-right priceFormat">{{totalHarga}}</td> 
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><b class="pull-right">Total Bayar</b></td> 
+                                    <td class="text-right priceFormat">{{totalBayar}}</td> 
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><b class="pull-right">{{labelKembalian}}</b></td> 
+                                    <td class="text-right priceFormat">{{kembalian}}</td> 
+                                </tr>
+                                <tr>
+                                    <td colspan="3">{{namaUser}}</td> 
+                                </tr>
+ 
+                                <tr>
+
+                                    <td colspan="4" align="center">
+                                        </br>
+                                        <b>Terima kasih</b>
+                                    </td>  
+                                </tr>
+                            </tfoot>
+                        </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
 <script type="text/javascript">
     // var tablePiutang = $('#tablePiutang').DataTable({
     //     paging:false,
@@ -278,43 +368,43 @@
 				    $('#tablePiutang').show();
                 });
             },
-            Post: function () { 
-                if(!localStorage.dataPembayaran)
-                    return;
+            // // Post: function () { 
+            // //     if(!localStorage.dataPembayaran)
+            // //         return;
 
-                var data = JSON.parse(localStorage.dataPembayaran);
-                data.totalHarga = helper.convertToInt(data.totalHarga);
-                data.totalBayar = helper.convertToInt(data.totalBayar);
-                data.kembalian = helper.convertToInt(data.kembalian); 
-                $.each(Pembayaran.listPiutang,(index,item)=>{
-                    item.barang_harjul = helper.convertToInt(item.barang_harjul);
-                    item.barang_qty_input = helper.convertToInt(item.barang_qty_input);
-                })
+            // //     var data = JSON.parse(localStorage.dataPembayaran);
+            // //     data.totalHarga = helper.convertToInt(data.totalHarga);
+            // //     data.totalBayar = helper.convertToInt(data.totalBayar);
+            // //     data.kembalian = helper.convertToInt(data.kembalian); 
+            // //     $.each(Pembayaran.listPiutang,(index,item)=>{
+            // //         item.barang_harjul = helper.convertToInt(item.barang_harjul);
+            // //         item.barang_qty_input = helper.convertToInt(item.barang_qty_input);
+            // //     })
 
-                $.ajax({
-                    url: '<?php echo base_url().'admin/penjualan/simpan_penjualan';?>',
-                    cache: false,
-				    dataType: 'json',
-                    // headers: {
-                    //     'Content-Type': 'application/json'
-                    // },
-                    data: data,
-                    method: 'POST',
-                    beforeSend: function () {
-                        BeforeSendAjaxBehaviour(true);
-                    }
-                }).done(function (data, textStatus, jqXHR) {
-                    if(data.status){
-                        Faktur.print(data.data); 
-                    }else{ 
-                        $(".info-error").text(data.message);
-                    }
-                }).fail(function (jqXHR, textStatus, errorThrown) { 
-                    $(".info-error").text(textStatus);
-                }).complete(function () { 
-                    AfterSendAjaxBehaviour(true);
-                });
-            },
+            // //     $.ajax({
+            // //         url: '<?php echo base_url().'admin/penjualan/simpan_penjualan';?>',
+            // //         cache: false,
+			// // 	    dataType: 'json',
+            // //         // headers: {
+            // //         //     'Content-Type': 'application/json'
+            // //         // },
+            // //         data: data,
+            // //         method: 'POST',
+            // //         beforeSend: function () {
+            // //             BeforeSendAjaxBehaviour(true);
+            // //         }
+            // //     }).done(function (data, textStatus, jqXHR) {
+            // //         if(data.status){
+            // //             Faktur.print(data.data); 
+            // //         }else{ 
+            // //             $(".info-error").text(data.message);
+            // //         }
+            // //     }).fail(function (jqXHR, textStatus, errorThrown) { 
+            // //         $(".info-error").text(textStatus);
+            // //     }).complete(function () { 
+            // //         AfterSendAjaxBehaviour(true);
+            // //     });
+            // // },
             numberWithThousandSeparator: function (myNumber) {
                 return helper.numberWithThousandSeparator(myNumber);
             },
@@ -377,7 +467,8 @@
             namaPegawai:"",
             listBarang:[],
             listPembayaran:[], 
-            inputBayar:0
+            inputBayar:0,
+            namaPelanggan:""
         },
         mounted: function () { 
         },
@@ -408,7 +499,7 @@
                 this.totalBayar = data.jual_jml_uang;
                 this.kurangBayar = data.jual_kembalian;
                 this.namaPegawai = data.user_nama; 
-                
+                this.namaPelanggan = data.nama_pelanggan;
                 this.SearchListBarang(this.nofak); 
                 this.SearchListBayar(this.nofak); 
                 $("#inputBayar").focus(); 
@@ -507,6 +598,12 @@
                     AfterSendAjaxBehaviour(true);
                 });
             },
+            ShowInputMoney: function(){
+                var callback = function(data){
+                    Detail.inputBayar=data;
+                }
+                helper.showModalInputUang(callback);
+            }, 
         },
         computed: {
             kurangBayarBaru: function () {
@@ -527,8 +624,129 @@
         }
     });
  
+    
+    var Faktur = new Vue({
+        el: "#sectionFaktur",
+        data: {
+            listBarang: [],
+            totalHarga : 0,
+            totalBayar : 0,
+            kembalian : "", 
+            nofak : "",
+            namaUser : "",
+            namaToko : "",
+            alamatToko : "",
+            hpToko : "",
+            labelKembalian : "",
+            tanggalTransaksi : "",
+            namaPelanggan : "",
+            dataToko:{}
+        },
+        mounted: function () { 
+        },
+        watch: {
+            // isNew: function () {
+            //     this.action = this.isNew ? "Submit" : "Update";
+            //     this.title = this.isNew ? "Add Crew" : "Crew Detail";
+            // }
+        },
+        methods: {
+            Init: function (isNew, data) { 
+                
+                $.ajax({
+                    url: '<?php echo base_url().'admin/common/get_data_toko';?>',
+                    cache: false,
+				    dataType: 'json',  
+                    method: 'GET',
+                    beforeSend: function () {
+                        BeforeSendAjaxBehaviour();
+                    }
+                }).done(function (data, textStatus, jqXHR) {
+                    if(data){
+                        Faktur.dataToko = data;
+                    }else{ 
+                        $(".info-error").text("Tidak ada data.");
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) { 
+                    $(".info-error").text(textStatus);
+                });
+                
+            },
+            Search: function (kobar) { 
+            },
+            ClearData: function(){
+               // localStorage.dataPenjualan = "";
+                location.reload();
+            },
+            Print: function () {  
+                
+            // // nofak:"",
+            // // tanggalPembelian:"",
+            // // totalHarga:"",
+            // // totalBayar:"",
+            // // kurangBayar:"",
+            // // namaPegawai:"",
+            // // listBarang:[],
+            // // listPembayaran:[], 
+            // // inputBayar:0
+
+                this.nofak =  Detail.nofak;
+                this.namaPelanggan = Detail.namaPelanggan;
+                this.namaUser = $("#userName").text();
+                this.tanggalTransaksi = Detail.tanggalPembelian;
+ 
+                this.namaToko = $.grep(Faktur.dataToko,(n,i)=>{return n.lookup_kode == helper.dataToko.namaTokoKode})[0].lookup_value;
+                this.alamatToko = $.grep(Faktur.dataToko,(n,i)=>{return n.lookup_kode == helper.dataToko.alamatTokoKode})[0].lookup_value;
+                this.hpToko = $.grep(Faktur.dataToko,(n,i)=>{return n.lookup_kode == helper.dataToko.hpTokoKode})[0].lookup_value;
+
+                this.listBarang  = Detail.listBarang;
+                this.totalHarga  = Detail.totalHarga;
+                this.totalBayar  = Detail.totalBayar;
+                this.kembalian  = Detail.kurangBayar;
+                
+                this.labelKembalian  = Pembayaran.labelKembalian; 
+                
+                setTimeout(() => { 
+                    var newWindow = window.open();
+                    var content = $("#divFaktur").html(); 
+                    newWindow.document.write("<html><head></head><body><div style='width:400px'>"+ content +"</div></body></html>");
+                    newWindow.print();
+                    newWindow.close(); 
+                }, 1000);
+            },
+            Put: function () {
+            },
+            Delete: function () {
+            },
+            Validation: function () { 
+            },
+            SortArray: function (data, ColumnToSort) {
+                data.sort(function (a, b) {
+                    var x = a[ColumnToSort].toLowerCase();
+                    var y = b[ColumnToSort].toLowerCase();
+                    if (x < y) { return -1; }
+                    if (x > y) { return 1; }
+                    return 0;
+                });
+                return data;
+            }
+        },
+        computed: { 
+        },
+        updated: function () {
+            $('.priceFormat').priceFormat({
+                prefix: '',
+                //centsSeparator: '',
+                centsLimit: 0,
+                thousandsSeparator: '.'
+            });
+        }
+    });
+
+    
     $(document).ready(function(){
         Pembayaran.Init();
+        Faktur.Init();
     });
 </script>
      

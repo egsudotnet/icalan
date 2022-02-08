@@ -33,6 +33,11 @@
         .w-100{
            width:100% !important;
         }
+
+        .m-10{
+            margin:10px !important;
+        }
+
         .mt-10{
             margin-top:10px;
         }
@@ -45,6 +50,21 @@
         .mt-40{
             margin-top:40px;
         }
+
+        
+        .mb-10{
+            margin-bottom:10px;
+        }
+        .mb-20{
+            margin-bottom:20px;
+        }
+        .mb-30{
+            margin-bottom:30px;
+        }
+        .mb-40{
+            margin-bottom:40px;
+        }
+
         .mr-10{
             margin-right:10px;
         }

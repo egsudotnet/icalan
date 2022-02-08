@@ -152,7 +152,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p style="text-align:center;">Copyright &copy; <?php echo '2022';?> by egsudotnet</p>
+                    <!-- <p style="text-align:center;">Copyright &copy; <?php echo '2022';?> by egsudotnet</p> -->
                 </div>
             </div>
             <!-- /.row -->

@@ -87,14 +87,17 @@
                                     </th> 
                                     <th colspan="1"><b class="pull-right">Total Rp.</b></th> 
                                     <th>
-                                        <input v-model="totalHarga" class="form-control input-lg priceFormat text-right" style="width:200px"/>
+                                        <input v-model="totalHarga" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
                                     </th> 
                                 </tr>
                                 <tr>
                                     <th colspan="1"><b class="pull-right">Total Bayar Rp.</b></th> 
-                                    <th>
-                                        <input v-model="totalBayar" class="form-control input-lg priceFormat text-right" style="width:200px"/>
-                                    </th> 
+                                    <th colspan="2" v-on:click="ShowInputMoney">
+                                        <div class="input-group" style="width:120px">
+                                             <input v-model="totalBayar" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
+                                            <span class="input-group-addon"><i class="fa fa-money btn-success"></i></span>
+                                        </div> 
+                                    </th>  
                                 </tr>
                                 <tr>
                                     <th colspan="1"><b v-bind:class="('pull-right ' + (kembalian<0?'text-danger':''))">{{labelKembalian}} Rp.</b></th> 
@@ -407,6 +410,12 @@
                 localStorage.dataPenjualan = "";
                 location.reload();
             },
+            ShowInputMoney: function(){
+                var callback = function(data){
+                    Penjualan.totalBayar=data;
+                }
+                helper.showModalInputUang(callback);
+            }, 
             Validation: function () {
                 // $("#crewForm").validate({
                 //     rules: {
@@ -532,13 +541,15 @@
                 this.totalBayar  = Penjualan.totalBayar;
                 this.kembalian  = Penjualan.kembalian;
                 
-                this.labelKembalian  = Penjualan.labelKembalian;
-                $("#divInput").hide();
-                $("#divFaktur").show();
+                this.labelKembalian  = Penjualan.labelKembalian; 
                 
-                setTimeout(() => { 
-                    window.print();
-                    Penjualan.ClearData();
+                setTimeout(() => {  
+                    var newWindow = window.open();
+                    var content = $("#divFaktur").html(); 
+                    newWindow.document.write("<html><head></head><body><div style='width:400px'>"+ content +"</div></body></html>");
+                    newWindow.print();
+                    newWindow.close();
+                    Penjualan.ClearData()
                 }, 1000);
             },
             Put: function () {

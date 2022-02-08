@@ -42,17 +42,17 @@ class Administrator extends CI_Controller{
             redirect('administrator/gagallogin');
         }
     }
-        function berhasillogin(){
-            redirect('welcome');
-        }
-        function gagallogin(){
-            $url=base_url('administrator');
-            echo $this->session->set_flashdata('msg','Username Atau Password Salah');
-            redirect($url);
-        }
-        function logout(){
-            $this->session->sess_destroy();
-            $url=base_url('administrator');
-            redirect($url);
-        }
+    function berhasillogin(){
+        redirect('welcome');
+    }
+    function gagallogin(){
+        $url=base_url('administrator');
+        echo $this->session->set_flashdata('msg','Username Atau Password Salah');
+        redirect($url);
+    }
+    function logout(){
+        $this->session->sess_destroy();
+        $url=base_url('administrator');
+        redirect($url);
+    }
 }

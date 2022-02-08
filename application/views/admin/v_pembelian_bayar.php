@@ -166,7 +166,12 @@
                     <tfoot>
                         <tr>
                             <th colspan="4"></th> 
-                            <td align="right"><b><input v-model="inputBayar" id="inputBayar" class="text-right priceFormat"/></b></td> 
+                            <td align="right" v-on:click="ShowInputMoney">
+                                <div class="input-group" style="width:120px">
+                                    <span class="input-group-addon"><i class="fa fa-money btn-success"></i></span>
+                                    <input v-model="inputBayar" id="inputBayar" class="text-right priceFormat" disabled style="width:120px !important"/>
+                                </div>
+                            </td> 
                             <td align="right"><b><input v-model="kurangBayarBaruShow" id="inputBayar" class="text-right" disabled/></b></td>  
                             <th>       
                                 <span class="btn btn-primary" v-on:click="Simpan"><i class="fa fa-save"> SIMPAN</i></span>
@@ -534,6 +539,12 @@
             numberWithThousandSeparator: function (myNumber) {
                 return helper.numberWithThousandSeparator(myNumber);
             },
+            ShowInputMoney: function(){
+                var callback = function(data){
+                    Detail.inputBayar=data;
+                }
+                helper.showModalInputUang(callback);
+            }, 
         },
         computed: {
             kurangBayarBaru: function () {

@@ -96,14 +96,17 @@
                                     </th> 
                                     <th colspan="1"><b class="pull-right">Total Rp.</b></th> 
                                     <th>
-                                        <input v-model="totalHarga" class="form-control input-lg priceFormat text-right" style="width:200px"/>
+                                        <input v-model="totalHarga" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
                                     </th> 
                                 </tr>
                                 <tr>
                                     <th colspan="1"><b class="pull-right">Total Bayar Rp.</b></th> 
-                                    <th>
-                                        <input v-model="totalBayar" class="form-control input-lg priceFormat text-right" style="width:200px"/>
-                                    </th> 
+                                    <th colspan="2" v-on:click="ShowInputMoney">
+                                        <div class="input-group" style="width:120px">
+                                             <input v-model="totalBayar" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
+                                            <span class="input-group-addon"><i class="fa fa-money btn-success"></i></span>
+                                        </div> 
+                                    </th>  
                                 </tr>
                                 <tr>
                                     <th colspan="1"><b v-bind:class="('pull-right ' + (kembalian<0?'text-danger':''))">{{labelKembalian}} Rp.</b></th> 
@@ -217,7 +220,8 @@
                     }
                 }).on('select2:select', function (evt) {  
                     Pembelian.kodeSuplier = $(this).val();
-                    Pembelian.namaSuplier = $("#select_kode_suplier option:selected").text();
+                    Pembelian.namaSuplier = $("#select_kode_suplier option:selected").text(); 
+                    Pembelian.$forceUpdate();
                 });  
                 //=================================>>
 
@@ -355,7 +359,13 @@
             },
             totalHargaPerBarang(harpok,qty) { 
                  return helper.numberWithThousandSeparator(helper.convertToInt(harpok) * helper.convertToInt(qty)); 
-            }
+            },
+            ShowInputMoney: function(){
+                var callback = function(data){
+                    Pembelian.totalBayar=data;
+                }
+                helper.showModalInputUang(callback);
+            }, 
         },
         computed: {
             totalHarga: function () {
@@ -374,12 +384,6 @@
             }
         },
         updated: function () {
-            $('.priceFormat').priceFormat({
-                prefix: '',
-                //centsSeparator: '',
-                centsLimit: 0,
-                thousandsSeparator: '.'
-            }); 
             var dataPembelian = {};
             dataPembelian.nofak = Pembelian.nofak;
             dataPembelian.kodeSuplier = Pembelian.kodeSuplier;

@@ -57,6 +57,10 @@
                      <li>
                         <a href="<?php echo base_url().'administrator/logout'?>"><span class="fa fa-sign-out"></span> Logout</a>
                     </li>
+                    
+                    <li> 
+                        <a href=""><span class="fa fa-user"></span> <span id="userName"><?php echo $this->session->userdata('nama')?></span></a> 
+                    </li>
                 </ul>
 
 

@@ -96,6 +96,11 @@
          
     </script>
 
+
+    <?php 
+            $this->load->view('layout/modal_input_uang');
+    ?>
+
     </body>
 
 </html>

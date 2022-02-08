@@ -51,7 +51,7 @@ class M_penjualan_bayar extends CI_Model{
 
 		$query = $this->db->query("
 		SELECT
-			jual_nofak, DATE_FORMAT(jual_tanggal, '%d-%m-%Y %H:%i')jual_tanggal, jual_total, jual_jml_uang, jual_kembalian, jual_user_id, b.user_nama 
+			jual_nofak, DATE_FORMAT(jual_tanggal, '%d-%m-%Y %H:%i')jual_tanggal, jual_total, jual_jml_uang, jual_kembalian, jual_user_id, b.user_nama ,jual_nama_pelanggan AS nama_pelanggan
 		FROM tbl_jual AS a 
 		LEFT JOIN tbl_user AS b ON a.jual_user_id=b.user_id
 		WHERE $additionalQuery

@@ -58,7 +58,11 @@ CHANGE COLUMN `piutang` `utang` DOUBLE NULL DEFAULT 0 ;
 
 .......................
 CATATAN
-- tbl_jual_bayar_belum rrelasi ke tabel_jual
-- title perlu dirapikan SEbagian
+- tbl_jual_bayar_belum rrelasi ke tabel_jual (Pending)
+- title perlu dirapikan Swbagian  OK
 
-- Form Barang perlu ke Vue
+- Form Barang perlu ke Vue (cancel)
+
+[23.02, 5/2/2022] Egih Sugiatna: cetak ualng Struk 
+[23.02, 5/2/2022] Egih Sugiatna: print tab masih ngaco
+[23.27, 5/2/2022] Egih Sugiatna: date ubah pake device date OK
