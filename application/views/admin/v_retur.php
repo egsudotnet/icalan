@@ -253,14 +253,14 @@
             $("#kode_brg").focus();
             $("#kode_brg").on("input",function(){
                 var kobar = {kode_brg:$(this).val()};
-                   $.ajax({
-               type: "POST",
-               url : "<?php echo base_url().'admin/retur/get_barang';?>",
-               data: kobar,
-               success: function(msg){
-               $('#detail_barang').html(msg);
-               }
-            });
+                    $.ajax({
+                    type: "POST",
+                    url : "<?php echo base_url().'admin/retur/get_barang';?>",
+                    data: kobar,
+                    success: function(msg){
+                    $('#detail_barang').html(msg);
+                    }
+                });
             }); 
 
             $("#kode_brg").keypress(function(e){

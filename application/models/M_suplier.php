@@ -21,4 +21,24 @@ class M_suplier extends CI_Model{
 		return $hsl;
 	}
 
+	//API 
+	function get_suplier($search, $suplierId){
+		$additionalFilter = "WHERE 1=1 ";
+		if(!empty($search)){
+			$additionalFilter .= " AND (suplier_id like '%$search%' OR suplier_nama like '%$search%' OR suplier_alamat like '%$search%' OR suplier_notelp like '%$search%') ";
+		}
+		if(!empty($suplierId)){
+			$additionalFilter .= " AND suplier_id='$suplierId' ";
+		}
+		$query=$this->db->query("SELECT suplier_id AS id,
+									suplier_nama AS text,
+									suplier_alamat AS alamat,
+									suplier_notelp AS tlp
+								FROM tbl_suplier
+								$additionalFilter
+								");
+		if($query->num_rows() > 0){ 
+            return $query->result() ;
+        }
+	}
 }

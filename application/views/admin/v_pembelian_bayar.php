@@ -10,25 +10,26 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Transaksi
-                <small>Pembayaran Piutang</small>
+                <small>Pembayaran Utang</small>
                 <a href="#" data-toggle="modal" data-target="#largeModal" class="pull-right"><small></small></a>
             </h1> 
         </div>
     </div>
 
-    <section id="sectionPembayaran">
+    <section id="sectionPembelian">
         <div class="row">
                 <div class="col-lg-12">
                         <table class="w-100 filter">
                                 <tr> 
-                                    <td><b>Nama Pelanggan<b></td>  
+                                    <td><b>Suplayer<b></td>  
                                     <td><b>No.Faktur<b></td>  
                                     <td colspan="3"><b>Tanggal<b></td>  
                                     <td><b>Status<b></td>   
                                 </tr>
                                 <tr> 
-                                    <td style="width:200px"> 
-                                        <input v-model="namaPelanggan" class="form-control input-sm"/>
+                                    <td style="width:200px">  
+                                        <select name="select_kode_suplier" id="select_kode_suplier" class="form-control input-sm"> 
+                                        </select> 
                                    </td> 
                                     <td style="width:200px"> 
                                         <input v-model="nofak" class="form-control input-sm"/>
@@ -51,11 +52,12 @@
                                 </tr>
                         </table>
                         </br> 
-                        <div id="divTablePiutangLoading"></div>
-                        <table id="tablePiutang" class="table table-bordered">
+                        <div id="divTableUtangLoading"></div>
+                        <table id="tableUtang" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>No.</th>
+                                    <th>Suplayer</th>
                                     <th>No.Faktur</th>
                                     <th>Tanggal Pembelian</th> 
                                     <th>Total Harga</th>
@@ -66,13 +68,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(row,index) in listPiutang">
+                                <tr v-for="(row,index) in listUtang">
                                     <td>{{index+1}}</td>
-                                    <td>{{row.jual_nofak}}</td>
-                                    <td class="">{{row.jual_tanggal}}</td> 
-                                    <td class="text-right priceFormat">{{row.jual_total}}</td>
-                                    <td class="text-right priceFormat">{{row.jual_jml_uang}}</td>
-                                    <td class="text-right priceFormat">{{row.jual_kembalian * -1}}</td>
+                                    <td>{{row.suplier_nama}}</td>
+                                    <td>{{row.beli_nofak}}</td>
+                                    <td class="">{{row.beli_tanggal}}</td> 
+                                    <td class="text-right priceFormat">{{row.beli_total}}</td>
+                                    <td class="text-right priceFormat">{{row.beli_jml_uang}}</td>
+                                    <td class="text-right priceFormat">{{row.beli_kembalian * -1}}</td>
                                     <td class="">{{row.user_nama}}</td>
                                     <td class=""><span class="btn btn-success btn-pilih"><i class="glyphicon glyphicon-edit">Pilih</i></span></td>
                                 </tr>
@@ -104,7 +107,7 @@
                 <td>Nama Pegawai</td> 
                 <td>{{namaPegawai}}</td> 
                 <td>Kurang Bayar</td>
-                <td class="">{{numberWithThousandSeparator(kurangBayar * -1)}}</td> 
+                <td>{{numberWithThousandSeparator(kurangBayar * -1)}}</td> 
             </tr>
         </table>
 
@@ -115,16 +118,18 @@
                 <tr>
                 <th>No.</th>
                 <th>Nama</th>
-                <th>Harga</th>
+                <th>Harga Beli</th>
+                <th>Harga Jual</th>
                 <th>Qty</th>
                 <th style="width:200px">Total</th>
                 </tr>
             </thead>
             <tbody>
-            <!-- d_jual_barang_nama, d_jual_barang_satuan, d_jual_barang_harjul, d_jual_qty, d_jual_total -->
+            <!-- d_beli_barang_nama, d_beli_barang_satuan, d_beli_barang_harpok, d_beli_qty, d_beli_total -->
                 <tr v-for="(row,index) in listBarang">
                     <td>{{index+1}}</td>
                     <td>{{row.barang_nama}}</td> 
+                    <td class="text-right priceFormat">{{row.barang_harpok}}</td> 
                     <td class="text-right priceFormat">{{row.barang_harjul}}</td> 
                     <td class="text-right">{{row.qty}} {{row.barang_satuan}}</td>
                     <td class="text-right priceFormat">{{row.total}}</td> 
@@ -139,7 +144,7 @@
                         <tr>
                         <th>No.</th>
                         <th>No.Faktur</th>
-                        <th>Piutang</th>
+                        <th>Utang</th>
                         <th>Tgl.Bayar</th>
                         <th>Jml.Pembayaran</th>
                         <th>Kurang Bayar</th>
@@ -147,11 +152,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <!-- d_jual_barang_nama, d_jual_barang_satuan, d_jual_barang_harjul, d_jual_qty, d_jual_total -->
-                        <tr v-for="(row,index) in listPembayaran">
+                    <!-- d_beli_barang_nama, d_beli_barang_satuan, d_beli_barang_harpok, d_beli_qty, d_beli_total -->
+                        <tr v-for="(row,index) in listPembelian">
                             <td>{{index+1}}</td>
                             <td>{{row.bayar_nofak}}</td> 
-                            <td class="text-right priceFormat">{{row.piutang}}</td> 
+                            <td class="text-right priceFormat">{{row.utang}}</td> 
                             <td>{{row.bayar_tanggal}}</td> 
                             <td class="text-right priceFormat">{{row.bayar_jml_uang}}</td> 
                             <td class="text-right priceFormat">{{row.bayar_kurang}}</td>
@@ -182,7 +187,7 @@
 </div>
  
 <script type="text/javascript">
-    // var tablePiutang = $('#tablePiutang').DataTable({
+    // var tableUtang = $('#tableUtang').DataTable({
     //     paging:false,
     //     scrollY: 400,
     //     searching:false,
@@ -191,13 +196,13 @@
     //     catch:false
     // });
 
-    var tablePiutang;
+    var tableUtang;
 
-    var Pembayaran = new Vue({
-        el: "#sectionPembayaran",
+    var Pembelian = new Vue({
+        el: "#sectionPembelian",
         data: {
-            listPiutang: [],
-            totalPiutang : 0 ,
+            listUtang: [],
+            totalUtang : 0 ,
             totalBayar : 0 ,
             kurangBayar : 0,
 
@@ -210,7 +215,7 @@
             alamatToko : "",
             hpToko : "",
             
-            namaPelanggan:"",
+            kodeSuplier:"",
             status:""
         },
         mounted: function () {  
@@ -222,42 +227,64 @@
                 $(document).on("click",".btn-pilih",function(){ 
                     var target = $(this).closest("tr").find("td .btn-pilih");
                     var index = $(this).closest("tr").index();
-                    var data = Pembayaran.listPiutang[index];
+                    var data = Pembelian.listUtang[index];
                     Detail.Show(data);
                 })  
+
+                
+                this.selectBarang = $('#select_kode_suplier').select2({
+                    minimumInputLength: 3,
+                    allowClear: true,
+                    placeholder: '',
+                    ajax: {
+                        dataType: 'json',
+                        url: '<?php echo base_url().'admin/suplier/get_suplier';?>',
+                        delay: 800,
+                        data: function(params) {
+                            return {search: params.term}
+                        },
+                        processResults: function (data, page) {
+                            return {
+                                results: data
+                            };
+                        },
+                    }
+                }).on('select2:select', function (evt) {  
+                    Pembelian.kodeSuplier = $(this).val(); 
+                });  
             },
             Search: function () {  
-                if(!Pembayaran.namaPelanggan && !Pembayaran.tanggalDari && !Pembayaran.tanggalSampai && !Pembayaran.nofak){
-                    alert("Silahkan isi minimal satu data filter nomor faktur, nama pelanggan atau tanggal!");
+                if(!Pembelian.kodeSuplier && !Pembelian.tanggalDari && !Pembelian.tanggalSampai && !Pembelian.nofak){
+                    alert("Silahkan isi minimal satu data filter nomor faktur, suplayer atau tanggal!");
                     return;
                 }
                 var data = {
-                    namaPelanggan : Pembayaran.namaPelanggan,
-                    tanggalDari : Pembayaran.tanggalDari, 
-                    tanggalSampai : Pembayaran.tanggalSampai,  
-                    nofak : Pembayaran.nofak, 
-                    status : Pembayaran.status,  
+                    kodeSuplier : Pembelian.kodeSuplier,
+                    tanggalDari : Pembelian.tanggalDari, 
+                    tanggalSampai : Pembelian.tanggalSampai,  
+                    nofak : Pembelian.nofak, 
+                    status : Pembelian.status,  
                 };
                 $.ajax({
-                    url: '<?php echo base_url().'admin/penjualan_bayar/get_piutang';?>',
+                    url: '<?php echo base_url().'admin/pembelian_bayar/get_utang';?>',
                     cache: false,
 				    dataType: 'json', 
                     data: data,
                     method: 'POST',
                     beforeSend: function () {  
                         BeforeSendAjaxBehaviour();
-					    $('#divTablePiutangLoading').addClass('panel-loading');
-					    $('#tablePiutang').hide();
+					    $('#divTableUtangLoading').addClass('panel-loading');
+					    $('#tableUtang').hide();
                     }
                 }).done(function (data, textStatus, jqXHR) {
                     if(data){
-                        Pembayaran.listPiutang = [];
+                        Pembelian.listUtang = [];
                         setTimeout(() => {
-                            Pembayaran.listPiutang = data; 
-                            if(!tablePiutang){
+                            Pembelian.listUtang = data; 
+                            if(!tableUtang){
                                 setTimeout(() => { 
                                     ////alert($(window).height()-1000);
-                                    tablePiutang = $('#tablePiutang').DataTable({
+                                    tableUtang = $('#tableUtang').DataTable({
                                         paging:false,
                                         scrollY: 800,
                                         searching:false,
@@ -274,25 +301,25 @@
                 }).fail(function (jqXHR, textStatus, errorThrown) { 
                     $(".info-error").text(textStatus);
                 }).complete(()=>{ 
-                    $('#divTablePiutangLoading').removeClass('panel-loading');
-				    $('#tablePiutang').show();
+                    $('#divTableUtangLoading').removeClass('panel-loading');
+				    $('#tableUtang').show();
                 });
             },
             Post: function () { 
-                if(!localStorage.dataPembayaran)
+                if(!localStorage.dataPembelian)
                     return;
 
-                var data = JSON.parse(localStorage.dataPembayaran);
+                var data = JSON.parse(localStorage.dataPembelian);
                 data.totalHarga = helper.convertToInt(data.totalHarga);
                 data.totalBayar = helper.convertToInt(data.totalBayar);
                 data.kembalian = helper.convertToInt(data.kembalian); 
-                $.each(Pembayaran.listPiutang,(index,item)=>{
-                    item.barang_harjul = helper.convertToInt(item.barang_harjul);
+                $.each(Pembelian.listUtang,(index,item)=>{
+                    item.barang_harpok = helper.convertToInt(item.barang_harpok);
                     item.barang_qty_input = helper.convertToInt(item.barang_qty_input);
                 })
 
                 $.ajax({
-                    url: '<?php echo base_url().'admin/penjualan/simpan_penjualan';?>',
+                    url: '<?php echo base_url().'admin/pembelian/simpan_pembelian';?>',
                     cache: false,
 				    dataType: 'json',
                     // headers: {
@@ -314,21 +341,18 @@
                 }).complete(function () { 
                     AfterSendAjaxBehaviour(true);
                 });
-            },
-            numberWithThousandSeparator: function (myNumber) {
-                return helper.numberWithThousandSeparator(myNumber);
-            },
+            }, 
             Delete: function () {
-                if(!localStorage.dataPembayaran)
+                if(!localStorage.dataPembelian)
                     return;
                     
                 if (confirm("Apakah anda akan membatalkan transaksi?")) {
-                    localStorage.dataPembayaran = "";
+                    localStorage.dataPembelian = "";
                     location.reload();
                 }
             },
             ClearData: function(){
-                localStorage.dataPembayaran = "";
+                localStorage.dataPembelian = "";
                 location.reload();
             },
             Validation: function () {
@@ -342,13 +366,16 @@
                     return 0;
                 });
                 return data;
-            }
+            },
+            numberWithThousandSeparator: function (myNumber) {
+                return helper.numberWithThousandSeparator(myNumber);
+            },
         },
         computed: {
             totalHarga: function () {
                  var total = 0;
-                 $.each(this.listPiutang,function(index,item){
-                    total +=  helper.convertToInt(item.barang_harjul) *  helper.convertToInt(item.barang_qty_input);
+                 $.each(this.listUtang,function(index,item){
+                    total +=  helper.convertToInt(item.barang_harpok) *  helper.convertToInt(item.barang_qty_input);
                  });
                  return total; 
             },
@@ -376,7 +403,7 @@
             kurangBayar:"",
             namaPegawai:"",
             listBarang:[],
-            listPembayaran:[], 
+            listPembelian:[], 
             inputBayar:0
         },
         mounted: function () { 
@@ -394,19 +421,19 @@
                 this.kurangBayar = "";
                 this.namaPegawai = "";
                 this.listBarang = [];
-                this.listPembayaran = [];
+                this.listPembelian = [];
                 this.inputBayar = 0
             },
             Show: function (data) { 
                 this.Clear();
-                $("#sectionPembayaran").hide();
+                $("#sectionPembelian").hide();
                 $("#sectionDetail").show(); 
                 this.inputBayar = "";
-                this.nofak = data.jual_nofak;
-                this.tanggalPembelian = moment(data.jual_tanggal).format("DD-MM-YY HH:mm");
-                this.totalHarga = data.jual_total;
-                this.totalBayar = data.jual_jml_uang;
-                this.kurangBayar = data.jual_kembalian;
+                this.nofak = data.beli_nofak;
+                this.tanggalPembelian = moment(data.beli_tanggal).format("DD-MM-YY HH:mm");
+                this.totalHarga = data.beli_total;
+                this.totalBayar = data.beli_jml_uang;
+                this.kurangBayar = data.beli_kembalian;
                 this.namaPegawai = data.user_nama; 
                 
                 this.SearchListBarang(this.nofak); 
@@ -414,7 +441,7 @@
                 $("#inputBayar").focus(); 
             },
             ShowHeader: function () { 
-                $("#sectionPembayaran").show();
+                $("#sectionPembelian").show();
                 $("#sectionDetail").hide(); 
             },
             SearchListBarang: function (nofak) { 
@@ -422,7 +449,7 @@
                     return;
 
                 $.ajax({
-                    url: '<?php echo base_url().'admin/penjualan_bayar/get_list_barang?nofak=';?>' + nofak,
+                    url: '<?php echo base_url().'admin/pembelian_bayar/get_list_barang?nofak=';?>' + nofak,
                     cache: false,
 				    dataType: 'json',  
                     method: 'GET',
@@ -447,7 +474,7 @@
                     return;
 
                 $.ajax({
-                    url: '<?php echo base_url().'admin/penjualan_bayar/get_list_bayar?nofak=';?>' + nofak,
+                    url: '<?php echo base_url().'admin/pembelian_bayar/get_list_bayar?nofak=';?>' + nofak,
                     cache: false,
 				    dataType: 'json',  
                     method: 'GET',
@@ -456,16 +483,13 @@
                     }
                 }).done(function (data, textStatus, jqXHR) {
                     if(data){
-                        Detail.listPembayaran = data;
+                        Detail.listPembelian = data;
                     }else{ 
                         $(".info-error").text("Tidak ada data.");
                     }
                 }).fail(function (jqXHR, textStatus, errorThrown) { 
                     $(".info-error").text(textStatus);
                 });
-            },
-            numberWithThousandSeparator: function (myNumber) {
-                return helper.numberWithThousandSeparator(myNumber);
             },
             Simpan: function () { 
                 var data= {};
@@ -486,7 +510,7 @@
                 }
 
                 $.ajax({
-                    url: '<?php echo base_url().'admin/penjualan_bayar/simpan_pembayaran';?>',
+                    url: '<?php echo base_url().'admin/pembelian_bayar/simpan_pembayaran';?>',
                     cache: false,
 				    dataType: 'json', 
                     data: data,
@@ -497,7 +521,7 @@
                 }).done(function (data, textStatus, jqXHR) {
                     if(data.status){
                       Detail.ShowHeader();
-                      Pembayaran.Search();
+                      Pembelian.Search();
                     }else{ 
                         $(".info-error").text(data.message);
                     }
@@ -506,6 +530,9 @@
                 }).complete(function () { 
                     AfterSendAjaxBehaviour(true);
                 });
+            },
+            numberWithThousandSeparator: function (myNumber) {
+                return helper.numberWithThousandSeparator(myNumber);
             },
         },
         computed: {
@@ -528,7 +555,7 @@
     });
  
     $(document).ready(function(){
-        Pembayaran.Init();
+        Pembelian.Init();
     });
 </script>
      

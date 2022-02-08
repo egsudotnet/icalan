@@ -165,13 +165,7 @@
                     format: 'HH:mm'
                 });
             });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#mydata').DataTable();
-        } );
-    </script>
-    
+    </script> 
 <!-- footer -->
 <?php 
     $this->load->view('layout/footer');

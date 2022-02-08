@@ -18,11 +18,15 @@
     <section id="sectionPenjualan">
         <div class="row">
                 <div class="col-lg-12">
-                        <table style="width:100%">
+                        <table class="w-100 filter">
                                 <tr> 
+                                    <td><b>Nama Pelannggan<b></td> 
                                     <td><b>Nama Barang<b></td> 
                                 </tr>
                                 <tr> 
+                                    <td> 
+                                        <input name="nama_pelanggan" id="nama_pelanggan" v-model="namaPelanggan" class="form-control input-sm"/>  
+                                    </td>  
                                     <td> 
                                         <select name="select_kode_brg" id="select_kode_brg" class="form-control input-lg"> 
                                         </select>
@@ -39,6 +43,7 @@
                             <thead>
                                 <tr>
                                 <th>Nama</th>
+                                <th>Stok</th> 
                                 <th>Satuan</th> 
                                 <th>Harga</th>
                                 <th>Qty</th>
@@ -47,28 +52,38 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="row in listBarang">
+                                <tr v-for="(row,index) in listBarang">
                                     <td>{{row.barang_nama}}</td>
+                                    <td>{{row.barang_stok}}</td>
                                     <td>{{row.barang_satuan}}</td>
-                                    <td class="barang_harjul text-right priceFormat">{{row.barang_harjul}}</td> 
+                                    <td> 
+                                        <div class="input-group input-group-sm"> 
+                                            <input class="form-control input-sm text-right priceFormat" readonly v-model="row.barang_harjul"/>
+                                            <span class="input-group-btn btn-edit-harga" v-on:click="UpdateHarga(index, row.barang_id, row.barang_nama, row.barang_harjul)">
+                                                <span class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            </span>
+                                        </div>
+                                    </td> 
                                     <td style="width:120px"> 
                                         <div class="input-group input-group-sm">
-                                        <span class="input-group-btn btn-minus">
-                                            <span class="btn btn-warning"><i class="glyphicon glyphicon-minus"></i></span>
-                                        </span>
-                                        <input v-model="row.barang_qty_input" class="form-control input-sm text-right input-qty" style="width:100px"/>
-                                        <span class="input-group-btn btn-plus">
-                                            <span class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></span>
-                                        </span>
+                                            <span class="input-group-btn btn-minus">
+                                                <span class="btn btn-warning"><i class="glyphicon glyphicon-minus"></i></span>
+                                            </span>
+                                            <input v-model="row.barang_qty_input" class="form-control input-sm text-right input-qty" style="width:100px"/>
+                                            <span class="input-group-btn btn-plus">
+                                                <span class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></span>
+                                            </span>
                                         </div>
                                     </td>
-                                    <td class="text-right priceFormat">{{row.barang_harjul * row.barang_qty_input}}</td>
+                                    <td class="text-right"> 
+                                        <input class="form-control input-sm text-right priceFormat" readonly v-model="row.barang_harjul * row.barang_qty_input"/> 
+                                    </td>
                                     <td class=""><span class="btn btn-danger btn-delete"><i class="glyphicon glyphicon-remove"></i></span></td>
                                 </tr>
                             <tbody>
                             <tfoot>
                                 <tr>
-                                    <th rowspan="3" colspan="3">
+                                    <th rowspan="3" colspan="4">
                                     </th> 
                                     <th colspan="1"><b class="pull-right">Total Rp.</b></th> 
                                     <th>
@@ -129,7 +144,7 @@
                                 </tr>
                         </table> 
                         <div>{{nofak}} <span class="pull-right">{{tanggalTransaksi}}</span></div>
-                        <div>{{namaUser}}</div>
+                        <div>{{namaPelanggan}}</div>
                         <table style="width:100%">
                             <thead>
                                 <tr>
@@ -166,6 +181,10 @@
                                     <td class="text-right priceFormat">{{kembalian}}</td> 
                                 </tr>
                                 <tr>
+                                    <td colspan="3">{{namaUser}}</td> 
+                                </tr>
+ 
+                                <tr>
 
                                     <td colspan="4" align="center">
                                         </br>
@@ -196,6 +215,8 @@
             namaToko : "",
             alamatToko : "",
             hpToko : "",
+
+            namaPelanggan : ""
         },
         mounted: function () { 
             //this.Validation();
@@ -215,7 +236,7 @@
                     placeholder: '',
                     ajax: {
                         dataType: 'json',
-                        url: '<?php echo base_url().'admin/penjualan/get_barang2';?>',
+                        url: '<?php echo base_url().'admin/barang/get_barang2';?>',
                         delay: 800,
                         data: function(params) {
                             return {search: params.term}
@@ -227,8 +248,7 @@
                             };
                         },
                     }
-                }).on('select2:select', function (evt) {
-                    $("#kode_brg").val($('#select_kode_brg').val()).trigger("input");
+                }).on('select2:select', function (evt) { 
                 });
                 
                 $("#select_kode_brg").change(function(){
@@ -239,6 +259,7 @@
                     });
                     if(barangExist.length>0){
                         barangExist[0].barang_qty_input ++;
+                        $("#select_kode_brg").val("").change();
                     }else{
                         Penjualan.Search($(this).val()); 
                     }
@@ -272,11 +293,12 @@
 
                 /////
                 
-                var dataPenjualanEceran = localStorage.dataPenjualanEceran;
-                if(dataPenjualanEceran){
-                    dataPenjualanEceran = eval("("+ dataPenjualanEceran +")");
-                    this.listBarang = dataPenjualanEceran.listBarang;
-                    this.totalBayar = dataPenjualanEceran.totalBayar;
+                var dataPenjualan = localStorage.dataPenjualan; 
+                if(dataPenjualan){
+                    dataPenjualan = JSON.parse(dataPenjualan);
+                    this.listBarang = dataPenjualan.listBarang;
+                    this.totalBayar = dataPenjualan.totalBayar;
+                    this.namaPelanggan = dataPenjualan.namaPelanggan;
                 }
             },
             Search: function (kobar) { 
@@ -293,10 +315,15 @@
                 $("#select_kode_brg").val("").change();
             },
             Post: function () { 
-                if(!localStorage.dataPenjualanEceran)
+                if(!localStorage.dataPenjualan)
                     return;
-
-                var data = JSON.parse(localStorage.dataPenjualanEceran);
+                var data = JSON.parse(localStorage.dataPenjualan);
+                
+                if(!data.namaPelanggan){
+                    alert("Silahkan isi nama pelanggan!");
+                    return;
+                }
+                data.namaPelanggan = data.namaPelanggan;
                 data.totalHarga = helper.convertToInt(data.totalHarga);
                 data.totalBayar = helper.convertToInt(data.totalBayar);
                 data.kembalian = helper.convertToInt(data.kembalian); 
@@ -321,25 +348,63 @@
                     if(data.status){
                         Faktur.print(data.data); 
                     }else{ 
-                        $("#info-error").text(data.message);
+                        $(".info-error").text(data.message);
                     }
                 }).fail(function (jqXHR, textStatus, errorThrown) { 
-                    $("#info-error").text(textStatus);
+                    $(".info-error").text(textStatus);
+                }).complete(function(){ 
+                    AfterSendAjaxBehaviour(true);
                 });
             },
-            Put: function () {
+            UpdateHarga: function (index, idbarang, namaBarang, harjulLama) {  
+                var harjulBaru = (function ask() {
+                    var n = prompt("Silahkan masukan harga baru untuk " + namaBarang, "");
+                    return isNaN(n) ? ask() : n;
+                }())
+                if(isNaN(harjulBaru)){
+                    alert("Anda salah memasukan harga.");
+                    return;
+                }
+
+                if (harjulBaru != null) { 
+                    var data = {}; 
+                    data.kobar = idbarang;
+                    data.harjulLama = helper.convertToInt(harjulLama);
+                    data.harjulBaru = helper.convertToInt(harjulBaru);
+
+                    $.ajax({
+                        url: '<?php echo base_url().'admin/barang/api_update_harga';?>',
+                        cache: false,
+                        dataType: 'json',
+                        data: data,
+                        method: 'POST',
+                        beforeSend: function () {
+                            BeforeSendAjaxBehaviour(true);
+                        }
+                    }).done(function (data, textStatus, jqXHR) {
+                        if(data.status){
+                            Penjualan.listBarang[index].barang_harjul=harjulBaru;
+                        }else{ 
+                            $(".info-error").text(data.message);
+                        }
+                    }).fail(function (jqXHR, textStatus, errorThrown) { 
+                        $(".info-error").text(textStatus);
+                    }).complete(function(){ 
+                        AfterSendAjaxBehaviour(true);
+                    });
+                }
             },
             Delete: function () {
-                if(!localStorage.dataPenjualanEceran)
+                if(!localStorage.dataPenjualan)
                     return;
                     
-                if (confirm("Apaah anda akan membatalkan transaksi?")) {
-                    localStorage.dataPenjualanEceran = "";
+                if (confirm("Apakah anda akan membatalkan transaksi?")) {
+                    localStorage.dataPenjualan = "";
                     location.reload();
                 }
             },
             ClearData: function(){
-                localStorage.dataPenjualanEceran = "";
+                localStorage.dataPenjualan = "";
                 location.reload();
             },
             Validation: function () {
@@ -411,15 +476,16 @@
                 thousandsSeparator: '.'
             });
 
-            var dataPenjualanEceran = {};
-            dataPenjualanEceran.listBarang = Penjualan.listBarang;
-            dataPenjualanEceran.totalHarga = Penjualan.totalHarga;
-            dataPenjualanEceran.totalBayar = Penjualan.totalBayar;
-            dataPenjualanEceran.kembalian = Penjualan.kembalian;
-            dataPenjualanEceran.labelKembalian = Penjualan.labelKembalian;
+            var dataPenjualan = {};
+            dataPenjualan.namaPelanggan = Penjualan.namaPelanggan;
+            dataPenjualan.listBarang = Penjualan.listBarang;
+            dataPenjualan.totalHarga = Penjualan.totalHarga;
+            dataPenjualan.totalBayar = Penjualan.totalBayar;
+            dataPenjualan.kembalian = Penjualan.kembalian;
+            dataPenjualan.labelKembalian = Penjualan.labelKembalian;
             
-            dataPenjualanEceran = JSON.stringify(dataPenjualanEceran);
-            localStorage.dataPenjualanEceran = dataPenjualanEceran;
+            dataPenjualan = JSON.stringify(dataPenjualan);
+            localStorage.dataPenjualan = dataPenjualan;
         }
     });
 
@@ -436,7 +502,8 @@
             alamatToko : "",
             hpToko : "",
             labelKembalian : "",
-            tanggalTransaksi : "ffffff ff"
+            tanggalTransaksi : "",
+            namaPelanggan : ""
         },
         mounted: function () { 
         },
@@ -453,6 +520,7 @@
             },
             print: function (data) {
                 this.nofak =  data.nofak;
+                this.namaPelanggan = Penjualan.namaPelanggan;
                 this.namaUser = data.namaUser;
                 this.tanggalTransaksi = data.tanggalTransaksi;
                 this.namaToko = $.grep(data.dataToko,(n,i)=>{return n.lookup_kode == helper.dataToko.namaTokoKode})[0].lookup_value;

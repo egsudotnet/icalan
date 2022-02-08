@@ -7,39 +7,20 @@ class Penjualan extends CI_Controller{
             redirect($url);
         };
 		//$this->load->model('m_kategori');
-		$this->load->model('M_barang_v2');
+		$this->load->model('M_barang');
 		//$this->load->model('m_suplier');
-		$this->load->model('M_penjualan_v2');
+		$this->load->model('M_penjualan');
 	} 
 
 	function index(){
 		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){
-			$data['data']=$this->M_barang_v2->tampil_barang();
+			$data['data']=$this->M_barang->tampil_barang();
+			$data['title']="Penjualan";
 			$this->load->view('admin/v_penjualan',$data);
 		}else{
 			echo "Halaman tidak ditemukan";
 		}
 	}
-
-	function get_barang(){
-		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){
-			$kobar=$this->input->post('kobar');  
-			$data=$this->M_barang_v2->get_barang($kobar);
-		}else{
-			echo "Halaman tidak ditemukan";
-		}		
-		echo json_encode($data);
-	}
-	function get_barang2(){
-		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){ 
-			$search=$this->input->get('search');  
-			$data=$this->M_barang_v2->get_barang_by_search($search);  
-		}else{
-			echo "Tidak mempunyai akses";
-		}
-		echo json_encode($data);
-	}
- 
 
 	// function pr($str, $die = true) {
 	// 	if ($str) {
@@ -59,11 +40,12 @@ class Penjualan extends CI_Controller{
 	function simpan_penjualan(){
 		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){  
 			$param=$this->input;
+			$namaPelanggan = $param->post("namaPelanggan");
 			$total = $param->post("totalHarga");
 			$jml_uang = $param->post("totalBayar");
 			$kembalian = $param->post("kembalian"); 	
 			$listBarang = $param->post("listBarang"); 	 
-			$result=$this->M_penjualan_v2->simpan_penjualan($total,$jml_uang,$kembalian,$listBarang); 
+			$result=$this->M_penjualan->simpan_penjualan($namaPelanggan,$total,$jml_uang,$kembalian,$listBarang); 
 			echo json_encode($result); 
 		}else{
 			echo "Halaman tidak ditemukan";

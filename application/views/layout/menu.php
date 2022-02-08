@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?php echo base_url().'welcome'?>">Point of Sale</a>
+                <b><a class="navbar-brand" href="<?php echo base_url().'welcome'?>">POSAGEN</a></b>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -21,7 +21,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Transaksi"><span class="fa fa-shopping-cart" aria-hidden="true"></span> Penjualan</a>
                         <ul class="dropdown-menu">
                             <li><a href="<?php echo base_url().'admin/penjualan'?>"><span class="fa fa-shopping-bag" aria-hidden="true"></span> Penjualan</a></li> 
-                            <li><a href="<?php echo base_url().'admin/penjualan_bayar'?>"><span class="fa fa-cubes" aria-hidden="true"></span> Pembayaran (Piutang)</a></li> 
+                            <li><a href="<?php echo base_url().'admin/penjualan_bayar'?>"><span class="fa fa-money" aria-hidden="true"></span> Pembayaran (Piutang)</a></li> 
                         </ul>
                     </li>
                     <!--ending dropdown-->
@@ -29,7 +29,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Transaksi"><span class="fa fa-shopping-cart" aria-hidden="true"></span> Pembelian</a>
                         <ul class="dropdown-menu">
                             <li><a href="<?php echo base_url().'admin/pembelian'?>"><span class="fa fa-shopping-bag" aria-hidden="true"></span> Pembelian</a></li> 
-                            <li><a href="<?php echo base_url().'admin/pembelian_bayar'?>"><span class="fa fa-cubes" aria-hidden="true"></span> Pembayaran (Hutang)</a></li> 
+                            <li><a href="<?php echo base_url().'admin/pembelian_bayar'?>"><span class="fa fa-money" aria-hidden="true"></span> Pembayaran (Hutang)</a></li> 
                         </ul>
                     </li>
                     <li>
@@ -45,14 +45,14 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Transaksi"><span class="fa fa-shopping-cart" aria-hidden="true"></span> Transaksi</a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo base_url().'admin/penjualan'?>"><span class="fa fa-shopping-bag" aria-hidden="true"></span> Penjualan (Eceran)</a></li> 
+                            <li><a href="<?php echo base_url().'admin/penjualan'?>"><span class="fa fa-shopping-bag" aria-hidden="true"></span> Penjualan</a></li> 
                             <li><a href="<?php echo base_url().'admin/penjualan_bayar'?>"><span class="fa fa-cubes" aria-hidden="true"></span> Pembayaran (Piutang)</a></li> 
                         </ul>
                     </li>
                     <!--ending dropdown-->
-                    <li>
+                    <!-- <li>
                         <a href="<?php echo base_url().'admin/retur'?>"><span class="fa fa-refresh"></span> Retur</a>
-                    </li>
+                    </li> -->
                     <?php }?>
                      <li>
                         <a href="<?php echo base_url().'administrator/logout'?>"><span class="fa fa-sign-out"></span> Logout</a>

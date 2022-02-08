@@ -6,90 +6,51 @@ class Pembelian extends CI_Controller{
             $url=base_url();
             redirect($url);
         };
-		$this->load->model('m_kategori');
-		$this->load->model('m_barang');
-		$this->load->model('m_suplier');
-		$this->load->model('m_pembelian');
-	}
-	function index(){
-	if($this->session->userdata('akses')=='1'){
-		$x['sup']=$this->m_suplier->tampil_suplier();
-		$this->load->view('admin/v_pembelian',$x);
-	}else{
-        echo "Halaman tidak ditemukan";
-    }
-	}
-	function get_barang(){
-	if($this->session->userdata('akses')=='1'){
-		$kobar=$this->input->post('kode_brg');
-		$x['brg']=$this->m_barang->get_barang($kobar);
-		$this->load->view('admin/v_detail_barang_beli',$x);
-	}else{
-        echo "Halaman tidak ditemukan";
-    }
-	}
-	function add_to_cart(){
-	if($this->session->userdata('akses')=='1'){
-		$nofak=$this->input->post('nofak');
-		$tgl=$this->input->post('tgl');
-		$suplier=$this->input->post('suplier');
-		$this->session->set_userdata('nofak',$nofak);
-		$this->session->set_userdata('tglfak',$tgl);
-		$this->session->set_userdata('suplier',$suplier);
-		$kobar=$this->input->post('kode_brg');
-		$produk=$this->m_barang->get_barang($kobar);
-		$i=$produk->row_array();
-		$data = array(
-               'id'       => $i['barang_id'],
-               'name'     => $i['barang_nama'],
-               'satuan'   => $i['barang_satuan'],
-               'price'    => $this->input->post('harpok'),
-               'harga'    => $this->input->post('harjul'),
-               'qty'      => $this->input->post('jumlah')
-            );
+		//$this->load->model('m_kategori');
+		$this->load->model('M_barang');
+		//$this->load->model('m_suplier');
+		$this->load->model('M_pembelian');
+	} 
 
-		$this->cart->insert($data); 
-		redirect('admin/pembelian');
-	}else{
-        echo "Halaman tidak ditemukan";
-    }
-	}
-	function remove(){
-	if($this->session->userdata('akses')=='1'){
-		$row_id=$this->uri->segment(4);
-		$this->cart->update(array(
-               'rowid'      => $row_id,
-               'qty'     => 0
-            ));
-		redirect('admin/pembelian');
-	}else{
-        echo "Halaman tidak ditemukan";
-    }
-	}
-	function simpan_pembelian(){
-	if($this->session->userdata('akses')=='1'){
-		$nofak=$this->session->userdata('nofak');
-		$tglfak=$this->session->userdata('tglfak');
-		$suplier=$this->session->userdata('suplier');
-		if(!empty($nofak) && !empty($tglfak) && !empty($suplier)){
-			$beli_kode=$this->m_pembelian->get_kobel();
-			$order_proses=$this->m_pembelian->simpan_pembelian($nofak,$tglfak,$suplier,$beli_kode);
-			if($order_proses){
-				$this->cart->destroy();
-				$this->session->unset_userdata('nofak');
-				$this->session->unset_userdata('tglfak');
-				$this->session->unset_userdata('suplier');
-				echo $this->session->set_flashdata('msg','<label class="label label-success">Pembelian Berhasil di Simpan ke Database</label>');
-				redirect('admin/pembelian');	
-			}else{
-				redirect('admin/pembelian');
-			}
+	function index(){
+		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){
+			$data['data']=$this->M_barang->tampil_barang();
+			$data['title']="Pembelian";
+			$this->load->view('admin/v_pembelian',$data);
 		}else{
-			echo $this->session->set_flashdata('msg','<label class="label label-danger">Pembelian Gagal di Simpan, Mohon Periksa Kembali Semua Inputan Anda!</label>');
-			redirect('admin/pembelian');
+			echo "Halaman tidak ditemukan";
 		}
-	}else{
-        echo "Halaman tidak ditemukan";
-    }	
+	}
+	
+	// function pr($str, $die = true) {
+	// 	if ($str) {
+	// 		if (is_object($str) || is_array($str)) {
+	// 			echo "<pre>" . print_r($str, true) . "</pre>";
+	// 		} else {
+	// 			echo "<pre>$str</pre>";
+	// 		}
+	// 	}
+
+	// 	if ($die) {
+	// 		echo "---------------------------------------- die ----------------------------------------";
+	// 		die();
+	// 	}
+	// }
+
+	function simpan_pembelian(){
+		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){  
+			$param=$this->input;
+			$nofak = $param->post("nofak");
+			$kodeSuplier = $param->post("kodeSuplier");
+			$tanggalBeli = $param->post("tanggalBeli");
+			$total = $param->post("totalHarga");
+			$jml_uang = $param->post("totalBayar");
+			$kembalian = $param->post("kembalian"); 	
+			$listBarang = $param->post("listBarang"); 	 
+			$result=$this->M_pembelian->simpan_pembelian($nofak,$kodeSuplier,$tanggalBeli,$total,$jml_uang,$kembalian,$listBarang); 
+			echo json_encode($result); 
+		}else{
+			echo "Halaman tidak ditemukan";
+		}
 	}
 }

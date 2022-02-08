@@ -232,7 +232,12 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'mfikrisetiadi';
+$config['encryption_key'] = '13Sembako'; //'mfikrisetiadi';
+
+// $config['index_page'] = 'index.php';
+// $config['uri_protocol'] = 'AUTO';
+
+// $config['encryption_key'] = 'SET_ANY_KEY_TO_USE_SESSION';
 
 /*
 |--------------------------------------------------------------------------

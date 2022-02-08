@@ -25,8 +25,8 @@
                         <th>Nama Barang</th>
                         <th>Satuan</th>
                         <th>Harga Pokok</th>
-                        <th>Harga (Eceran)</th>
-                        <th>Harga (Grosir)</th>
+                        <th>Harga</th>
+                        <!-- <th>Harga (Grosir)</th> -->
                         <th>Stok</th>
                         <th>Min Stok</th>
                         <th>Kategori</th>
@@ -56,7 +56,7 @@
                         <td style="text-align:center;"><?php echo $satuan;?></td>
                         <td style="text-align:right;"><?php echo 'Rp '.number_format($harpok);?></td>
                         <td style="text-align:right;"><?php echo 'Rp '.number_format($harjul);?></td>
-                        <td style="text-align:right;"><?php echo 'Rp '.number_format($harjul_grosir);?></td>
+                        <!-- <td style="text-align:right;"><?php echo 'Rp '.number_format($harjul_grosir);?></td> -->
                         <td style="text-align:center;"><?php echo $stok;?></td>
                         <td style="text-align:center;"><?php echo $min_stok;?></td>
                         <td><?php echo $kat_nama;?></td>
@@ -155,9 +155,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-xs-3" >Harga (Eceran)</label>
+                        <label class="control-label col-xs-3" >Harga</label>
                         <div class="col-xs-9">
-                            <input name="harjul" class="harjul form-control" type="text" placeholder="Harga Jual Eceran..." style="width:335px;">
+                            <input name="harjul" class="harjul form-control" type="text" placeholder="Harga Jual..." style="width:335px;">
                         </div>
                     </div>
 
@@ -969,7 +969,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-xs-3" >Harga (Eceran)</label>
+                            <label class="control-label col-xs-3" >Harga</label>
                             <div class="col-xs-9">
                                 <input name="harjul" class="harjul form-control" type="text" value="<?php echo $harjul;?>" placeholder="Harga Jual..." style="width:335px;" required>
                             </div>

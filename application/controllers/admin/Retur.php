@@ -15,6 +15,7 @@ class Retur extends CI_Controller{
 	if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){
 		$data['data']=$this->m_barang->tampil_barang();
 		$data['retur']=$this->m_penjualan->tampil_retur();
+		$data['title']="Retur";
 		$this->load->view('admin/v_retur',$data);
 	}else{
         echo "Halaman tidak ditemukan";

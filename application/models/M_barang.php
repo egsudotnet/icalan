@@ -24,11 +24,41 @@
 	}
 
 
+	// function get_barang($kobar){
+	// 	$hsl=$this->db->query("SELECT * FROM tbl_barang where barang_id='$kobar'");
+	// 	return $hsl;
+	// }
+
+	
+	//=============API==========
+
 	function get_barang($kobar){
-		$hsl=$this->db->query("SELECT * FROM tbl_barang where barang_id='$kobar'");
-		return $hsl;
+		$query=$this->db->query("SELECT barang_id,barang_nama,barang_satuan,barang_harpok,barang_harjul,barang_harjul_grosir,barang_stok,barang_min_stok,barang_kategori_id,barang_user_id,1 barang_qty_input FROM tbl_barang where barang_id='$kobar'");
+		if($query->num_rows() > 0){ 
+            return $query->row() ;
+        }
 	}
 
+    function get_barang_by_search($filter){
+		$query=$this->db->query("SELECT 
+			barang_id AS id,
+			barang_nama AS text,
+			barang_id,
+			barang_nama,
+			barang_satuan,
+			barang_harpok,
+			barang_harjul,
+			barang_harjul_grosir,
+			barang_stok,
+			barang_min_stok,
+			barang_kategori_id,
+			barang_user_id,
+			1 barang_qty_input
+		FROM tbl_barang where barang_id like '%$filter%' or barang_nama like '%$filter%' Limit 10");
+        if($query->num_rows() > 0){ 
+            return $query->result() ;
+        }
+    }
 	function get_kobar(){
 		$q = $this->db->query("SELECT MAX(RIGHT(barang_id,6)) AS kd_max FROM tbl_barang");
 		$kd = "";
@@ -41,6 +71,56 @@
 			$kd = "000001";
 		}
 		return "BR".$kd;
+	} 
+	
+	function api_update_harga($kobar,$harjulLama,$harjulbaru){ 
+		$idadmin=$this->session->userdata('idadmin');  
+		$this->db->trans_start(); 
+		try {    
+			$this->db->query("
+				UPDATE tbl_barang SET barang_harjul='$harjulbaru' WHERE barang_id='$kobar'
+			");  
+ 
+			$this->db->query("
+			INSERT INTO log_update
+			( 
+				nama_table,
+				nama_kolom,
+				kolom_id,
+				nilai_lama,
+				nilai_baru,
+				user_id
+			)
+			VALUES
+			( 
+				'tbl_barang',
+				'barang_harjul',
+				'$kobar',
+				'$harjulLama',
+				'$harjulbaru',
+				'$idadmin'
+			);
+			
+			");  
+			
+
+			$this->db->trans_commit();  
+			$response = [
+				'status' => true,
+				'message' => 'Proses Simpan Berhasil'
+			];
+		} catch ( Exception $e ) { 
+			$this->db->trans_rollback(); 
+			$response = [
+				'status' => false,
+				'message' => $e,
+				'data' =>['nofak' => $nofak], tanggalTransaksi
+			];
+			$this->_log_request($authorized = true, serialize($response), serialize($errors), serialize($detailData));
+			return $response;  
+		}
+
+		return $response;
 	}
 
 } 
