@@ -58,7 +58,7 @@
         <div class="row" align="center">
          <?php if($h=='1'){ ?> 
             <div class="col-xs-3 portfolio-item">
-                <div class="menu-item blue" style="height:150px;width:150px;">
+                <div class="menu-item blue" style="height:150px">
                      <a href="<?php echo base_url().'admin/penjualan'?>" data-toggle="modal">
                            <i class="fa fa-shopping-bag"></i>
                             <p style="text-align:left;font-size:14px;padding-left:5px;">Penjualan</p>
