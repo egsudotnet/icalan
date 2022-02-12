@@ -147,6 +147,25 @@
                 background: transparent url('<?php echo base_url('assets/img/Spinner-1.gif') ?>') center center no-repeat;
                 min-height:50px !important;
             }
+
+            .table-list{
+                font-size:13px !important
+            }
+            .table-list td{
+                padding:1px !important
+            }
+            .table-list th{
+                font-size:13px !important
+            }
+
+            #modalInputUang td span{
+                font-size:20px !important;
+                font-weight:bold !important;
+            }
+            #modalInputUang #nilaiInput{
+                font-size:20px !important;
+                font-weight:bold !important;
+            }
         </style>
 
     <title><?php echo $title ?></title>

@@ -3,16 +3,15 @@
     $this->load->view('layout/header');
 ?> 
 
-
 <!-- Page Content -->
 <div class="container"> 
 <!-- Page Heading -->
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Transaksi
+        <h3 class="page-header">Transaksi
             <small>Penjualan</small>
             <a href="#" data-toggle="modal" data-target="#largeModal" class="pull-right"><small></small></a>
-        </h1> 
+        </h3> 
     </div>
 </div>
     <section id="sectionPenjualan">
@@ -20,42 +19,44 @@
                 <div class="col-lg-12">
                         <table class="w-100 filter">
                                 <tr> 
-                                    <td><b>Nama Pelannggan<b></td> 
-                                    <td><b>Nama Barang<b></td> 
+                                    <td><b> Pelanggan<b></td> 
+                                    <td><b> Barang<b></td> 
                                 </tr>
                                 <tr> 
                                     <td> 
                                         <input name="nama_pelanggan" id="nama_pelanggan" v-model="namaPelanggan" class="form-control input-sm"/>  
                                     </td>  
                                     <td> 
-                                        <select name="select_kode_brg" id="select_kode_brg" class="form-control input-lg"> 
+                                        <select name="select_kode_brg" id="select_kode_brg" class="form-control input-sm"> 
                                         </select>
                                     </td>  
                                     <td>
                                         <div class="pull-right"> 
-                                            <span class="btn btn-primary" v-on:click="Post"><i class="fa fa-save"> Simpan</i></span>
+                                            <span class="btn btn-primary" v-on:click="Post"><i class="fa fa-save"> Simpan</i></span> 
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="pull-right">  
                                             <span class="btn btn-danger" v-on:click="Delete"><i class="fa fa-trash"> Batal</i></span>
                                         </div>
                                     </td>
                                 </tr>
                         </table>
-                        <table class="table table-stripped">
+                        <table class="table table-stripped w-100 table-list">
                             <thead>
                                 <tr>
-                                <th>Nama</th>
-                                <th>Stok</th> 
-                                <th>Satuan</th> 
-                                <th>Harga</th>
-                                <th>Qty</th>
-                                <th style="width:200px">Total</th> 
-                                <th style="width:10px"></th> 
+                                <th style="width:20%">Nama</th>
+                                <th style="width:10%">Stok</th>  
+                                <th style="width:20%">Harga</th>
+                                <th style="width:20%">Qty</th>
+                                <th style="width:20%">Total</th> 
+                                <th style="width:10%"></th> 
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(row,index) in listBarang">
                                     <td>{{row.barang_nama}}</td>
-                                    <td>{{row.barang_stok}}</td>
-                                    <td>{{row.barang_satuan}}</td>
+                                    <td>{{row.barang_stok}} {{row.barang_satuan}}</td> 
                                     <td> 
                                         <div class="input-group input-group-sm"> 
                                             <input class="form-control input-sm text-right priceFormat" readonly v-model="row.barang_harjul"/>
@@ -64,16 +65,16 @@
                                             </span>
                                         </div>
                                     </td> 
-                                    <td style="width:120px"> 
+                                    <td style=""> 
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-btn btn-minus">
                                                 <span class="btn btn-warning"><i class="glyphicon glyphicon-minus"></i></span>
                                             </span>
-                                            <input v-model="row.barang_qty_input" class="form-control input-sm text-right input-qty" style="width:100px"/>
+                                            <input v-model="row.barang_qty_input" class="form-control input-sm text-right input-qty" style="width:40px"/>
                                             <span class="input-group-btn btn-plus">
                                                 <span class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></span>
                                             </span>
-                                        </div>
+                                        </div> 
                                     </td>
                                     <td class="text-right"> 
                                         <input class="form-control input-sm text-right priceFormat" readonly v-model="row.barang_harjul * row.barang_qty_input"/> 
@@ -83,26 +84,26 @@
                             <tbody>
                             <tfoot>
                                 <tr>
-                                    <th rowspan="3" colspan="4">
+                                    <th rowspan="3" colspan="1">
                                     </th> 
-                                    <th colspan="1"><b class="pull-right">Total Rp.</b></th> 
-                                    <th>
-                                        <input v-model="totalHarga" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
+                                    <th colspan="2"><b class="pull-right">Total Rp.</b></th> 
+                                    <th colspan="2">
+                                        <input v-model="totalHarga" class="form-control input-sm priceFormat text-right" style="" readonly/>
                                     </th> 
                                 </tr>
                                 <tr>
-                                    <th colspan="1"><b class="pull-right">Total Bayar Rp.</b></th> 
+                                    <th colspan="2"><b class="pull-right">Total Bayar Rp.</b></th> 
                                     <th colspan="2" v-on:click="ShowInputMoney">
-                                        <div class="input-group" style="width:120px">
-                                             <input v-model="totalBayar" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
+                                        <div class="input-group" style="">
                                             <span class="input-group-addon"><i class="fa fa-money btn-success"></i></span>
+                                             <input v-model="totalBayar" class="form-control input-sm priceFormat text-right" style="" readonly/>
                                         </div> 
                                     </th>  
                                 </tr>
                                 <tr>
-                                    <th colspan="1"><b v-bind:class="('pull-right ' + (kembalian<0?'text-danger':''))">{{labelKembalian}} Rp.</b></th> 
-                                    <th>
-                                        <input v-model="kembalian" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
+                                    <th colspan="2"><b v-bind:class="('pull-right ' + (kembalian<0?'text-danger':''))">{{labelKembalian}} Rp.</b></th> 
+                                    <th colspan="2">
+                                        <input v-model="kembalian" class="form-control input-sm priceFormat text-right" style="" readonly/>
                                     </th> 
                                 </tr>
                             </tfoot>

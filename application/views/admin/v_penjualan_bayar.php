@@ -9,7 +9,7 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Transaksi
+            <h3 class="page-header">Transaksi
                 <small>Pembayaran Piutang</small>
                 <a href="#" data-toggle="modal" data-target="#largeModal" class="pull-right"><small></small></a>
             </h1> 
@@ -19,29 +19,34 @@
     <section id="sectionPembayaran">
         <div class="row">
                 <div class="col-lg-12">
-                        <table class="w-100 filter">
+                        <table class="w-100 filter table-list" >
                                 <tr> 
-                                    <td><b>Nama Pelanggan<b></td>  
-                                    <td><b>No.Faktur<b></td>  
+                                    <td><b>Pelanggan<b></td>  
+                                    <td><b>Faktur<b></td>   
+                                </tr>
+                                <tr> 
+                                    <td style=""> 
+                                        <input v-model="namaPelanggan" class="form-control input-sm"/>
+                                   </td> 
+                                    <td colspan="3"> 
+                                        <input v-model="nofak" class="form-control input-sm"/>
+                                   </td>  
+                                </tr>
+
+                                
+                                <tr>  
                                     <td colspan="3"><b>Tanggal<b></td>  
                                     <td><b>Status<b></td>   
                                 </tr>
-                                <tr> 
-                                    <td style="width:200px"> 
-                                        <input v-model="namaPelanggan" class="form-control input-sm"/>
-                                   </td> 
-                                    <td style="width:200px"> 
-                                        <input v-model="nofak" class="form-control input-sm"/>
-                                   </td> 
-                                    <td style="width:200px"> 
+                                <tr>  
+                                    <td style=""> 
                                         <input v-model="tanggalDari" type="date" name="tanggal_dari" id="input_tanggal_dari" class="form-control input-sm"/>  
-                                    </td> 
-                                    <td style="width:10px">s/d</td>
-                                    <td style="width:200px"> 
+                                    </td>
+                                    <td style=""> 
                                         <input v-model="tanggalSampai" type="date" name="tanggal_sampai" id="input_tanggal_sampai" class="form-control input-sm"/>  
                                     </td>  
-                                    <td style="width:200px"> 
-                                       <select v-model="status"><option value="">Semua</option><option value="0">Belum Lunas</option><option value="1">Lunas</option></select>
+                                    <td style=""> 
+                                       <select v-model="status" class="form-control input-sm"><option value="">Semua</option><option value="0">Belum Lunas</option><option value="1">Lunas</option></select>
                                     </td> 
                                     <td>
                                          <div class="pull-right"> 
@@ -52,16 +57,14 @@
                         </table>
                         </br> 
                         <div id="divTablePiutangLoading"></div>
-                        <table id="tablePiutang" class="table table-bordered">
+                        <table id="tablePiutang" class="table table-bordered table-list">
                             <thead>
                                 <tr>
                                     <th>No.</th>
                                     <th>No.Faktur</th>
                                     <th>Tanggal Pembelian</th> 
-                                    <th>Total Harga</th>
-                                    <th>Total Bayar</th>
+                                    <th>Total Harga</th> 
                                     <th>Kurang Bayar</th>
-                                    <th>Nama Pegawai</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -71,9 +74,7 @@
                                     <td>{{row.jual_nofak}}</td>
                                     <td class="">{{row.jual_tanggal}}</td> 
                                     <td class="text-right priceFormat">{{row.jual_total}}</td>
-                                    <td class="text-right priceFormat">{{row.jual_jml_uang}}</td>
                                     <td class="text-right priceFormat">{{row.jual_kembalian * -1}}</td>
-                                    <td class="">{{row.user_nama}}</td>
                                     <td class=""><span class="btn btn-success btn-pilih"><i class="glyphicon glyphicon-edit">Pilih</i></span></td>
                                 </tr>
                             </tbody> 
@@ -90,7 +91,7 @@
             <span class="btn btn-default pull-right" onclick="Faktur.Print()"><i class="glyphicon glyphicon-print"> Cetak Ulang</i></span>
         </div>
         <h3 style="margin-top:10px"></h3>  
-        <table class="w-100">   
+        <table class="w-100 table-list">   
             <tr>
                 <td style="width:150px">No.Faktur</td>
                 <td style="width:300px">{{nofak}}</td> 
@@ -112,8 +113,8 @@
         </table>
 
         </br>
-        <h3 style="margin-top:10px">List barang</h3>  
-        <table class="table table-stripped">
+        <h4 style="margin-top:10px">List barang</h4>  
+        <table class="table table-stripped table-list">
             <thead>
                 <tr>
                 <th>No.</th>
@@ -136,15 +137,15 @@
         </table> 
         
         </br>  
-        <h3 style="margin-top:10px">Riwayat Bayar</h3>  
-        <table class="table table-stripped">
+        <h4 style="margin-top:10px">Riwayat Bayar</h4>  
+        <table class="table table-stripped  table-list">
                     <thead>
                         <tr>
                         <th>No.</th>
                         <th>No.Faktur</th>
                         <th>Piutang</th>
                         <th>Tgl.Bayar</th>
-                        <th>Jml.Pembayaran</th>
+                        <th>Pembayaran</th>
                         <th>Kurang Bayar</th>
                         <th>Nama Pegawai</th>
                         </tr>
@@ -163,14 +164,16 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th  colspan="4"></th> 
-                            <td align="right" v-on:click="ShowInputMoney">
-                                <div class="input-group" style="width:120px">
+                            <th  colspan="3"></th> 
+                            <th colspan="2" v-on:click="ShowInputMoney">
+                                <div class="input-group" style="">
                                     <span class="input-group-addon"><i class="fa fa-money btn-success"></i></span>
-                                    <input v-model="inputBayar" id="inputBayar" class="text-right priceFormat" disabled style="width:120px !important"/>
-                                </div>
+                                    <input v-model="inputBayar" id="inputBayar" class="form-control input-sm priceFormat text-right" style="" readonly/>
+                                </div> 
+                            </th>  
+                            <td>
+                                    <input v-model="kurangBayarBaruShow" class="form-control input-sm priceFormat text-right" style="margin-top:7px" readonly/> 
                             </td>  
-                            <td align="right"><b><input v-model="kurangBayarBaruShow" id="inputBayar" class="text-right" disabled style="width:120px !important"/></b></td>  
                             <th>       
                                 <span class="btn btn-primary" v-on:click="Simpan"><i class="fa fa-save"> SIMPAN</i></span>
                             </th> 
@@ -711,7 +714,9 @@
                     var content = $("#divFaktur").html(); 
                     newWindow.document.write("<html><head></head><body><div style='width:400px'>"+ content +"</div></body></html>");
                     newWindow.print();
-                    newWindow.close(); 
+                    setTimeout(() => {
+                        newWindow.close();  
+                    }, 3000);
                 }, 1000);
             },
             Put: function () {
