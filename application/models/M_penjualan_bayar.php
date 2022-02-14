@@ -33,7 +33,7 @@ class M_penjualan_bayar extends CI_Model{
 		}
 
 		if(!empty($tanggalDari) && !empty($tanggalSampai)){
-			$additionalQuery .= "AND jual_tanggal BETWEEN= '$tanggalDari' AND '$tanggalSampai'";
+			$additionalQuery .= "AND jual_tanggal BETWEEN '$tanggalDari' AND '$tanggalSampai'";
 		}
 		if(!empty($tanggalDari) && empty($tanggalSampai)){
 			$additionalQuery .= "AND jual_tanggal >= '$tanggalDari'";
