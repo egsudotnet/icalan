@@ -18,12 +18,11 @@
     <section id="sectionPembelian">
         <div class="row">
                 <div class="col-lg-12">
-                        <table class="w-100 filter" >
+                        <table class="w-100 filter table-list" >
                                 <tr> 
                                     <td style="width: 200px"><b>No.Faktur<b></td> 
                                     <td style="width: 300px"><b>Suplayer<b></td> 
-                                    <td ><b>Tanggal Beli<b></td> 
-                                    <td><b>Nama Barang<b></td> 
+                                    <td ><b>Tanggal Beli<b></td>  
                                 </tr>
                                 <tr> 
                                     <td> 
@@ -33,51 +32,72 @@
                                         <select name="select_kode_suplier" id="select_kode_suplier"  style="width: 100%" class="form-control input-sm"> 
                                         </select>
                                     </td>    
-                                    <td> 
+                                    <td colspan="2"> 
                                         <input type="date" name="tanggal_beli" id="tanggal_beli" v-model="tanggalBeli" class="form-control input-sm"/>  
-                                    </td>  
-                                    <td> 
+                                    </td> 
+                                </tr>
+
+                                
+                                <tr>  
+                                    <td><b>Nama Barang<b></td> 
+                                </tr>
+                                <tr>  
+                                    <td colspan="2"> 
                                         <select name="select_kode_brg" id="select_kode_brg" class="form-control input-sm"> 
                                         </select>
-                                    </td>  
-                                    <td>
+                                    </td> 
+                                    <td style="width:70px">
                                         <div class="pull-right"> 
-                                            <span class="btn btn-primary" v-on:click="Post"><i class="fa fa-save"> Simpan</i></span>
+                                            <span class="btn btn-primary" v-on:click="Post"><i class="fa fa-save"> Simpan</i></span> 
+                                        </div>
+                                    </td>
+                                    <td style="width:70px">
+                                        <div class="pull-right">  
                                             <span class="btn btn-danger" v-on:click="Delete"><i class="fa fa-trash"> Batal</i></span>
                                         </div>
                                     </td>
                                 </tr>
                         </table>
-                        <table class="table table-stripped mt-20">
+                        <table class="table table-stripped mt-20 w-100 table-list">
                             <thead>
                                 <tr>
+                                    <th style="width:20%">Nama</th>
+                                    <th style="width:10%">Stok</th>  
+                                    <th style="width:20%">Harga Beli</th>
+                                    <th style="width:20%">Harga Jual</th>
+                                    <th style="width:20%">Qty</th>
+                                    <th style="width:20%">Total</th> 
+                                    <th style="width:10%"></th> 
+                                </tr> 
+
+<!--                                 
+                                <tr>
                                 <th>Nama</th>
-                                <th>Stok</th> 
-                                <th>Satuan</th> 
+                                <th>Stok</th>  
                                 <th>Harga Beli</th>
                                 <th>Harga Jual</th>
                                 <th>Qty</th>
                                 <th style="width:200px">Total</th> 
                                 <th style="width:10px"></th> 
-                                </tr>
+                                </tr> -->
+
                             </thead>
                             <tbody>
                                 <tr v-for="(row,index) in listBarang">
                                     <td>{{row.barang_nama}}</td>
-                                    <td>{{row.barang_stok}}</td>
-                                    <td>{{row.barang_satuan}}</td>
+                                    <td>{{row.barang_stok}} {{row.barang_satuan}}</td> 
                                     <td> 
-                                        <input class="form-control input-sm text-right priceFormat barang-harpok" v-model="row.barang_harpok"/>
+                                        <input type="" class="form-control input-sm text-right priceFormat barang-harpok" v-model="row.barang_harpok"/>
                                     </td> 
                                     <td> 
-                                        <input class="form-control input-sm text-right priceFormat" v-model="row.barang_harjul"/>
+                                        <input type=""  class="form-control input-sm text-right priceFormat" v-model="row.barang_harjul"/>
                                     </td> 
-                                    <td style="width:120px"> 
+                                    <td style=""> 
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-btn btn-minus">
                                                 <span class="btn btn-warning"><i class="glyphicon glyphicon-minus"></i></span>
                                             </span>
-                                            <input v-model="row.barang_qty_input" class="form-control input-sm text-right input-qty" style="width:100px"/>
+                                            <input v-model="row.barang_qty_input" class="form-control input-sm text-right input-qty" style="width:40px"/>
                                             <span class="input-group-btn btn-plus">
                                                 <span class="btn btn-success"><i class="glyphicon glyphicon-plus"></i></span>
                                             </span>
@@ -92,26 +112,26 @@
                             <tbody>
                             <tfoot>
                                 <tr>
-                                    <th rowspan="3" colspan="5">
+                                    <th rowspan="3" colspan="2">
                                     </th> 
-                                    <th colspan="1"><b class="pull-right">Total Rp.</b></th> 
-                                    <th>
-                                        <input v-model="totalHarga" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
+                                    <th colspan="2"><b class="pull-right">Total Rp.</b></th> 
+                                    <th colspan="2">
+                                        <input v-model="totalHarga" class="form-control input-sm priceFormat text-right" style="" readonly/>
                                     </th> 
                                 </tr>
                                 <tr>
-                                    <th colspan="1"><b class="pull-right">Total Bayar Rp.</b></th> 
-                                    <th colspan="2" v-on:click="ShowInputMoney">
-                                        <div class="input-group" style="width:120px">
-                                             <input v-model="totalBayar" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
+                                    <th colspan="2"><b class="pull-right">Total Bayar Rp.</b></th> 
+                                    <th colspan="3" v-on:click="ShowInputMoney">
+                                        <div class="input-group" style="">
+                                             <input v-model="totalBayar" class="form-control input-sm priceFormat text-right" style="" readonly>
                                             <span class="input-group-addon"><i class="fa fa-money btn-success"></i></span>
                                         </div> 
                                     </th>  
                                 </tr>
                                 <tr>
-                                    <th colspan="1"><b v-bind:class="('pull-right ' + (kembalian<0?'text-danger':''))">{{labelKembalian}} Rp.</b></th> 
-                                    <th>
-                                        <input v-model="kembalian" class="form-control input-lg priceFormat text-right" style="width:200px" readonly/>
+                                    <th colspan="2"><b v-bind:class="('pull-right ' + (kembalian<0?'text-danger':''))">{{labelKembalian}} Rp.</b></th> 
+                                    <th colspan="2">
+                                        <input v-model="kembalian" class="form-control input-sm priceFormat text-right" style="" readonly/>
                                     </th> 
                                 </tr>
                             </tfoot>
@@ -167,6 +187,7 @@
                 this.selectBarang = $('#select_kode_brg').select2({
                     minimumInputLength: 3,
                     allowClear: true,
+                    width:"100%",
                     placeholder: '',
                     ajax: {
                         dataType: 'json',
@@ -384,6 +405,7 @@
             }
         },
         updated: function () {
+            helper.updatePriceFormat();
             var dataPembelian = {};
             dataPembelian.nofak = Pembelian.nofak;
             dataPembelian.kodeSuplier = Pembelian.kodeSuplier;

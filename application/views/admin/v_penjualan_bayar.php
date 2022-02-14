@@ -35,7 +35,7 @@
 
                                 
                                 <tr>  
-                                    <td colspan="3"><b>Tanggal<b></td>  
+                                    <td colspan="2"><b>Tanggal<b></td>  
                                     <td><b>Status<b></td>   
                                 </tr>
                                 <tr>  
@@ -113,7 +113,7 @@
         </table>
 
         </br>
-        <h4 style="margin-top:10px">List barang</h4>  
+        <h5 style="margin-top:10px">List barang</h5>  
         <table class="table table-stripped table-list">
             <thead>
                 <tr>
@@ -137,7 +137,7 @@
         </table> 
         
         </br>  
-        <h4 style="margin-top:10px">Riwayat Bayar</h4>  
+        <h5 style="margin-top:10px">Riwayat Bayar</h5>  
         <table class="table table-stripped  table-list">
                     <thead>
                         <tr>
@@ -194,6 +194,11 @@
  
 
 <div id="divFaktur" style="display:none;width:400px">  
+    <style>
+    .text-right{
+        text-align:right;
+    }
+    </style>
     <section id="sectionFaktur">
         <div class="row">
                 <div class="col-lg-12">
@@ -232,8 +237,8 @@
                                 <tr v-for="row in listBarang">
                                     <td>{{row.barang_nama}}</td>
                                     <td class="text-right priceFormat">{{row.barang_harjul}}</td>
-                                    <td class="text-right priceFormat">{{row.barang_qty_input}} {{row.barang_satuan}}</td> 
-                                    <td class="text-right priceFormat">{{row.barang_harjul * row.barang_qty_input}}</td>
+                                    <td class="text-right priceFormat">{{row.qty}} {{row.barang_satuan}}</td> 
+                                    <td class="text-right priceFormat">{{row.total}}</td>
                                 </tr>
                             <tbody>
                             <tfoot>
@@ -441,7 +446,7 @@
             totalHarga: function () {
                  var total = 0;
                  $.each(this.listPiutang,function(index,item){
-                    total +=  helper.convertToInt(item.barang_harjul) *  helper.convertToInt(item.barang_qty_input);
+                    total +=  helper.convertToInt(item.barang_harjul) *  helper.convertToInt(item.qty);
                  });
                  return total; 
             },

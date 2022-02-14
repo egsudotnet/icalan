@@ -30,12 +30,12 @@
                                         <select name="select_kode_brg" id="select_kode_brg" class="form-control input-sm"> 
                                         </select>
                                     </td>  
-                                    <td>
+                                    <td style="width:70px">
                                         <div class="pull-right"> 
                                             <span class="btn btn-primary" v-on:click="Post"><i class="fa fa-save"> Simpan</i></span> 
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style="width:70px">
                                         <div class="pull-right">  
                                             <span class="btn btn-danger" v-on:click="Delete"><i class="fa fa-trash"> Batal</i></span>
                                         </div>
@@ -45,12 +45,12 @@
                         <table class="table table-stripped w-100 table-list">
                             <thead>
                                 <tr>
-                                <th style="width:20%">Nama</th>
-                                <th style="width:10%">Stok</th>  
-                                <th style="width:20%">Harga</th>
-                                <th style="width:20%">Qty</th>
-                                <th style="width:20%">Total</th> 
-                                <th style="width:10%"></th> 
+                                    <th style="width:20%">Nama</th>
+                                    <th style="width:10%">Stok</th>  
+                                    <th style="width:20%">Harga</th>
+                                    <th style="width:20%">Qty</th>
+                                    <th style="width:20%">Total</th> 
+                                    <th style="width:10%"></th> 
                                 </tr>
                             </thead>
                             <tbody>
@@ -124,6 +124,11 @@
 </div>
 
 <div id="divFaktur" style="display:none;width:400px">  
+    <style>
+    .text-right{
+        text-align:right;
+    }
+    </style>
     <section id="sectionFaktur">
         <div class="row">
                 <div class="col-lg-12">
@@ -479,12 +484,7 @@
             }
         },
         updated: function () {
-            $('.priceFormat').priceFormat({
-                prefix: '',
-                //centsSeparator: '',
-                centsLimit: 0,
-                thousandsSeparator: '.'
-            });
+            helper.updatePriceFormat();
 
             var dataPenjualan = {};
             dataPenjualan.namaPelanggan = Penjualan.namaPelanggan;
@@ -573,12 +573,7 @@
         computed: { 
         },
         updated: function () {
-            $('.priceFormat').priceFormat({
-                prefix: '',
-                //centsSeparator: '',
-                centsLimit: 0,
-                thousandsSeparator: '.'
-            });
+            helper.updatePriceFormat();
         }
     });
 

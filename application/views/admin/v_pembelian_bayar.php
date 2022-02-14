@@ -9,41 +9,45 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Transaksi
+            <h3 class="page-header">Transaksi
                 <small>Pembayaran Utang</small>
                 <a href="#" data-toggle="modal" data-target="#largeModal" class="pull-right"><small></small></a>
-            </h1> 
+            </h3> 
         </div>
     </div>
 
     <section id="sectionPembelian">
         <div class="row">
                 <div class="col-lg-12">
-                        <table class="w-100 filter">
+                        <table class="w-100 filter table-list">
                                 <tr> 
                                     <td><b>Suplayer<b></td>  
                                     <td><b>No.Faktur<b></td>  
-                                    <td colspan="3"><b>Tanggal<b></td>  
                                     <td><b>Status<b></td>   
                                 </tr>
                                 <tr> 
-                                    <td style="width:200px">  
+                                    <td style="">  
                                         <select name="select_kode_suplier" id="select_kode_suplier" class="form-control input-sm"> 
                                         </select> 
                                    </td> 
-                                    <td style="width:200px"> 
+                                    <td style=""> 
                                         <input v-model="nofak" class="form-control input-sm"/>
                                    </td> 
-                                    <td style="width:200px"> 
+                                    <td style=""> 
+                                       <select v-model="status" class="w-100"><option value="">Semua</option><option value="0">Belum Lunas</option><option value="1">Lunas</option></select>
+                                    </td> 
+                                </tr>
+                                
+                                <tr>  
+                                    <td colspan="3"><b>Tanggal<b></td>   
+                                </tr>
+                                <tr>  
+                                    <td style=""> 
                                         <input v-model="tanggalDari" type="date" name="tanggal_dari" id="input_tanggal_dari" class="form-control input-sm"/>  
-                                    </td> 
-                                    <td style="width:10px">s/d</td>
-                                    <td style="width:200px"> 
-                                        <input v-model="tanggalSampai" type="date" name="tanggal_sampai" id="input_tanggal_sampai" class="form-control input-sm"/>  
                                     </td>  
-                                    <td style="width:200px"> 
-                                       <select v-model="status"><option value="">Semua</option><option value="0">Belum Lunas</option><option value="1">Lunas</option></select>
-                                    </td> 
+                                    <td style=""> 
+                                        <input v-model="tanggalSampai" type="date" name="tanggal_sampai" id="input_tanggal_sampai" class="form-control input-sm"/>  
+                                    </td>   
                                     <td>
                                          <div class="pull-right"> 
                                             <span class="btn btn-warning" v-on:click="Search"><i class="fa fa-search"> Cari</i></span>
@@ -53,17 +57,15 @@
                         </table>
                         </br> 
                         <div id="divTableUtangLoading"></div>
-                        <table id="tableUtang" class="table table-bordered">
+                        <table id="tableUtang" class="table table-bordered table-list">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
-                                    <th>Suplayer</th>
-                                    <th>No.Faktur</th>
-                                    <th>Tanggal Pembelian</th> 
-                                    <th>Total Harga</th>
-                                    <th>Total Bayar</th>
-                                    <th>Kurang Bayar</th>
-                                    <th>Nama Pegawai</th>
+                                    <th style="width:10%">No.</th>
+                                    <th style="width:30%">Suplayer</th>
+                                    <th style="width:15%">No.Faktur</th>
+                                    <!-- <th style="width:15%">Tanggal Pembelian</th>  -->
+                                    <th style="width:15%">Total Harga</th>
+                                    <th style="width:15%">Kurang Bayar</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -72,11 +74,9 @@
                                     <td>{{index+1}}</td>
                                     <td>{{row.suplier_nama}}</td>
                                     <td>{{row.beli_nofak}}</td>
-                                    <td class="">{{row.beli_tanggal}}</td> 
+                                    <!-- <td class="">{{row.beli_tanggal}}</td>  -->
                                     <td class="text-right priceFormat">{{row.beli_total}}</td>
-                                    <td class="text-right priceFormat">{{row.beli_jml_uang}}</td>
                                     <td class="text-right priceFormat">{{row.beli_kembalian * -1}}</td>
-                                    <td class="">{{row.user_nama}}</td>
                                     <td class=""><span class="btn btn-success btn-pilih"><i class="glyphicon glyphicon-edit">Pilih</i></span></td>
                                 </tr>
                             </tbody> 
@@ -89,8 +89,8 @@
 
     <section id="sectionDetail" style="display:none">
         <div><span class="btn btn-default" v-on:click="ShowHeader"><i class="glyphicon glyphicon-arrow-left"> Kembali</i></span></div>
-        <h3 style="margin-top:10px"></h3>  
-        <table class="w-100">   
+     
+        <table class="w-100 table-list">   
             <tr>
                 <td style="width:150px">No.Faktur</td>
                 <td style="width:300px">{{nofak}}</td> 
@@ -113,7 +113,7 @@
 
         </br>
         <h3 style="margin-top:10px">List barang</h3>  
-        <table class="table table-stripped">
+        <table class="table table-stripped  table-list">
             <thead>
                 <tr>
                 <th>No.</th>
@@ -139,7 +139,7 @@
         
         </br>  
         <h3 style="margin-top:10px">Riwayat Bayar</h3>  
-        <table class="table table-stripped">
+        <!-- <table class="table table-stripped table-list">
                     <thead>
                         <tr>
                         <th>No.</th>
@@ -151,8 +151,7 @@
                         <th>Nama Pegawai</th>
                         </tr>
                     </thead>
-                    <tbody>
-                    <!-- d_beli_barang_nama, d_beli_barang_satuan, d_beli_barang_harpok, d_beli_qty, d_beli_total -->
+                    <tbody> 
                         <tr v-for="(row,index) in listPembelian">
                             <td>{{index+1}}</td>
                             <td>{{row.bayar_nofak}}</td> 
@@ -178,8 +177,50 @@
                             </th> 
                         </tr>
                     </tfoot>
+                </table>   -->
+ 
+                <table class="table table-stripped  table-list">
+                    <thead>
+                        <tr>
+                        <th>No.</th>
+                        <th>No.Faktur</th>
+                        <th>Piutang</th>
+                        <th>Tgl.Bayar</th>
+                        <th>Pembayaran</th>
+                        <th>Kurang Bayar</th>
+                        <th>Nama Pegawai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <!-- d_jual_barang_nama, d_jual_barang_satuan, d_jual_barang_harjul, d_jual_qty, d_jual_total -->
+                        <tr v-for="(row,index) in listPembayaran">
+                            <td>{{index+1}}</td>
+                            <td>{{row.bayar_nofak}}</td> 
+                            <td class="text-right priceFormat">{{row.piutang}}</td> 
+                            <td>{{row.bayar_tanggal}}</td> 
+                            <td class="text-right priceFormat">{{row.bayar_jml_uang}}</td> 
+                            <td class="text-right priceFormat">{{row.bayar_kurang}}</td>
+                            <td>{{row.user_nama}}</td> 
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th  colspan="3"></th> 
+                            <th colspan="2" v-on:click="ShowInputMoney">
+                                <div class="input-group" style="">
+                                    <span class="input-group-addon"><i class="fa fa-money btn-success"></i></span>
+                                    <input v-model="inputBayar" id="inputBayar" class="form-control input-sm priceFormat text-right" style="" readonly/>
+                                </div> 
+                            </th>  
+                            <td>
+                                    <input v-model="kurangBayarBaruShow" class="form-control input-sm priceFormat text-right" style="margin-top:7px" readonly/> 
+                            </td>  
+                            <th>       
+                                <span class="btn btn-primary" v-on:click="Simpan"><i class="fa fa-save"> SIMPAN</i></span>
+                            </th> 
+                        </tr>
+                    </tfoot>
                 </table>  
-
     <section>
 </div>
 <!-- /.container -->
@@ -240,6 +281,7 @@
                 this.selectBarang = $('#select_kode_suplier').select2({
                     minimumInputLength: 3,
                     allowClear: true,
+                    width:"100%",
                     placeholder: '',
                     ajax: {
                         dataType: 'json',
@@ -291,7 +333,7 @@
                                     ////alert($(window).height()-1000);
                                     tableUtang = $('#tableUtang').DataTable({
                                         paging:false,
-                                        scrollY: 800,
+                                        scrollY: 500,
                                         searching:false,
                                         info:false,
                                         ordering:false,
@@ -408,7 +450,7 @@
             kurangBayar:"",
             namaPegawai:"",
             listBarang:[],
-            listPembelian:[], 
+            listPembayaran:[], 
             inputBayar:0
         },
         mounted: function () { 
@@ -426,7 +468,7 @@
                 this.kurangBayar = "";
                 this.namaPegawai = "";
                 this.listBarang = [];
-                this.listPembelian = [];
+                this.listPembayaran = [];
                 this.inputBayar = 0
             },
             Show: function (data) { 
@@ -488,7 +530,7 @@
                     }
                 }).done(function (data, textStatus, jqXHR) {
                     if(data){
-                        Detail.listPembelian = data;
+                        Detail.listPembayaran = data;
                     }else{ 
                         $(".info-error").text("Tidak ada data.");
                     }
