@@ -717,11 +717,9 @@
                 setTimeout(() => { 
                     var newWindow = window.open();
                     var content = $("#divFaktur").html(); 
-                    newWindow.document.write("<html><head></head><body><div style='width:400px'>"+ content +"</div></body></html>");
+                    var content = $("#divFaktur").html(); 
+                    newWindow.document.write("<html><head></head><body onclick='window.close()'><div style='width:420px'>"+ content +"</div></body></html>");
                     newWindow.print();
-                    setTimeout(() => {
-                        newWindow.close();  
-                    }, 3000);
                 }, 1000);
             },
             Put: function () {

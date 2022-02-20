@@ -1,26 +1,116 @@
 <?php
 	class M_barang extends CI_Model{
 
-	function hapus_barang($kode){
-		$hsl=$this->db->query("DELETE FROM tbl_barang where barang_id='$kode'");
-		return $hsl;
+	function hapus_barang($kobar){
+		try { 
+			
+			$query=$this->db->query("SELECT 1 
+			FROM tbl_barang 
+			where barang_id = '". $kobar ."'");
+
+			if($query->num_rows() > 0){   
+				$response = [
+					'status' => false,
+					'message' => 'Proses Hapus Tidak Bisa dilakukan karena barang ini sudah ada dalam data transaksi. Silahkan mengubah status menjadi tidak aktif supaya tidak bisa digunakan!'
+				]; 
+			}else{ 
+				$this->db->query("
+					DELETE FROM tbl_barang where barang_id='$kode'
+				"); 
+				$response = [
+					'status' => true,
+					'message' => 'Proses Hapus Berhasil'
+				];
+			} 
+		} catch ( Exception $e ) {  
+			$response = [
+				'status' => false,
+				'message' => $e, 
+			]; 
+		}
+		return $response;  
 	}
 
-	function update_barang($kobar,$nabar,$kat,$satuan,$harpok,$harjul,$harjul_grosir,$stok,$min_stok){
-		$user_id=$this->session->userdata('idadmin');
-		$hsl=$this->db->query("UPDATE tbl_barang SET barang_nama='$nabar',barang_satuan='$satuan',barang_harpok='$harpok',barang_harjul='$harjul',barang_harjul_grosir='$harjul_grosir',barang_stok='$stok',barang_min_stok='$min_stok',barang_tgl_last_update=NOW(),barang_kategori_id='$kat',barang_user_id='$user_id' WHERE barang_id='$kobar'");
-		return $hsl;
+	function update_barang($kobar,$nabar,$kat,$satuan,$harpok,$harjul,$harjul_grosir,$stok,$min_stok,$statusAktif){
+		try { 
+			$user_id=$this->session->userdata('idadmin');
+			$hsl=$this->db->query("
+				UPDATE tbl_barang 
+				SET barang_nama='$nabar',
+				barang_satuan='$satuan',
+				barang_harpok='$harpok',
+				barang_harjul='$harjul',
+				barang_harjul_grosir='$harjul_grosir',
+				barang_stok='$stok',
+				barang_min_stok='$min_stok',
+				barang_tgl_last_update=NOW(),
+				barang_kategori_id='$kat',
+				barang_user_id='$user_id',
+				is_aktif='$statusAktif'
+				WHERE barang_id='$kobar'");
+			//return $hsl; 
+			$response = [
+				'status' => true,
+				'message' => 'Proses Ubah Berhasil'
+			];
+		} catch ( Exception $e ) {  
+			$response = [
+				'status' => false,
+				'message' => $e, 
+			]; 
+		}
+		return $response;  
 	}
 
 	function tampil_barang(){
-		$hsl=$this->db->query("SELECT barang_id,barang_nama,barang_satuan,barang_harpok,barang_harjul,barang_harjul_grosir,barang_stok,barang_min_stok,barang_kategori_id,kategori_nama FROM tbl_barang JOIN tbl_kategori ON barang_kategori_id=kategori_id");
+		$hsl=$this->db->query("SELECT barang_id,barang_nama,barang_satuan,barang_harpok,barang_harjul,barang_harjul_grosir,barang_stok,barang_min_stok,barang_kategori_id,kategori_nama,is_aktif FROM tbl_barang JOIN tbl_kategori ON barang_kategori_id=kategori_id");
 		return $hsl;
 	}
 
-	function simpan_barang($kobar,$nabar,$kat,$satuan,$harpok,$harjul,$harjul_grosir,$stok,$min_stok){
-		$user_id=$this->session->userdata('idadmin');
-		$hsl=$this->db->query("INSERT INTO tbl_barang (barang_id,barang_nama,barang_satuan,barang_harpok,barang_harjul,barang_harjul_grosir,barang_stok,barang_min_stok,barang_kategori_id,barang_user_id) VALUES ('$kobar','$nabar','$satuan','$harpok','$harjul','$harjul_grosir','$stok','$min_stok','$kat','$user_id')");
-		return $hsl;
+	function simpan_barang($kobar,$nabar,$kat,$satuan,$harpok,$harjul,$harjul_grosir,$stok,$min_stok,$statusAktif){
+		////return $hsl;
+		try { 
+			$user_id=$this->session->userdata('idadmin');
+			$hsl=$this->db->query("
+				INSERT INTO tbl_barang 
+				(
+					barang_id,
+					barang_nama,
+					barang_satuan,
+					barang_harpok,
+					barang_harjul,
+					barang_harjul_grosir,
+					barang_stok,
+					barang_min_stok,
+					barang_kategori_id,
+					barang_user_id,
+					is_aktif
+					) VALUES (
+						'$kobar',
+						'$nabar',
+						'$satuan',
+						'$harpok',
+						'$harjul',
+						'$harjul_grosir',
+						'$stok',
+						'$min_stok',
+						'$kat',
+						'$user_id'
+						'$statusAktif'
+						)");
+	
+			$response = [
+				'status' => true,
+				'message' => 'Proses Simpan Berhasil',
+				'data' => $hsl
+			];
+		} catch ( Exception $e ) {  
+			$response = [
+				'status' => false,
+				'message' => $e, 
+			];  
+		}
+		return $response; 
 	}
 
 
@@ -32,10 +122,46 @@
 	
 	//=============API==========
 
-	function get_barang($kobar){
-		$query=$this->db->query("SELECT barang_id,barang_nama,barang_satuan,barang_harpok,barang_harjul,barang_harjul_grosir,barang_stok,barang_min_stok,barang_kategori_id,barang_user_id,1 barang_qty_input FROM tbl_barang where barang_id='$kobar'");
+	function get_barang(){ 
+		$param = $this->input; 
+		$kobar = $param->post('kobar');
+		$nabar = $param->post('nabar');
+		$kategori = $param->post('kategori');
+		$satuan = $param->post('satuan');
+		$statusAktif = $param->post('statusAktif');  
+		$statusAktif = empty($statusAktif) ? "0" : "1";
+
+
+		$filter = "";
+		if(!empty($kobar))
+			$filter .= " AND barang_id='$kobar'";
+			
+		if(!empty($nabar))
+			$filter .= " AND barang_nama LIKE '%$nabar%'";
+		if(!empty($kategori))
+			$filter .= " AND barang_kategori_id='$kategori'";
+		if(!empty($satuan))
+			$filter .= " AND barang_satuan='$satuan'"; 
+
+		$query=$this->db->query("
+			SELECT 
+			barang_id,
+			barang_nama,
+			barang_satuan,
+			barang_harpok,
+			barang_harjul,
+			barang_harjul_grosir,
+			barang_stok,
+			barang_min_stok,
+			barang_kategori_id,
+			barang_user_id,
+			1 barang_qty_input,
+			is_aktif
+			FROM tbl_barang 
+			where is_aktif='$statusAktif' 
+			$filter");
 		if($query->num_rows() > 0){ 
-            return $query->row() ;
+            return $query->result() ;
         }
 	}
 
@@ -54,7 +180,8 @@
 			barang_kategori_id,
 			barang_user_id,
 			1 barang_qty_input
-		FROM tbl_barang where barang_id like '%$filter%' or barang_nama like '%$filter%' Limit 10");
+		FROM tbl_barang 
+		where is_aktif = 1 AND (barang_id like '%$filter%' or barang_nama like '%$filter%') Limit 10");
         if($query->num_rows() > 0){ 
             return $query->result() ;
         }

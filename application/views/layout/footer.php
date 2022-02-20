@@ -74,7 +74,7 @@
                     $('#loading').modal('show');
  
                     
-                $(".info-error,info-warning,.info-success").text(""); //todo
+                $(".info-error,.info-warning,.info-success").text(""); //todo
                 
             }  
             AfterSendAjaxBehaviour = () =>{
@@ -88,9 +88,9 @@
             snd.play();
         } 
 
-        $(document).ready(function(){
-            $('#mydata').DataTable();
-        });
+        // // $(document).ready(function(){
+        // //     $('#mydata').DataTable();
+        // // });
         
 
          

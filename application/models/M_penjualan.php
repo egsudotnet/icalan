@@ -126,7 +126,7 @@ class M_penjualan extends CI_Model{
 			$response = [
 				'status' => false,
 				'message' => $e,
-				'data' =>['nofak' => $nofak], tanggalTransaksi
+				'data' =>['nofak' => $nofak]
 			];
 			$this->_log_request($authorized = true, serialize($response), serialize($errors), serialize($detailData));
 			return $response;  

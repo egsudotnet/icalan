@@ -19,17 +19,17 @@ class M_penjualan_bayar extends CI_Model{
 
 	function get_piutang($namaPelanggan, $tanggalDari, $tanggalSampai, $nofak, $status){
 		$result = [];
-		$additionalQuery = "  jual_kembalian <= 0 "; 
+		$additionalQuery = ""; 
 
 		if($status == "0"){
 			$additionalQuery .= " AND jual_kembalian < 0 ";
 		}
 		if($status == "1"){
-			$additionalQuery .= " AND jual_kembalian = 0 ";
+			$additionalQuery .= " AND jual_kembalian >= 0 ";
 		}
 
 		if(empty($additionalQuery)){
-			$additionalQuery .= " 1=1  ";
+			$additionalQuery .= "";
 		}
 
 		if(!empty($tanggalDari) && !empty($tanggalSampai)){
@@ -51,10 +51,14 @@ class M_penjualan_bayar extends CI_Model{
 
 		$query = $this->db->query("
 		SELECT
-			jual_nofak, DATE_FORMAT(jual_tanggal, '%d-%m-%Y %H:%i')jual_tanggal, jual_total, jual_jml_uang, jual_kembalian, jual_user_id, b.user_nama ,jual_nama_pelanggan AS nama_pelanggan
+			jual_nofak, DATE_FORMAT(jual_tanggal, '%d-%m-%Y %H:%i')jual_tanggal, jual_total, 
+			jual_jml_uang, 
+			case when jual_kembalian >= 0 then 0 else jual_kembalian end AS jual_kembalian, 
+			jual_user_id, 
+			b.user_nama ,jual_nama_pelanggan AS nama_pelanggan
 		FROM tbl_jual AS a 
 		LEFT JOIN tbl_user AS b ON a.jual_user_id=b.user_id
-		WHERE $additionalQuery
+		WHERE 1=1 $additionalQuery
 		"); 
         if($query->num_rows()>0){
 			$result = $query->result();

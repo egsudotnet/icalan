@@ -146,6 +146,7 @@
             .panel-loading {
                 background: transparent url('<?php echo base_url('assets/img/Spinner-1.gif') ?>') center center no-repeat;
                 min-height:50px !important;
+                z-index: 1000;
             }
 
             .table-list{

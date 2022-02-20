@@ -547,9 +547,8 @@
                 setTimeout(() => {  
                     var newWindow = window.open();
                     var content = $("#divFaktur").html(); 
-                    newWindow.document.write("<html><head></head><body><div style='width:400px'>"+ content +"</div></body></html>");
+                    newWindow.document.write("<html><head></head><body onclick='window.close()'><div style='width:420px'>"+ content +"</div></body></html>");
                     newWindow.print();
-                    newWindow.close();
                     Penjualan.ClearData()
                 }, 1000);
             },

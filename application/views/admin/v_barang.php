@@ -4,1087 +4,475 @@
     <!-- Page Content -->
     <div class="container">
 
+        <section id="section-search">
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">Data
                     <small>Barang</small>
-                    <div class="pull-right"><a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#largeModal"><span class="fa fa-plus"></span> Tambah Barang</a></div>
+                    <div class="pull-right"><a href="#" class="btn btn-sm btn-success" onclick="Detail.ShowModal(1)"><span class="fa fa-plus"></span> Tambah Barang</a></div>
                 </h1>
             </div>
         </div>
-        <!-- /.row -->
-        <!-- Projects Row -->
-        <div class="row">
-            <div class="col-lg-12">
-            <table class="table table-bordered table-condensed" style="font-size:11px;" id="mydata">
-                <thead>
-                    <tr>
-                        <th style="text-align:center;width:40px;">No</th>
-                        <th>Kode Barang</th>
-                        <th>Nama Barang</th>
-                        <th>Satuan</th>
-                        <th>Harga Pokok</th>
-                        <th>Harga</th>
-                        <!-- <th>Harga (Grosir)</th> -->
-                        <th>Stok</th>
-                        <th>Min Stok</th>
-                        <th>Kategori</th>
-                        <th style="width:100px;text-align:center;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php 
-                    $no=0;
-                    foreach ($data->result_array() as $a):
-                        $no++;
-                        $id=$a['barang_id'];
-                        $nm=$a['barang_nama'];
-                        $satuan=$a['barang_satuan'];
-                        $harpok=$a['barang_harpok'];
-                        $harjul=$a['barang_harjul'];
-                        $harjul_grosir=$a['barang_harjul_grosir'];
-                        $stok=$a['barang_stok'];
-                        $min_stok=$a['barang_min_stok'];
-                        $kat_id=$a['barang_kategori_id'];
-                        $kat_nama=$a['kategori_nama'];
-                ?>
-                    <tr>
-                        <td style="text-align:center;"><?php echo $no;?></td>
-                        <td><?php echo $id;?></td>
-                        <td><?php echo $nm;?></td>
-                        <td style="text-align:center;"><?php echo $satuan;?></td>
-                        <td style="text-align:right;"><?php echo 'Rp '.number_format($harpok);?></td>
-                        <td style="text-align:right;"><?php echo 'Rp '.number_format($harjul);?></td>
-                        <!-- <td style="text-align:right;"><?php echo 'Rp '.number_format($harjul_grosir);?></td> -->
-                        <td style="text-align:center;"><?php echo $stok;?></td>
-                        <td style="text-align:center;"><?php echo $min_stok;?></td>
-                        <td><?php echo $kat_nama;?></td>
-                        <td style="text-align:center;">
-                            <a class="btn btn-xs btn-warning" href="#modalEditPelanggan<?php echo $id?>" data-toggle="modal" title="Edit"><span class="fa fa-edit"></span> Edit</a>
-                            <a class="btn btn-xs btn-danger" href="#modalHapusPelanggan<?php echo $id?>" data-toggle="modal" title="Hapus"><span class="fa fa-close"></span> Hapus</a>
-                        </td>
-                    </tr>
-                <?php endforeach;?>
-                </tbody>
-            </table>
-            </div>
-        </div>
-        <!-- /.row -->
-        <!-- ============ MODAL ADD =============== -->
-        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
-            <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 class="modal-title" id="myModalLabel">Tambah Barang</h3>
-            </div>
-            <form class="form-horizontal" method="post" action="<?php echo base_url().'admin/barang/tambah_barang'?>">
-                <div class="modal-body">
-
-                    <!--<div class="form-group">
-                        <label class="control-label col-xs-3" >Kode Barang</label>
-                        <div class="col-xs-9">
-                            <input name="kobar" class="form-control" type="text" placeholder="Kode Barang..." style="width:335px;" required>
-                        </div>
-                    </div>-->
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3" >Nama Barang</label>
-                        <div class="col-xs-9">
-                            <input name="nabar" class="form-control" type="text" placeholder="Nama Barang..." style="width:335px;" required>
-                        </div>
-                    </div>
-
-                     <div class="form-group">
-                            <label class="control-label col-xs-3" >Kategori</label>
+        <!-- /.row --> 
+            <div class="row">
+                
+                <div class="col-lg-6 form-horizontal">
+                <div class="form-group">
+                            <label class="control-label col-xs-3" >Nama Barang</label>
                             <div class="col-xs-9">
-                                <select name="kategori" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Kategori" data-width="80%" placeholder="Pilih Kategori" required>
-                                <?php foreach ($kat2->result_array() as $k2) {
-                                    $id_kat=$k2['kategori_id'];
-                                    $nm_kat=$k2['kategori_nama'];
-                                    ?>
-                                        <option value="<?php echo $id_kat;?>"><?php echo $nm_kat;?></option>
-                                <?php }?>
-                                    
-                                </select>
+                                <input v-model="nabar" class="form-control" type="text" placeholder="" style="" required>
                             </div>
                         </div>
-
-                 
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3" >Satuan</label>
-                        <div class="col-xs-9">
-                             <select name="satuan" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Satuan" data-width="80%" placeholder="Pilih Satuan" required>
-                                <option>Unit</option>
-                                <option>Kotak</option>
-                                <option>Botol</option>
-                                <option>Butir</option>
-                                <option>Buah</option>
-                                <option>Biji</option>
-                                <option>Sachet</option>
-                                <option>Bks</option>
-                                <option>Roll</option>
-                                <option>PCS</option>
-                                <option>Box</option>
-                                <option>Meter</option>
-                                <option>Centimeter</option>
-                                <option>Liter</option>
-                                <option>CC</option>
-                                <option>Mililiter</option>
-                                <option>Lusin</option>
-                                <option>Gross</option>
-                                <option>Kodi</option>
-                                <option>Rim</option>
-                                <option>Dozen</option>
-                                <option>Kaleng</option>
-                                <option>Lembar</option>
-                                <option>Helai</option>
-                                <option>Gram</option>
-                                <option>Kilogram</option>
-                             </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3" >Harga Pokok</label>
-                        <div class="col-xs-9">
-                            <input name="harpok" class="harpok form-control" type="text" placeholder="Harga Pokok..." style="width:335px;">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3" >Harga</label>
-                        <div class="col-xs-9">
-                            <input name="harjul" class="harjul form-control" type="text" placeholder="Harga Jual..." style="width:335px;">
-                        </div>
-                    </div>
-
-                    <!-- <div class="form-group">
-                        <label class="control-label col-xs-3" >Harga (Grosir)</label>
-                        <div class="col-xs-9">
-                            <input name="harjul_grosir" class="harjul form-control" type="text" placeholder="Harga Jual Grosir..." style="width:335px;">
-                        </div>
-                    </div> -->
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3" >Stok</label>
-                        <div class="col-xs-9">
-                            <input name="stok" class="form-control" type="number" placeholder="Stok..." style="width:335px;">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3" >Minimal Stok</label>
-                        <div class="col-xs-9">
-                            <input name="min_stok" class="form-control" type="number" placeholder="Minimal Stok..." style="width:335px;">
-                        </div>
-                    </div>
-                           
-
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
-                    <button class="btn btn-info">Simpan</button>
-                </div>
-            </form>
-            </div>
-            </div>
-        </div>
-
-        <!-- ============ MODAL EDIT =============== -->
-        <?php
-                    foreach ($data->result_array() as $a) {
-                        $id=$a['barang_id'];
-                        $nm=$a['barang_nama'];
-                        $satuan=$a['barang_satuan'];
-                        $harpok=$a['barang_harpok'];
-                        $harjul=$a['barang_harjul'];
-                        $harjul_grosir=$a['barang_harjul_grosir'];
-                        $stok=$a['barang_stok'];
-                        $min_stok=$a['barang_min_stok'];
-                        $kat_id=$a['barang_kategori_id'];
-                        $kat_nama=$a['kategori_nama'];
-                    ?>
-                <div id="modalEditPelanggan<?php echo $id?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
-                    <div class="modal-dialog">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 class="modal-title" id="myModalLabel">Edit Barang</h3>
-                    </div>
-                    <form class="form-horizontal" method="post" action="<?php echo base_url().'admin/barang/edit_barang'?>">
-                        <div class="modal-body">
 
                         <div class="form-group">
-                            <label class="control-label col-xs-3" >Kode Barang</label>
+                                <label class="control-label col-xs-3" >Kategori</label>
+                                <div class="col-xs-9">
+                                    <select v-model="kategori" class="selectpicker show-tick form-control" data-allow-clear="true" data-live-search="true" title="" data-width="" placeholder="" required>
+                                        <option></option>
+                                        <?php foreach ($kat->result_array() as $k2) {
+                                            $id_kat=$k2['kategori_id'];
+                                            $nm_kat=$k2['kategori_nama'];
+                                            ?>
+                                                <option value="<?php echo $id_kat;?>"><?php echo $nm_kat;?></option>
+                                        <?php }?> 
+                                    </select>
+                                </div>
+                            </div>
+
+                </div>
+                <div class="col-lg-6 form-horizontal">
+                     
+                        <div class="form-group">
+                            <label class="control-label col-xs-3" >Satuan</label>
                             <div class="col-xs-9">
-                                <input name="kobar" class="form-control" type="text" value="<?php echo $id;?>" placeholder="Kode Barang..." style="width:335px;" readonly>
+                                <select v-model="satuan" class="selectpicker show-tick form-control" data-allow-clear="true" data-live-search="true" title="" data-width="" placeholder="" required>
+                                        <option></option>
+                                        <?php foreach ($sat->result_array() as $k2) {
+                                        $id_kat=$k2['satuan_kode'];
+                                        $nm_kat=$k2['satuan_keterangan'];
+                                        ?>
+                                            <option value="<?php echo $id_kat;?>"><?php echo $nm_kat;?></option>
+                                    <?php }?> 
+                                </select>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label class="control-label col-xs-3" >Status Aktif</label>
+                            <div class="col-xs-9">
+                                <input type="checkbox" type="number" v-model="statusAktif" checked>
                             </div>
                         </div>
+                            
+                </div>
+                
+                <div class="col-lg-12">
+                    <button class="btn btn-info fa fa-search" v-on:click="Search"> Cari</button> 
+                    <button class="btn btn-default fa fa-refresh" v-on:click="Refresh"> Refresh</button> 
+                <div>
 
+
+                <div class="col-lg-12" id="divTableList">
+                    <table class="table table-bordered table-condensed" style="font-size:11px;" id="myList">
+                        <thead>
+                        </thead>
+                        <tbody> 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <!-- /.row -->
+        <!-- ============ MODAL ADD =============== -->
+        
+        <section id="section-detail">
+            <div class="modal fade" id="modalBarang" tabindex="-1" role="dialog" aria-labelledby="modalBarang" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 class="modal-title" id="myModalLabel"><span>{{labelModalBarang}}</span> Barang</h3>
+                </div>
+                <div class="form-horizontal">
+                    <div class="modal-body"> 
                         <div class="form-group">
                             <label class="control-label col-xs-3" >Nama Barang</label>
                             <div class="col-xs-9">
-                                <input name="nabar" class="form-control" type="text" value="<?php echo $nm;?>" placeholder="Nama Barang..." style="width:335px;" required>
+                                <input v-model="nabar" class="form-control" type="text" placeholder="" style=";" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-xs-3" >Kategori</label>
-                            <div class="col-xs-9">
-                                <select name="kategori" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Kategori" data-width="80%" placeholder="Pilih Kategori" required>
-                                <?php foreach ($kat2->result_array() as $k2) {
-                                    $id_kat=$k2['kategori_id'];
-                                    $nm_kat=$k2['kategori_nama'];
-                                    if($id_kat==$kat_id)
-                                        echo "<option value='$id_kat' selected>$nm_kat</option>";
-                                    else
-                                        echo "<option value='$id_kat'>$nm_kat</option>";
-                                }
-                                ?>
-                                    
-                                </select>
+                                <label class="control-label col-xs-3" >Kategori</label>
+                                <div class="col-xs-9">
+                                    <select v-model="kategori" class="selectpicker show-tick form-control" data-allow-clear="true" data-live-search="true" title="" data-width="" placeholder="" required>
+                                        <option></option>
+                                        <?php foreach ($kat->result_array() as $k2) {
+                                            $id_kat=$k2['kategori_id'];
+                                            $nm_kat=$k2['kategori_nama'];
+                                            ?>
+                                                <option value="<?php echo $id_kat;?>"><?php echo $nm_kat;?></option>
+                                        <?php }?> 
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+
+                    
 
                         <div class="form-group">
                             <label class="control-label col-xs-3" >Satuan</label>
                             <div class="col-xs-9">
-                                 <select name="satuan" class="selectpicker show-tick form-control" data-live-search="true" title="Pilih Satuan" data-width="80%" placeholder="Pilih Satuan" required>
-                                    <?php if($satuan=='Unit'):?>
-                                        <option selected>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Kotak'):?>
-                                        <option>Unit</option>
-                                        <option selected>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Botol'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option selected>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Butir'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option selected>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Buah'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option selected>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Biji'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option selected>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Sachet'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option selected>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Bks'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option selected>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Roll'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option selected>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='PCS'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option selected>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Box'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option selected>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Meter'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option selected>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Centimeter'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option selected>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Liter'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option selected>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='CC'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option selected>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Mililiter'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option selected>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Lusin'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option selected>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Gross'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option selected>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Kodi'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option selected>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Rim'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option selected>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Dozen'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option selected>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Kaleng'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option selected>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Lembar'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option selected>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Helai'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option selected>Helai</option>
-                                        <option>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php elseif($satuan=='Gram'):?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option selected>Gram</option>
-                                        <option>Kilogram</option>
-                                    <?php else:?>
-                                        <option>Unit</option>
-                                        <option>Kotak</option>
-                                        <option>Botol</option>
-                                        <option>Butir</option>
-                                        <option>Buah</option>
-                                        <option>Biji</option>
-                                        <option>Sachet</option>
-                                        <option>Bks</option>
-                                        <option>Roll</option>
-                                        <option>PCS</option>
-                                        <option>Box</option>
-                                        <option>Meter</option>
-                                        <option>Centimeter</option>
-                                        <option>Liter</option>
-                                        <option>CC</option>
-                                        <option>Mililiter</option>
-                                        <option>Lusin</option>
-                                        <option>Gross</option>
-                                        <option>Kodi</option>
-                                        <option>Rim</option>
-                                        <option>Dozen</option>
-                                        <option>Kaleng</option>
-                                        <option>Lembar</option>
-                                        <option>Helai</option>
-                                        <option>Gram</option>
-                                        <option selected>Kilogram</option>
-                                    <?php endif;?>
-                                 </select>
+                                <select v-model="satuan" class="selectpicker show-tick form-control" data-allow-clear="true" data-live-search="true" title="" data-width="" placeholder="" required>
+                                    <option></option>
+                                        <?php foreach ($sat->result_array() as $k2) {
+                                        $id_kat=$k2['satuan_kode'];
+                                        $nm_kat=$k2['satuan_keterangan'];
+                                        ?>
+                                            <option value="<?php echo $id_kat;?>"><?php echo $nm_kat;?></option>
+                                    <?php }?> 
+                                </select>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-3" >Harga Pokok</label>
                             <div class="col-xs-9">
-                                <input name="harpok" class="harpok form-control" type="text" value="<?php echo $harpok;?>" placeholder="Harga Pokok..." style="width:335px;" required>
+                                <input type="number" v-model="harpok" class="harpok form-control" type="text" placeholder="" style="">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-xs-3" >Harga</label>
                             <div class="col-xs-9">
-                                <input name="harjul" class="harjul form-control" type="text" value="<?php echo $harjul;?>" placeholder="Harga Jual..." style="width:335px;" required>
+                                <input type="number"  v-model="harjul" class="harjul form-control" type="text" placeholder="" style="">
                             </div>
                         </div>
-<!-- 
-                        <div class="form-group">
-                            <label class="control-label col-xs-3" >Harga (Grosir)</label>
-                            <div class="col-xs-9">
-                                <input name="harjul_grosir" class="harjul form-control" type="text" value="<?php echo $harjul_grosir;?>" placeholder="Harga Jual Grosir..." style="width:335px;" required>
-                            </div>
-                        </div> -->
 
                         <div class="form-group">
                             <label class="control-label col-xs-3" >Stok</label>
                             <div class="col-xs-9">
-                                <input name="stok" class="form-control" type="number" value="<?php echo $stok;?>" placeholder="Stok..." style="width:335px;" required>
+                                <input type="number"  v-model="stok" class="form-control" type="number" placeholder="" style="">
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="control-label col-xs-3" >Minimal Stok</label>
                             <div class="col-xs-9">
-                                <input name="min_stok" class="form-control" type="number" value="<?php echo $min_stok;?>" placeholder="Minimal Stok..." style="width:335px;" required>
+                                <input type="number"  v-model="minStok" class="form-control" type="number" placeholder="" style="">
+                            </div>
+                        </div> -->
+
+                        <div class="form-group">
+                            <label class="control-label col-xs-3" >Status Aktif</label>
+                            <div class="col-xs-9">
+                                <input type="checkbox" type="number" v-model="statusAktif">
                             </div>
                         </div>
+                            
 
                     </div>
-                        <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
-                            <button type="submit" class="btn btn-info">Update</button>
-                        </div>
-                    </form>
-                </div>
-                </div>
-                </div>
-            <?php
-        }
-        ?>
 
-        <!-- ============ MODAL HAPUS =============== -->
-        <?php
-                    foreach ($data->result_array() as $a) {
-                        $id=$a['barang_id'];
-                        $nm=$a['barang_nama'];
-                        $harpok=$a['barang_harpok'];
-                        $harjul=$a['barang_harjul'];
-                        $stok=$a['barang_stok'];
-                        $min_stok=$a['barang_min_stok'];
-                        $kat_id=$a['barang_kategori_id'];
-                        $kat_nama=$a['kategori_nama'];
-                    ?>
-                <div id="modalHapusPelanggan<?php echo $id?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
-                    <div class="modal-dialog">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 class="modal-title" id="myModalLabel">Hapus Barang</h3>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
+                        <button class="btn btn-info" v-on:click="Simpan">Simpan</button>
                     </div>
-                    <form class="form-horizontal" method="post" action="<?php echo base_url().'admin/barang/hapus_barang'?>">
-                        <div class="modal-body">
-                            <p>Yakin mau menghapus data barang ini..?</p>
-                                    <input name="kode" type="hidden" value="<?php echo $id; ?>">
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
-                            <button type="submit" class="btn btn-primary">Hapus</button>
-                        </div>
-                    </form>
                 </div>
                 </div>
                 </div>
-            <?php
-        }
-        ?>
-
-        <!--END MODAL-->
-
-        <hr>
-
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <!-- <!-- <p style="text-align:center;">Copyright &copy; <?php echo '2022';?> by egsudotnet</p> --> -->
-                </div>
-            </div>
-            <!-- /.row -->
-        </footer>
-
+            </div> 
+        </section>
+        <!--END MODAL--> 
     </div>
     <!-- /.container -->
- 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#mydata').DataTable();
-        } );
-    </script>
-    <script type="text/javascript">
-        $(function(){
-            $('.harpok').priceFormat({
-                    prefix: '',
-                    //centsSeparator: '',
-                    centsLimit: 0,
-                    thousandsSeparator: ','
-            });
-            $('.harjul').priceFormat({
-                    prefix: '',
-                    //centsSeparator: '',
-                    centsLimit: 0,
-                    thousandsSeparator: ','
-            });
-        });
-    </script>
-    
+  
 <!-- footer -->
 <?php 
     $this->load->view('layout/footer');
 ?> 
+
+    <script type="text/javascript"> 
+        var Current={};
+        Current.tableListObj; 
+        var Main = new Vue({
+            el: "#section-search",
+            data: {
+                nabar: "",
+                kategori: "",
+                satuan : "", 
+                statusAktif: true, 
+                listBarang: [], 
+            },
+            mounted: function () { 
+            },
+            watch: {
+                // isNew: function () {
+                //     this.action = this.isNew ? "Submit" : "Update";
+                //     this.title = this.isNew ? "Add Crew" : "Crew Detail";
+                // }
+            },
+            methods: {
+                Init: function (isNew, data) { 
+                },
+                Search: function (kobar) { 
+                    var data = {}; 
+                    data.nabar = this.nabar;
+                    data.kategori = this.kategori;
+                    data.satuan = this.satuan;  
+                    data.statusAktif = this.statusAktif?1:0;
+                    $.ajax({
+                        url: '<?php echo base_url().'admin/barang/get_barang';?>',
+                        cache: false,
+                        dataType: 'json',
+                        data: data,
+                        method: 'POST',
+                        beforeSend: function () {
+					        $('#divTableList').addClass('panel-loading');
+                            Current.tableListObj.clear().draw();
+                            BeforeSendAjaxBehaviour(false);
+                        }
+                    }).done(function (data, textStatus, jqXHR) { 
+                        if(!data)
+                            return;
+                            
+				        Current.tableListObj.clear().draw();
+                        Current.tableListObj.rows.add(data).draw(); 
+                        setTimeout(function () {
+                            Current.tableListObj.columns.adjust().draw(); 
+                        }, 200); 
+                    }).fail(function (jqXHR, textStatus, errorThrown) { 
+                        $(".info-error").text(textStatus);
+                    }).complete(function(){ 
+					    $('#divTableList').removeClass('panel-loading');
+                    });
+                },  
+                Refresh: function () { 
+                    this.nabar = "";
+                    this.kategori = "";
+                    this.satuan = "";
+                    this.statusAktif = true;
+                    this.listBarang = [];
+                    $("select").val("").change()
+                },
+            },
+            computed: { 
+            },
+            updated: function () {
+                helper.updatePriceFormat();
+            }
+        }); 
+        var Detail = new Vue({
+            el: "#section-detail",
+            data: {
+                id : "",
+                kobar : "",
+                nabar: "",
+                kategori: "",
+                satuan : "",
+                harpok : "",
+                harjul : "",
+                stok : "",
+                ////minStok : "",
+                statusAktif: "", 
+                labelModalBarang: "",
+                aksiModalBarang: 0
+            },
+            mounted: function () { 
+            },
+            watch: {
+                // isNew: function () {
+                //     this.action = this.isNew ? "Submit" : "Update";
+                //     this.title = this.isNew ? "Add Crew" : "Crew Detail";
+                // }
+            },
+            methods: {
+                ShowModal: function (action,data) {
+                    this.aksiModalBarang = action;
+                    if(action==1){ 
+                        this.nabar = "";
+                        this.kategori = "";
+                        this.satuan = "";
+                        this.harpok = "";
+                        this.harjul = "";
+                        this.stok = 1; 
+                        this.statusAktif = true;
+                        this.labelModalBarang = "Tambah";
+                    }
+                    if(action==2){
+                        this.kobar = data.barang_id;
+                        this.nabar = data.barang_nama;
+                        this.kategori = data.barang_kategori_id;
+                        this.satuan = data.barang_satuan;
+                        this.harpok = data.barang_harpok;
+                        this.harjul = data.barang_harjul;
+                        this.stok = data.barang_stok; 
+                        this.statusAktif = data.is_aktif==1;
+                        this.labelModalBarang = "Edit";
+                    }
+                    this.labelModalBarang = action == 1 ? "Tambah" : 'Edit';
+                    $("#modalBarang").modal("show");
+                    setTimeout(() => {
+                        $("#modalBarang select").change(); 
+                    }, 500);
+                },
+                Simpan: function () { 
+                    if(this.aksiModalBarang==1)
+                        this.Add();
+                    if(this.aksiModalBarang==2)
+                        this.Put();
+                },
+                Add: function () { 
+                    var data = {};  
+                    data.nabar = this.nabar;
+                    data.kategori = this.kategori;
+                    data.satuan = this.satuan;
+                    data.harpok = this.harpok;
+                    data.harjul = this.harjul;
+                    data.stok = this.stok;
+                    data.minStok = 1;
+                    data.statusAktif = this.statusAktif?1:0;
+
+                    $.ajax({
+                        url: '<?php echo base_url().'admin/barang/tambah_barang/';?>',
+                        cache: false,
+                        dataType: 'json',
+                        data: data,
+                        method: 'POST',
+                        beforeSend: function () {
+                            BeforeSendAjaxBehaviour(true);
+                        }
+                    }).done(function (data, textStatus, jqXHR) { 
+                        $(".info-success").text("Data berhasil disimpan."); 
+                        Main.Search();  
+                    }).fail(function (jqXHR, textStatus, errorThrown) { 
+                        $(".info-error").text(textStatus);
+                    }).complete(function(){ 
+                        AfterSendAjaxBehaviour(true);
+                        $("#modalBarang").modal("hide"); 
+                    });
+                }, 
+                Put: function () {
+                    var data = {}; 
+                    data.kobar = this.kobar;
+                    data.nabar = this.nabar;
+                    data.kategori = this.kategori;
+                    data.satuan = this.satuan;
+                    data.harpok = this.harpok;
+                    data.harjul = this.harjul;
+                    data.stok = this.stok;
+                    data.minStok = 1;
+                    data.statusAktif = this.statusAktif?1:0;
+
+                    $.ajax({
+                        url: '<?php echo base_url().'admin/barang/edit_barang';?>',
+                        cache: false,
+                        dataType: 'json',
+                        data: data,
+                        method: 'POST',
+                        beforeSend: function () {
+                            BeforeSendAjaxBehaviour(true);
+                        }
+                    }).done(function (data, textStatus, jqXHR) { 
+                        $(".info-success").text("Data berhasil diubah."); 
+                        Main.Search(); 
+                    }).fail(function (jqXHR, textStatus, errorThrown) { 
+                        $(".info-error").text(textStatus);
+                    }).complete(function(){ 
+                        AfterSendAjaxBehaviour(true);
+                        $("#modalBarang").modal("hide"); 
+                    });
+                },
+                Delete: function (kobar) {  
+                    if (confirm("Apakah anda akan menghapus data?")) {
+                        $.ajax({
+                            url: '<?php echo base_url().'admin/barang/hapus_barang?kobar=';?>' + kobar,
+                            cache: false,
+                            dataType: 'json',  
+                            beforeSend: function () {
+                                BeforeSendAjaxBehaviour(true);
+                            }
+                        }).done(function (data, textStatus, jqXHR) { 
+                            if(data.status){  
+                                $(".info-success").text("Data berhasil dihapus."); 
+                                Main.Search();
+                            }else{
+                                $(".info-warning").text(data.message); 
+                            }  
+                        }).fail(function (jqXHR, textStatus, errorThrown) { 
+                            $(".info-error").text(textStatus);
+                        }).complete(function(){ 
+                            AfterSendAjaxBehaviour(true);
+                            $("#modalBarang").modal("hide");
+                        });
+                    }
+                },
+                Edit: function () { 
+                    $("#modalBarang").modal("show");
+                } 
+            },
+            computed: { 
+            },
+            updated: function () {
+                helper.updatePriceFormat();
+            }
+        }); 
+
+        $(document).ready(function(){  
+            Current.tableListObj = $('#myList').DataTable({
+                scrollY: 500,
+                scrollX: 400,
+                //scrollCollapse: true,
+                //pagingType: 'full_numbers',
+                order: [[0, "desc"]],
+                pageLength: 10,
+                //bLengthChange: false,
+                // bFilter: true,
+                // keys: true,
+                // deferRender: true,
+                // select: true,
+                searching: false,
+                paging: false,
+                columns: [ 
+                    { data: null, visible: true, title: 'No' }, 
+                    { data: 'barang_id', name: 'barang_id', visible: true, title: 'id' }, 
+                    { data: 'barang_nama', name: 'barang_nama', visible: true, title: 'Nama Bbarang' }, 
+                    //{ data: 'barang_satuan', name: 'barang_satuan', visible: true, title: 'Satuan' }, 
+                    //{ data: 'barang_harpok', name: 'barang_harpok', visible: true, title: 'Harga Pokok' }, 
+                    { data: 'barang_harjul', name: 'barang_harjul', visible: true, title: 'Harga Jual' }, 
+                    //{ data: 'barang_stok', name: 'barang_stok', visible: true, title: 'Stok' }, 
+                    //{ data: 'barang_min_stok', name: 'barang_min_stok', visible: true, title: 'minimal stok' }, 
+                    // { data: 'kategori_nama', name: 'kategori_nama', visible: true, title: 'kategori' },  
+                    { 
+                        title: 'Edit', 
+                        render: function (data, type, full, meta) {
+                            return '<a class="btn btn-xs btn-warning mr-10 edit" title="Edit"><span class="fa fa-edit"></span></a>';
+                        }
+                    },  
+                    { 
+                        title: 'Hapus', 
+                        render: function (data, type, full, meta) {
+                            return '<a class="btn btn-xs btn-danger hapus" title="Hapus"><span class="fa fa-close"></span></a>';
+                        }
+                    },  
+                ],
+                rowCallback: function (row, data, index) {  
+                    var no =  index + 1;
+                    $(row).find('td:eq(0)').html(no);
+
+                    $(row).find('.edit').unbind();
+                    $(row).find('.edit').click(function(){
+                        Detail.ShowModal(2,data);
+                    });
+                    $(row).find('.hapus').unbind();
+                    $(row).find('.hapus').click(function(){
+                        Detail.Delete(data.barang_id);
+                    }); 
+                // 	$('td', row).attr('nowrap', 'nowrap');
+                // 	if (parseInt(data.IS_VERIF) === 1) {
+                // 		$(row).addClass('is-verif');
+                // 	}
+                }
+            });
+ 
+        });
+    </script>
+  
