@@ -34,7 +34,7 @@
                                         <input v-model="nofak" class="form-control input-sm"/>
                                    </td> 
                                     <td style=""> 
-                                       <select v-model="status" class="w-100"><option value="">Semua</option><option value="0">Belum Lunas</option><option value="1">Lunas</option></select>
+                                       <select v-model="status" class="w-100 form-control"><option value="">Semua</option><option value="0">Belum Lunas</option><option value="1">Lunas</option></select>
                                     </td> 
                                 </tr>
                                 
@@ -60,10 +60,8 @@
                         <table id="tableUtang" class="table table-bordered table-list">
                             <thead>
                                 <tr>
-                                    <th style="width:10%">No.</th>
                                     <th style="width:30%">Suplayer</th>
                                     <th style="width:15%">No.Faktur</th>
-                                    <!-- <th style="width:15%">Tanggal Pembelian</th>  -->
                                     <th style="width:15%">Total Harga</th>
                                     <th style="width:15%">Kurang Bayar</th>
                                     <th></th>
@@ -71,13 +69,12 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(row,index) in listUtang">
-                                    <td>{{index+1}}</td>
                                     <td>{{row.suplier_nama}}</td>
                                     <td>{{row.beli_nofak}}</td>
                                     <!-- <td class="">{{row.beli_tanggal}}</td>  -->
                                     <td class="text-right priceFormat">{{row.beli_total}}</td>
                                     <td class="text-right priceFormat">{{row.beli_kembalian * -1}}</td>
-                                    <td class=""><span class="btn btn-success btn-pilih"><i class="glyphicon glyphicon-edit">Pilih</i></span></td>
+                                    <td class=""><span class="btn btn-success btn-pilih"><i class="glyphicon glyphicon-edit"></i></span></td>
                                 </tr>
                             </tbody> 
                         </table>
@@ -182,9 +179,7 @@
                 <table class="table table-stripped  table-list">
                     <thead>
                         <tr>
-                        <th>No.</th>
-                        <th>No.Faktur</th>
-                        <th>Piutang</th>
+                        <th>No.Transaksi</th>
                         <th>Tgl.Bayar</th>
                         <th>Pembayaran</th>
                         <th>Kurang Bayar</th>
@@ -194,9 +189,7 @@
                     <tbody>
                     <!-- d_jual_barang_nama, d_jual_barang_satuan, d_jual_barang_harjul, d_jual_qty, d_jual_total -->
                         <tr v-for="(row,index) in listPembayaran">
-                            <td>{{index+1}}</td>
                             <td>{{row.bayar_nofak}}</td> 
-                            <td class="text-right priceFormat">{{row.piutang}}</td> 
                             <td>{{row.bayar_tanggal}}</td> 
                             <td class="text-right priceFormat">{{row.bayar_jml_uang}}</td> 
                             <td class="text-right priceFormat">{{row.bayar_kurang}}</td>
@@ -205,7 +198,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th  colspan="3"></th> 
+                            <th  colspan="1"></th> 
                             <th colspan="2" v-on:click="ShowInputMoney">
                                 <div class="input-group" style="">
                                     <span class="input-group-addon"><i class="fa fa-money btn-success"></i></span>
@@ -216,7 +209,7 @@
                                     <input v-model="kurangBayarBaruShow" class="form-control input-sm priceFormat text-right" style="margin-top:7px" readonly/> 
                             </td>  
                             <th>       
-                                <span class="btn btn-primary" v-on:click="Simpan"><i class="fa fa-save"> SIMPAN</i></span>
+                                <span class="btn btn-success" v-on:click="Simpan"><i class="fa fa-save"></i></span>
                             </th> 
                         </tr>
                     </tfoot>

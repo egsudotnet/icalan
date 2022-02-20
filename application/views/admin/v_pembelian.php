@@ -48,7 +48,7 @@
                                     </td> 
                                     <td style="width:70px">
                                         <div class="pull-right"> 
-                                            <span class="btn btn-primary" v-on:click="Post"><i class="fa fa-save"> Simpan</i></span> 
+                                            <span class="btn btn-success" v-on:click="Post"><i class="fa fa-save"> Simpan</i></span> 
                                         </div>
                                     </td>
                                     <td style="width:70px">
@@ -62,9 +62,7 @@
                             <thead>
                                 <tr>
                                     <th style="width:20%">Nama</th>
-                                    <th style="width:10%">Stok</th>  
                                     <th style="width:20%">Harga Beli</th>
-                                    <th style="width:20%">Harga Jual</th>
                                     <th style="width:20%">Qty</th>
                                     <th style="width:20%">Total</th> 
                                     <th style="width:10%"></th> 
@@ -85,13 +83,9 @@
                             <tbody>
                                 <tr v-for="(row,index) in listBarang">
                                     <td>{{row.barang_nama}}</td>
-                                    <td>{{row.barang_stok}} {{row.barang_satuan}}</td> 
                                     <td> 
-                                        <input type="" class="form-control input-sm text-right priceFormat barang-harpok" v-model="row.barang_harpok"/>
-                                    </td> 
-                                    <td> 
-                                        <input type=""  class="form-control input-sm text-right priceFormat" v-model="row.barang_harjul"/>
-                                    </td> 
+                                        <input type="number" class="form-control input-sm text-right barang-harpok" v-model="row.barang_harpok"/>
+                                    </td>
                                     <td style=""> 
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-btn btn-minus">
@@ -112,25 +106,24 @@
                             <tbody>
                             <tfoot>
                                 <tr>
-                                    <th rowspan="3" colspan="2">
                                     </th> 
                                     <th colspan="2"><b class="pull-right">Total Rp.</b></th> 
-                                    <th colspan="2">
+                                    <th colspan="3">
                                         <input v-model="totalHarga" class="form-control input-sm priceFormat text-right" style="" readonly/>
                                     </th> 
                                 </tr>
                                 <tr>
                                     <th colspan="2"><b class="pull-right">Total Bayar Rp.</b></th> 
-                                    <th colspan="3" v-on:click="ShowInputMoney">
+                                    <th colspan="4" v-on:click="ShowInputMoney">
                                         <div class="input-group" style="">
-                                             <input v-model="totalBayar" class="form-control input-sm priceFormat text-right" style="" readonly>
                                             <span class="input-group-addon"><i class="fa fa-money btn-success"></i></span>
+                                             <input v-model="totalBayar" class="form-control input-sm priceFormat text-right" style="" readonly>
                                         </div> 
                                     </th>  
                                 </tr>
                                 <tr>
                                     <th colspan="2"><b v-bind:class="('pull-right ' + (kembalian<0?'text-danger':''))">{{labelKembalian}} Rp.</b></th> 
-                                    <th colspan="2">
+                                    <th colspan="3">
                                         <input v-model="kembalian" class="form-control input-sm priceFormat text-right" style="" readonly/>
                                     </th> 
                                 </tr>

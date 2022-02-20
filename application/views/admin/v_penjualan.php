@@ -19,8 +19,8 @@
                 <div class="col-lg-12">
                         <table class="w-100 filter">
                                 <tr> 
-                                    <td><b> Pelanggan<b></td> 
-                                    <td><b> Barang<b></td> 
+                                    <td>Pelanggan</td> 
+                                    <td>Barang</td> 
                                 </tr>
                                 <tr> 
                                     <td> 
@@ -30,23 +30,12 @@
                                         <select name="select_kode_brg" id="select_kode_brg" class="form-control input-sm"> 
                                         </select>
                                     </td>  
-                                    <td style="width:70px">
-                                        <div class="pull-right"> 
-                                            <span class="btn btn-primary" v-on:click="Post"><i class="fa fa-save"> Simpan</i></span> 
-                                        </div>
-                                    </td>
-                                    <td style="width:70px">
-                                        <div class="pull-right">  
-                                            <span class="btn btn-danger" v-on:click="Delete"><i class="fa fa-trash"> Batal</i></span>
-                                        </div>
-                                    </td>
                                 </tr>
                         </table>
                         <table class="table table-stripped w-100 table-list">
                             <thead>
                                 <tr>
                                     <th style="width:20%">Nama</th>
-                                    <th style="width:10%">Stok</th>  
                                     <th style="width:20%">Harga</th>
                                     <th style="width:20%">Qty</th>
                                     <th style="width:20%">Total</th> 
@@ -56,13 +45,9 @@
                             <tbody>
                                 <tr v-for="(row,index) in listBarang">
                                     <td>{{row.barang_nama}}</td>
-                                    <td>{{row.barang_stok}} {{row.barang_satuan}}</td> 
                                     <td> 
                                         <div class="input-group input-group-sm"> 
-                                            <input class="form-control input-sm text-right priceFormat" readonly v-model="row.barang_harjul"/>
-                                            <span class="input-group-btn btn-edit-harga" v-on:click="UpdateHarga(index, row.barang_id, row.barang_nama, row.barang_harjul)">
-                                                <span class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></span>
-                                            </span>
+                                            <input class="form-control input-sm text-right priceFormat" readonly v-model="row.barang_harjul" v-on:click="UpdateHarga(index, row.barang_id, row.barang_nama, row.barang_harjul)"/> 
                                         </div>
                                     </td> 
                                     <td style=""> 
@@ -84,16 +69,14 @@
                             <tbody>
                             <tfoot>
                                 <tr>
-                                    <th rowspan="3" colspan="1">
-                                    </th> 
                                     <th colspan="2"><b class="pull-right">Total Rp.</b></th> 
-                                    <th colspan="2">
+                                    <th colspan="3">
                                         <input v-model="totalHarga" class="form-control input-sm priceFormat text-right" style="" readonly/>
                                     </th> 
                                 </tr>
                                 <tr>
                                     <th colspan="2"><b class="pull-right">Total Bayar Rp.</b></th> 
-                                    <th colspan="2" v-on:click="ShowInputMoney">
+                                    <th colspan="3" v-on:click="ShowInputMoney">
                                         <div class="input-group" style="">
                                             <span class="input-group-addon"><i class="fa fa-money btn-success"></i></span>
                                              <input v-model="totalBayar" class="form-control input-sm priceFormat text-right" style="" readonly/>
@@ -102,12 +85,18 @@
                                 </tr>
                                 <tr>
                                     <th colspan="2"><b v-bind:class="('pull-right ' + (kembalian<0?'text-danger':''))">{{labelKembalian}} Rp.</b></th> 
-                                    <th colspan="2">
+                                    <th colspan="3">
                                         <input v-model="kembalian" class="form-control input-sm priceFormat text-right" style="" readonly/>
                                     </th> 
                                 </tr>
                             </tfoot>
                         </table>
+                        
+                        <div align="center" class="mb-30"> 
+                            <span class="btn btn-success" v-on:click="Post"><i class="fa fa-save"> Simpan</i></span> 
+                    
+                            <span class="btn btn-danger" v-on:click="Delete"><i class="fa fa-trash"> Batal</i></span>
+                        </div>
                 </div>
             </div>
 
@@ -545,11 +534,12 @@
                 this.labelKembalian  = Penjualan.labelKembalian; 
                 
                 setTimeout(() => {  
+                    
                     var newWindow = window.open();
                     var content = $("#divFaktur").html(); 
-                    newWindow.document.write("<html><head></head><body onclick='window.close()'><div style='width:420px'>"+ content +"</div></body></html>");
+                    newWindow.document.write("<html><head></head><body onclick='window.close()'><div style='width:400px'>"+ content +"</div></body></html>");
                     newWindow.print();
-                    Penjualan.ClearData()
+                    Penjualan.ClearData();
                 }, 1000);
             },
             Put: function () {
