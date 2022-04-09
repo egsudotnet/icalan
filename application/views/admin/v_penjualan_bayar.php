@@ -196,7 +196,8 @@
     <section id="sectionFaktur">
         <div class="row">
                 <div class="col-lg-12">
-                        ____________________________________________________________________________
+                                        
+                        <span>--------------------------------------------------------------------------------</span>
                         <table>
                                 <tr> 
                                     <th>SELAMAT DATANG</th> 
@@ -263,6 +264,8 @@
                                     <td colspan="4" align="center">
                                         </br>
                                         <b>Terima kasih</b>
+                                        
+                                        <div style="margin-top:50px">--------------------------------------------------------------------------------</div>
                                     </td>  
                                 </tr>
                             </tfoot>
@@ -352,7 +355,7 @@
                                     ////alert($(window).height()-1000);
                                     tablePiutang = $('#tablePiutang').DataTable({
                                         paging:false,
-                                        scrollY: 800,
+                                        ////scrollY: 800,
                                         searching:false,
                                         info:false,
                                         ordering:false,

@@ -4,9 +4,15 @@
 	function hapus_barang($kobar){
 		try { 
 			
-			$query=$this->db->query("SELECT 1 
-			FROM tbl_barang 
-			where barang_id = '". $kobar ."'");
+			$query=$this->db->query("
+			SELECT 1 
+			FROM tbl_detail_jual
+			where d_jual_barang_id = '". $kobar ."'
+			UNION ALL
+			SELECT 1 
+			FROM tbl_detail_beli
+			where d_beli_barang_id = '". $kobar ."'
+			"); 
 
 			if($query->num_rows() > 0){   
 				$response = [
@@ -15,7 +21,7 @@
 				]; 
 			}else{ 
 				$this->db->query("
-					DELETE FROM tbl_barang where barang_id='$kode'
+					DELETE FROM tbl_barang where barang_id='$kobar'
 				"); 
 				$response = [
 					'status' => true,
@@ -95,7 +101,7 @@
 						'$stok',
 						'$min_stok',
 						'$kat',
-						'$user_id'
+						'$user_id',
 						'$statusAktif'
 						)");
 	
@@ -122,6 +128,19 @@
 	
 	//=============API==========
 
+	function get_all_nama_barang(){   
+		$query=$this->db->query("
+			SELECT 
+			barang_id,
+			barang_nama 
+			FROM tbl_barang 
+			where is_aktif='1' 
+			");
+		if($query->num_rows() > 0){ 
+            return $query->result() ;
+        }
+	}
+
 	function get_barang(){ 
 		$param = $this->input; 
 		$kobar = $param->post('kobar');
@@ -130,7 +149,6 @@
 		$satuan = $param->post('satuan');
 		$statusAktif = $param->post('statusAktif');  
 		$statusAktif = empty($statusAktif) ? "0" : "1";
-
 
 		$filter = "";
 		if(!empty($kobar))
@@ -164,7 +182,6 @@
             return $query->result() ;
         }
 	}
-
     function get_barang_by_search($filter){
 		$query=$this->db->query("SELECT 
 			barang_id AS id,

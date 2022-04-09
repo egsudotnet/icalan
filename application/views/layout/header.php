@@ -93,6 +93,10 @@
         table.filter td{
             padding-right:8px !important; 
         }
+        
+        .page-header{
+            margin-top:0px !important;
+        }
     </style>
     
     <style>
@@ -145,7 +149,7 @@
         
             .panel-loading {
                 background: transparent url('<?php echo base_url('assets/img/Spinner-1.gif') ?>') center center no-repeat;
-                min-height:50px !important;
+                min-height:250px !important;
                 z-index: 1000;
             }
 

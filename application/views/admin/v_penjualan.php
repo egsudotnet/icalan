@@ -121,6 +121,7 @@
     <section id="sectionFaktur">
         <div class="row">
                 <div class="col-lg-12">
+                        ____________________________________________________________________________
                         <table>
                                 <tr> 
                                     <th>SELAMAT DATANG</th> 
@@ -187,6 +188,7 @@
                                     <td colspan="4" align="center">
                                         </br>
                                         <b>Terima kasih</b>
+                                        <div style="margin-top:50px">--------------------------------------------------------------------------------</div>
                                     </td>  
                                 </tr>
                             </tfoot>
@@ -355,42 +357,73 @@
                 });
             },
             UpdateHarga: function (index, idbarang, namaBarang, harjulLama) {  
-                var harjulBaru = (function ask() {
-                    var n = prompt("Silahkan masukan harga baru untuk " + namaBarang, "");
-                    return isNaN(n) ? ask() : n;
-                }())
-                if(isNaN(harjulBaru)){
-                    alert("Anda salah memasukan harga.");
-                    return;
+                var setHarga = function(harjulBaru, isSaveToMaster){
+                
+                    if(isNaN(harjulBaru) || harjulBaru == null){
+                        alert("Anda salah memasukan harga.");
+                        return;
+                    }
+
+                    if (isSaveToMaster) { 
+                        var data = {}; 
+                        data.kobar = idbarang;
+                        data.harjulLama = helper.convertToInt(harjulLama);
+                        data.harjulBaru = helper.convertToInt(harjulBaru);
+
+                        $.ajax({
+                            url: '<?php echo base_url().'admin/barang/api_update_harga';?>',
+                            cache: false,
+                            dataType: 'json',
+                            data: data,
+                            method: 'POST',
+                            beforeSend: function () {
+                                BeforeSendAjaxBehaviour(true);
+                            }
+                        }).done(function (data, textStatus, jqXHR) {
+                            if(data.status){
+                                Penjualan.listBarang[index].barang_harjul=harjulBaru;
+                            }else{ 
+                                $(".info-error").text(data.message);
+                            }
+                        }).fail(function (jqXHR, textStatus, errorThrown) { 
+                            $(".info-error").text(textStatus);
+                        }).complete(function(){ 
+                            AfterSendAjaxBehaviour(true);
+                        });
+                    }else{
+                        Penjualan.listBarang[index].barang_harjul=harjulBaru; 
+                    }
                 }
 
-                if (harjulBaru != null) { 
-                    var data = {}; 
-                    data.kobar = idbarang;
-                    data.harjulLama = helper.convertToInt(harjulLama);
-                    data.harjulBaru = helper.convertToInt(harjulBaru);
-
-                    $.ajax({
-                        url: '<?php echo base_url().'admin/barang/api_update_harga';?>',
-                        cache: false,
-                        dataType: 'json',
-                        data: data,
-                        method: 'POST',
-                        beforeSend: function () {
-                            BeforeSendAjaxBehaviour(true);
+                Swal.fire({
+                    title: 'Ubah harga',
+                    input: 'number',
+                        html: '<input id="cbIsSaveToMaster" type="checkbox"> Simpan di master',
+                    inputAttributes: {
+                        min: 1,
+                        //max: 111,
+                        step: 1,
+                        pattern: "[0-9]{10}"
+                    },
+                    inputValidator: (value) => {
+                        // if (value > 1111) {
+                        //     return 'La cantidad ingresada supera a la cantidad en inventario'
+                        // }
+                        if (value < 0) {
+                            return 'Tidak boleh kurang dari 0'
                         }
-                    }).done(function (data, textStatus, jqXHR) {
-                        if(data.status){
-                            Penjualan.listBarang[index].barang_harjul=harjulBaru;
-                        }else{ 
-                            $(".info-error").text(data.message);
-                        }
-                    }).fail(function (jqXHR, textStatus, errorThrown) { 
-                        $(".info-error").text(textStatus);
-                    }).complete(function(){ 
-                        AfterSendAjaxBehaviour(true);
-                    });
-                }
+                        // if (value == 0) {
+                        //     return 'No ha especificado cuanto va a comprar'
+                        // }
+                    }, 
+                    showCancelButton: true,
+                    confirmButtonText: 'Simpan', 
+                    allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        setHarga(result.value, $("#cbIsSaveToMaster").prop("checked")); 
+                    }
+                })
             },
             Delete: function () {
                 if(!localStorage.dataPenjualan)

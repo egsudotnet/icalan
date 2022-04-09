@@ -326,7 +326,7 @@
                                     ////alert($(window).height()-1000);
                                     tableUtang = $('#tableUtang').DataTable({
                                         paging:false,
-                                        scrollY: 500,
+                                        ////scrollY: 500,
                                         searching:false,
                                         info:false,
                                         ordering:false,

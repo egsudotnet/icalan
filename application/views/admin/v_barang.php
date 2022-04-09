@@ -21,7 +21,10 @@
                 <div class="form-group">
                             <label class="control-label col-xs-3" >Nama Barang</label>
                             <div class="col-xs-9">
-                                <input v-model="nabar" class="form-control" type="text" placeholder="" style="" required>
+                                <input v-model="nabar" class="form-control" list="suggestionBarangListSearch"/>
+                                <datalist class="suggestion-barang" id="suggestionBarangListSearch">
+                                    <option v-for="item in suggestionBarangList" :value="item.barang_nama"> 
+                                </datalist> 
                             </div>
                         </div>
 
@@ -72,7 +75,7 @@
                 <div>
 
 
-                <div class="col-lg-12" id="divTableList">
+                <div class="" id="divTableList">
                     <table class="table table-bordered table-condensed" style="font-size:11px;" id="myList">
                         <thead>
                         </thead>
@@ -98,7 +101,10 @@
                         <div class="form-group">
                             <label class="control-label col-xs-3" >Nama Barang</label>
                             <div class="col-xs-9">
-                                <input v-model="nabar" class="form-control" type="text" placeholder="" style=";" required>
+                                <input v-model="nabar" class="form-control" list="suggestionBarangListModal"/>
+                                <datalist class="suggestion-barang" id="suggestionBarangListModal">
+                                    <option v-for="item in suggestionBarangList" :value="item.barang_nama"> 
+                                </datalist>  
                             </div>
                         </div>
 
@@ -201,6 +207,7 @@
                 satuan : "", 
                 statusAktif: true, 
                 listBarang: [], 
+                suggestionBarangList: []
             },
             mounted: function () { 
             },
@@ -274,7 +281,8 @@
                 ////minStok : "",
                 statusAktif: "", 
                 labelModalBarang: "",
-                aksiModalBarang: 0
+                aksiModalBarang: 0,
+                suggestionBarangList: []
             },
             mounted: function () { 
             },
@@ -314,22 +322,25 @@
                         $("#modalBarang select").change(); 
                     }, 500);
                 },
-                Simpan: function () { 
-                    if(this.aksiModalBarang==1)
-                        this.Add();
-                    if(this.aksiModalBarang==2)
-                        this.Put();
-                },
-                Add: function () { 
-                    var data = {};  
+                Simpan: function () {
+                    var data = {}; 
+                    data.kobar = this.kobar;
                     data.nabar = this.nabar;
                     data.kategori = this.kategori;
                     data.satuan = this.satuan;
                     data.harpok = this.harpok;
                     data.harjul = this.harjul;
+                    data.harjul_grosir = this.harjul;
                     data.stok = this.stok;
                     data.minStok = 1;
                     data.statusAktif = this.statusAktif?1:0;
+                    if(this.aksiModalBarang==1)
+                        this.Add(data);
+                    if(this.aksiModalBarang==2)
+                        this.Put(data);
+                        
+                },
+                Add: function (data) {  
 
                     $.ajax({
                         url: '<?php echo base_url().'admin/barang/tambah_barang/';?>',
@@ -342,7 +353,7 @@
                         }
                     }).done(function (data, textStatus, jqXHR) { 
                         $(".info-success").text("Data berhasil disimpan."); 
-                        Main.Search();  
+                        Main.Refresh();  
                     }).fail(function (jqXHR, textStatus, errorThrown) { 
                         $(".info-error").text(textStatus);
                     }).complete(function(){ 
@@ -350,17 +361,7 @@
                         $("#modalBarang").modal("hide"); 
                     });
                 }, 
-                Put: function () {
-                    var data = {}; 
-                    data.kobar = this.kobar;
-                    data.nabar = this.nabar;
-                    data.kategori = this.kategori;
-                    data.satuan = this.satuan;
-                    data.harpok = this.harpok;
-                    data.harjul = this.harjul;
-                    data.stok = this.stok;
-                    data.minStok = 1;
-                    data.statusAktif = this.statusAktif?1:0;
+                Put: function (data) {
 
                     $.ajax({
                         url: '<?php echo base_url().'admin/barang/edit_barang';?>',
@@ -373,7 +374,7 @@
                         }
                     }).done(function (data, textStatus, jqXHR) { 
                         $(".info-success").text("Data berhasil diubah."); 
-                        Main.Search(); 
+                        Current.tableListObj.clear().draw();
                     }).fail(function (jqXHR, textStatus, errorThrown) { 
                         $(".info-error").text(textStatus);
                     }).complete(function(){ 
@@ -393,7 +394,7 @@
                         }).done(function (data, textStatus, jqXHR) { 
                             if(data.status){  
                                 $(".info-success").text("Data berhasil dihapus."); 
-                                Main.Search();
+                                Current.tableListObj.clear().draw();
                             }else{
                                 $(".info-warning").text(data.message); 
                             }  
@@ -418,8 +419,8 @@
 
         $(document).ready(function(){  
             Current.tableListObj = $('#myList').DataTable({
-                scrollY: 500,
-                scrollX: 400,
+                //scrollY: 500,
+                //scrollX: 400,
                 //scrollCollapse: true,
                 //pagingType: 'full_numbers',
                 order: [[0, "desc"]],
@@ -432,11 +433,11 @@
                 searching: false,
                 paging: false,
                 columns: [ 
-                    { data: null, visible: true, title: 'No' }, 
-                    { data: 'barang_id', name: 'barang_id', visible: true, title: 'id' }, 
-                    { data: 'barang_nama', name: 'barang_nama', visible: true, title: 'Nama Bbarang' }, 
+                   // { data: null, visible: true, title: 'No' }, 
+                   // { data: 'barang_id', name: 'barang_id', visible: true, title: 'id' }, 
+                    { data: 'barang_nama', name: 'barang_nama', visible: true, title: 'Nama Barang' }, 
                     //{ data: 'barang_satuan', name: 'barang_satuan', visible: true, title: 'Satuan' }, 
-                    //{ data: 'barang_harpok', name: 'barang_harpok', visible: true, title: 'Harga Pokok' }, 
+                    { data: 'barang_harpok', name: 'barang_harpok', visible: true, title: 'Harga Pokok' }, 
                     { data: 'barang_harjul', name: 'barang_harjul', visible: true, title: 'Harga Jual' }, 
                     //{ data: 'barang_stok', name: 'barang_stok', visible: true, title: 'Stok' }, 
                     //{ data: 'barang_min_stok', name: 'barang_min_stok', visible: true, title: 'minimal stok' }, 
@@ -455,8 +456,8 @@
                     },  
                 ],
                 rowCallback: function (row, data, index) {  
-                    var no =  index + 1;
-                    $(row).find('td:eq(0)').html(no);
+                  //  var no =  index + 1;
+                  //  $(row).find('td:eq(0)').html(no);
 
                     $(row).find('.edit').unbind();
                     $(row).find('.edit').click(function(){
@@ -472,7 +473,62 @@
                 // 	}
                 }
             });
- 
+
+            
+            $.ajax({
+                    url: '<?php echo base_url().'admin/barang/get_all_nama_barang';?>',
+                    cache: false,
+                    dataType: 'json', 
+                    method: 'POST',
+                    beforeSend: function () {
+                        $('#divTableList').addClass('panel-loading');
+                        Current.tableListObj.clear().draw();
+                        BeforeSendAjaxBehaviour(false);
+                    }
+                    }).done(function (data, textStatus, jqXHR) { 
+                        if(!data)
+                            return;
+                        Current.suggestionBarangMainList = data;
+            }).fail(function (jqXHR, textStatus, errorThrown) { 
+                $(".info-error").text(textStatus);
+            }).complete(function(){ 
+                $('#divTableList').removeClass('panel-loading');
+            }); 
+
+            $("[list=suggestionBarangListSearch]").on("input",function(){
+                var textInput = $(this).val().toLowerCase();
+                if(textInput.length == 0){ 
+                    Main.suggestionBarangList = [];
+                    return;
+                }
+
+                var result;
+                var data = $.grep(Current.suggestionBarangMainList,function(n,i){
+                    return n.barang_nama.toLowerCase().indexOf(textInput) >= 0;   
+                });
+                if(data.length>0){
+                    if(data.length>=10) 
+                        data = data.slice(0, 10);  
+                    Main.suggestionBarangList = data; 
+                } 
+            })
+            $("[list=suggestionBarangListModal]").on("input",function(){
+                var textInput = $(this).val().toLowerCase();
+                if(textInput.length == 0){ 
+                    Detail.suggestionBarangList = [];
+                    return;
+                }
+                var result;
+                var data = $.grep(Current.suggestionBarangMainList,function(n,i){
+                    return n.barang_nama.toLowerCase().indexOf(textInput) >= 0;   
+                });
+                if(data.length>0){
+                    if(data.length>=10) 
+                        data = data.slice(0, 10);   
+                    Detail.suggestionBarangList = data;
+                } 
+            })
+
         });
     </script>
   

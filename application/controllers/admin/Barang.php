@@ -12,15 +12,15 @@ class Barang extends CI_Controller{
 		// $this->load->library('barcode');
 	}
 	function index(){
-	if($this->session->userdata('akses')=='1'){
-		$data['data']=$this->m_barang->tampil_barang();
-		$data['kat']=$this->m_kategori->tampil_kategori(); 
-		$data['sat']=$this->m_satuan->tampil_satuan(); 
-		$data['title']="Master Barang";
-		$this->load->view('admin/v_barang',$data);
-	}else{
-        echo "Halaman tidak ditemukan";
-    }
+		if($this->session->userdata('akses')=='1'){
+			$data['data']=$this->m_barang->tampil_barang();
+			$data['kat']=$this->m_kategori->tampil_kategori(); 
+			$data['sat']=$this->m_satuan->tampil_satuan(); 
+			$data['title']="Master Barang";
+			$this->load->view('admin/v_barang',$data);
+		}else{
+			echo "Halaman tidak ditemukan";
+		}
 	}
 	
 	// function pr($str, $die = true) {
@@ -50,7 +50,7 @@ class Barang extends CI_Controller{
 			$stok=$this->input->post('stok');
 			$minStok=$this->input->post('minStok');
 			$statusAktif=$this->input->post('statusAktif'); 
-			$result = $this->m_barang->simpan_barang($kobar,$nabar,$kat,$satuan,$harpok,$harjul,$harjul_grosir,$stok,$min_stok,$statusAktif);
+			$result = $this->m_barang->simpan_barang($kobar,$nabar,$kat,$satuan,$harpok,$harjul,$harjul_grosir,$stok,$minStok,$statusAktif);
 
 			echo json_encode($result);
 		}else{
@@ -96,6 +96,16 @@ class Barang extends CI_Controller{
 		}		
 		echo json_encode($data);
 	}
+
+	function get_all_nama_barang(){
+		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){ 
+			$data=$this->m_barang->get_all_nama_barang();
+		}else{
+			echo "Halaman tidak ditemukan";
+		}		
+		echo json_encode($data);
+	} 
+	
 	function get_barang2(){
 		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){ 
 			$search=$this->input->get('search');  

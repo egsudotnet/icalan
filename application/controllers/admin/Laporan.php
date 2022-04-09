@@ -33,15 +33,17 @@ class Laporan extends CI_Controller{
 		$x['data']=$this->m_laporan->get_data_barang();
 		$this->load->view('admin/laporan/v_lap_barang',$x);
 	}
+
 	function lap_data_penjualan(){
 		$x['data']=$this->m_laporan->get_data_penjualan();
 		$x['jml']=$this->m_laporan->get_total_penjualan();
 		$this->load->view('admin/laporan/v_lap_penjualan',$x);
 	}
 	function lap_penjualan_pertanggal(){
-		$tanggal=$this->input->post('tgl');
-		$x['jml']=$this->m_laporan->get_data__total_jual_pertanggal($tanggal);
-		$x['data']=$this->m_laporan->get_data_jual_pertanggal($tanggal);
+		$tanggalFrom=$this->input->post('tanggalFrom');
+		$tanggalTo=$this->input->post('tanggalTo');
+		$x['jml']=$this->m_laporan->get_data__total_jual_pertanggal($tanggalFrom,$tanggalTo);
+		$x['data']=$this->m_laporan->get_data_jual_pertanggal($tanggalFrom,$tanggalTo);
 		$this->load->view('admin/laporan/v_lap_jual_pertanggal',$x);
 	}
 	function lap_penjualan_perbulan(){
@@ -56,10 +58,41 @@ class Laporan extends CI_Controller{
 		$x['data']=$this->m_laporan->get_jual_pertahun($tahun);
 		$this->load->view('admin/laporan/v_lap_jual_pertahun',$x);
 	}
+
+	
 	function lap_laba_rugi(){
-		$bulan=$this->input->post('bln');
-		$x['jml']=$this->m_laporan->get_total_lap_laba_rugi($bulan);
-		$x['data']=$this->m_laporan->get_lap_laba_rugi($bulan);
+		$x['jml']=$this->m_laporan->get_total_lap_laba_rugi();
+		$x['data']=$this->m_laporan->get_lap_laba_rugi();
 		$this->load->view('admin/laporan/v_lap_laba_rugi',$x);
 	}
+	function lap_laba_rugi_pertanggal(){
+		$tanggalFrom=$this->input->post('tanggalFrom');
+		$tanggalTo=$this->input->post('tanggalTo');
+		$x['jml']=$this->m_laporan->get_total_laba_rugi_pertanggal($tanggalFrom,$tanggalTo);
+		$x['data']=$this->m_laporan->get_laba_rugi_pertanggal($tanggalFrom,$tanggalTo);
+		$this->load->view('admin/laporan/v_lap_laba_rugi',$x);
+	}
+	function lap_laba_rugi_perbulan(){
+		$bulan=$this->input->post('bln');
+		$x['jml']=$this->m_laporan->get_total_lap_laba_rugi_perbulan($bulan);
+		$x['data']=$this->m_laporan->get_lap_laba_rugi_perbulan($bulan);
+		$this->load->view('admin/laporan/v_lap_laba_rugi',$x);
+	}
+	function lap_laba_rugi_pertahun(){
+		$tahun=$this->input->post('thn');
+		$x['jml']=$this->m_laporan->get_total_laba_rugi_pertahun($tahun);
+		$x['data']=$this->m_laporan->get_lap_laba_rugi_pertahun($tahun);
+		$this->load->view('admin/laporan/v_lap_laba_rugi',$x);
+	}
+	
+	function getSummary(){
+		if($this->session->userdata('akses')=='1' || $this->session->userdata('akses')=='2'){  
+			$param=$this->input;   
+			$data = $this->m_laporan->getSummary($param);  
+		}else{
+			echo "Tidak mempunyai akses";
+		}
+		echo json_encode($data);
+	} 
+	
 }
